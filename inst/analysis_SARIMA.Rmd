@@ -76,7 +76,6 @@ data = BETS.get(code)
 
 ```{r eval = !custom.ts, echo = !custom.ts}
 info <- BETS.search(code = ts, view = F)
-print(params$teste)
 ```
 
 ```{r eval = custom.ts, echo = custom.ts}
@@ -373,13 +372,11 @@ ns_roots
 
 ```{r echo = htk, eval = htk}
 s_roots = nsdiffs(data)
-print(s_roots)
+s_roots
 
 if(s_roots != 0) {
    d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots) 
 }
-
-s_roots
 ```
 
 ```{asis echo = htk}
