@@ -1,0 +1,11 @@
+Name: BETS search - English
+Description: An interface `for` time series search (in english)
+Binding: BETS.addin_en
+Interactive: true
+
+
+
+Name: BETS search - Português
+Description: An interface `for` time series search (in portuguese)
+Binding: BETS.addin_pt
+Interactive: true

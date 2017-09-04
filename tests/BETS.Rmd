@@ -1,0 +1,70 @@
+---
+title: "Utilizando o BETS"
+output: html_notebook
+---
+
+Vamos instalar o pacote!! Existe uma versão no CRAN, mas, uma outra possibilidade é instalar a versão do Github. Essa versão pode ser mais atual, já com algumas modificações e melhorias implementadas pelos desenvolvedores do pacote.
+
+
+```{r}
+
+## Instalação via CRAN
+#install.packages("BETS")
+require (BETS)
+
+## Instalação via Github
+#install.packages("devtools")
+require(devtools)
+install_github("pedrocostaferreira/BETS",force = TRUE)
+require(BETS)
+```
+
+**BETS.search**
+
+
+```{r}
+BETS.search(description = "sales ~ retail")
+BETS.search(description = "'sales volume index' ~ vehicles")
+BETS.search(description = "'distrito federal'", periodicity = 'A', src = 'IBGE')
+BETS.search(description = "gdp accumulated", unit = "US", view = F)
+BETS.search(code = "21864")
+```
+
+
+**BETS.get e BETS.save.stata**
+
+```{r}
+gdp_accum = BETS.get(4192)
+gdp_df = BETS.get(23992, data.frame = T)
+BETS.get(2078)
+BETS.save.stata(code = 2078, file.name = "series_stata.dta")
+getwd()
+```
+
+**BETS.chart**
+
+```{r}
+#BETS.chart(alias = 'ipca_with_core', file = "ipca", out = "pdf")
+BETS.chart(alias = 'ulc', start = c(2008,1), file = "ulc", out = "pdf")
+
+```
+
+
+
+```{r}
+parameters = vector(mode = "list")
+parameters$author = "FGV/IBRE"
+parameters$url = "http://portalibre.fgv.br/"
+parameters$logo = "logo_ibre.png"
+parameters$text = "text.txt"
+BETS.dashboard(type = "inflation", parameters = parameters)
+
+```
+
+
+
+
+
+
+
+

@@ -1,0 +1,511 @@
+---
+title: "Fitted SARIMA Model"
+author: "BETS Package"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  ts: 21864
+  series.file: !r NA
+  af.lags: 48
+  n.ahead: 12
+  inf.crit: "BIC"
+  dummy: !r NA
+  ur.test: !r list(mode = "ADF", type = "drift", lags = 6, selectlags = "BIC", level = "5pct")
+  arch.test: !r list(lags = 12, demean = FALSE, alpha = 0.05)
+  box.test: !r list(lag = 1, type = "Ljung-Box", fitdf = 0)
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+
+custom.ts = TRUE
+ts = params$ts
+
+if(class(ts) != 'ts'){
+  custom.ts = FALSE
+  code = as.integer(ts) 
+} else{
+  code = "None"
+}
+
+has.dum = T
+if(is.na(params$dummy[1])){ 
+    has.dum = F
+}
+
+series.file = params$series.file
+```
+
+## User-Defined Parameters
+
+ Parameter          | Value                | Variable
+ ------------------ | -------------------- | ----------
+ Series Code        | `r code`             | `ts` 
+ Maximum Lag        | `r params$af.lags`   | `af.lags` 
+ Prevision Horizon  | `r params$n.ahead`   | `n.ahead` 
+ Unit Root Test     | `r params$ur.test`   | `ur.test`
+ ARCH Test          | `r params$arch.test` | `arch.test`
+ Box Test           | `r params$box.test`  | `box.test`
+ Dummy              | `r has.dum`          | `dummy`
+
+ 
+```{r echo = FALSE}
+  af.lags = params$af.lags
+  n.ahead = params$n.ahead
+  ur.test = params$ur.test
+  arch.test = params$arch.test
+  inf.crit = params$inf.crit
+  box.test = params$box.test
+  
+  dummy = NULL
+  m.dummy = NULL
+  f.dummy = NULL
+  if(has.dum){ dummy = params$dummy }
+```
+
+```{asis echo = !custom.ts}
+## Getting the Time Series from the BETS database
+```
+
+```{r eval = !custom.ts, echo = !custom.ts}
+library(BETS)
+data = BETS.get(code)
+```
+
+### Information About the Series
+
+```{r eval = !custom.ts, echo = !custom.ts}
+info <- BETS.search(code = ts, view = F)
+print(params$teste)
+```
+
+```{r eval = custom.ts, echo = custom.ts}
+data <- ts
+```
+
+```{r echo = FALSE, eval = custom.ts}
+info <- data.frame(matrix(nrow = 1, ncol = 6))
+names(info) <- c("Code","Description","Periodicity","Start","Source","Unit")
+info[1,] <- c(code," ",frequency(data),paste0(start(data),collapse = "."),"Custom"," ")
+```
+
+```{r echo = FALSE, eval = !custom.ts}
+names(info) <- c("Code","Description","Periodicity","Start","Source","Unit")
+info[,"Start"] <- paste(start(data),collapse=".")
+info[,"Description"] <- trimws(info[,"Description"])
+```
+
+```{r echo = FALSE}
+knitr::kable(info, format = "markdown")
+```
+
+
+## Graph
+
+```{r echo = F}
+library(mFilter)
+```
+
+
+```{r eval = -1}
+library(mFilter)
+trend = fitted(hpfilter(data))
+
+library(dygraphs)
+dygraph(cbind(Series = data, Trend = trend), main = info[,"Description"]) %>%
+  dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
+    dyAxis("y", label = info[,"Unit"]) 
+```
+
+## Unit Root Tests
+
+```{asis eval = (ur.test == "ADF")}
+### Augmented Dickey-Fuller 
+```
+
+
+```{asis eval = (ur.test == "KPSS")}
+### KPSS
+```
+
+```{asis eval = (ur.test == "PP")}
+### Phillips-Perron
+```
+
+```{r}
+  test.params = append(list(y = data), ur.test)
+  df = do.call(BETS.ur_test,test.params)
+  df$results
+```
+
+```{r echo = F}
+lvl = ur.test$level
+if(length(lvl) == 0){
+    lvl <- "5pct"
+}
+if(lvl == "1pc"){
+    ic = "99%"
+    alpha = 0.01
+} else if(lvl == "2.5%"){
+    ic = "97.5%"
+    alpha = 0.025
+} else if(lvl == "5%"){
+    ic = "95%"
+    alpha = 0.05
+} else {
+    ic = "90%"
+    alpha = 0.1
+}
+```
+
+
+```{r eval = (ur.test$mode != "KPSS"), echo = F}
+  uroot = FALSE
+  uroot = (df$results[1,"statistic"] > df$results[1,"crit.val"])
+```
+
+```{asis eval = (ur.test$mode != "KPSS") && uroot}
+  For the chosen confidence interval, the test statistic is greater than the critical value. We therefore conclude that there must be a unit root. 
+```
+
+```{r eval = (ur.test$mode == "KPSS"), echo = F}
+  uroot = FALSE
+  uroot = (df$results[1,"statistic"] < df$results[1,"crit.val"])
+```
+
+```{asis eval = (ur.test$mode == "KPSS") && uroot}
+  For the chosen confidence interval, the test statistic is smaller than the critical value. We therefore conclude that there must be a unit root. 
+
+```
+
+```{asis eval = uroot}
+  Now, we are going to repeatedly apply `diff` to the series and check if the diferenced series has a unit root.
+```
+
+```{asis eval = !uroot}
+  For a 95% confidence interval, the test statistic `tau3` is smaller than the critical value. We therefore conclude that there is no non-seasonal unit root. 
+```
+
+```{r eval = !uroot, echo = !uroot}
+ns_roots = 0
+d_ts = data 
+```
+
+
+```{r eval = (ur.test$mode != "KPSS") && uroot, echo = (ur.test$mode != "KPSS") && uroot}
+  ns_roots = 0
+  d_ts = data 
+
+  while(df$results[1,"statistic"] > df$results[1,"crit.val"]){
+    ns_roots = ns_roots + 1
+    d_ts = diff(d_ts)
+    test.params = append(list(y = d_ts), ur.test)
+    df = do.call(BETS.ur_test,test.params)
+    print(df$results)
+ }
+```
+
+```{r eval = (ur.test$mode == "KPSS") && uroot, echo = (ur.test$mode == "KPSS") && uroot}
+  ns_roots = 0
+  d_ts = data 
+
+  while(df$results[1,"statistic"] < df$results[1,"crit.val"]){
+    ns_roots = ns_roots + 1
+    d_ts = diff(d_ts)
+    test.params = append(list(y = d_ts), ur.test)
+    df = do.call(BETS.ur_test,test.params)
+    print(df$results)
+ }
+```
+
+`r if(uroot) 'These tests found that there must be a total of '` `r if(uroot) ns_roots` `r if(uroot) ' unit root(s)'`
+
+### Osborn-Chui-Smith-Birchenhall
+
+This test will be performed for lag `r frequency(data)`, that is, the frequency of the series `r info[1,1]`. 
+
+```{r echo = c(1,2,3)}
+library(forecast)
+s_roots = nsdiffs(data)
+print(s_roots)
+
+sroot = FALSE
+if(s_roots != 0) sroot = TRUE
+roots = (uroot || sroot)
+```
+
+```{asis eval = !sroot}
+  According to the OCSB test, there is no seasonal unit root, at least at a 5% significance level. 
+```
+
+`r if(sroot) 'This result holds for a 5% signficance level and means that, according to the OCSB test, there must be a total of '` `r if(sroot) s_roots` `r if(sroot) ' seasonal unit root(s)'`
+
+## Auto-Correlation Functions
+
+```{r echo = FALSE}
+library(plotly)
+```
+
+```{asis eval = !roots, echo = !roots }
+### ACF and PACF - Original Series
+```
+
+```{asis eval = roots, echo = roots}
+### ACF and PACF - After Differencing
+```
+
+`r if(roots) 'As we saw earlier, this series probably has'` `r if(uroot) ns_roots` `r if(uroot) ' non-seasonal unit root(s)'` `r if(sroot && uroot) ' and '` `r if(sroot) s_roots` `r if(sroot) ' seasonal unit root(s)'` `r if(roots) '. It means we have look into the correlograms of the differenced series.'`
+
+```{r eval =  roots, echo = roots}
+d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
+```
+
+```{r fig.height=3, fig.width=6.0}
+BETS.corrgram(d_ts, lag.max = af.lags, mode = "bartlett", knit = T)
+BETS.corrgram(d_ts, lag.max = af.lags, mode = "simple", type = "partial", knit = T)
+```
+
+## Model Identification and Estimation
+
+The correlograms from last section gives us enough information to try to identify the underlying SARIMA model parameters. We can confirm our guess by running the `auto.arima` function from the package `forecast`. By default, this function uses the AICc (Akaike Information Criterion with Finite Sample Correction) for model selection. `r if(inf.crit == "AICC") 'This is the criterion we are going to use here.'` `r if(inf.crit == "BIC") 'Here, we are going to use BIC (Bayesian Information Criterion), in which the penalty term for the number of parameters in the model is larger than in AIC.'` `r if(inf.crit == "AIC") 'Here, we are going to use AIC (Akaike Information Criterion).'`
+
+```{asis eval = has.dum}
+Since a dummy has to be included, we are going to separate it in two samples, one for the model and one for the forecasts.
+```
+
+```{r eval = has.dum, echo = has.dum}
+m.dummy = window(dummy, end = end(data))
+f.dummy = tail(dummy, n.ahead)
+```
+
+```{r echo = has.dum, eval = has.dum}
+model <- auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
+                   max.d = ns_roots, max.D = s_roots, xreg = m.dummy)
+summary(model)
+```
+
+```{r echo = !has.dum, eval = !has.dum}
+model <- auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
+                   max.d = ns_roots, max.D = s_roots)
+summary(model)
+```
+
+```{r echo = F}
+desc = capture.output(model)[2]
+diffs = as.numeric(gsub("\\,", "", regmatches(desc,gregexpr(",.,",desc))[[1]]))
+p = model$arma[1]
+d = diffs[1]
+q = model$arma[2]
+P = model$arma[3]
+D = diffs[2]
+Q = model$arma[4]
+freq = model$arma[5]
+
+desc = paste0("SARIMA(",p,",",d,",",q,")(",P,",",D,",",Q,")[",freq,"]")
+```
+
+We see that, according to `r inf.crit`, the best model is a `r desc`. Nevertheless, this is not the end. We still have to test for heteroskedasticity in the residuals. We can use an ARCH test with this purpose.
+
+```{r echo = c(1,2,3)}
+arch.params <- append(list(x = resid(model)), arch.test)
+at <- do.call(BETS.arch_test, arch.params)
+at
+htk = at[1,"htk"]
+```
+
+The p.value of `r round(at[1,"p.value"],2)` is `r if(htk) 'larger' else 'smaller'` than the significance level of `r arch.test$alpha`. We therefore conclude that the residuals are `r if(!htk) 'not'` heteroskedastic. `r if(htk) 'This means we should have built the SARIMA model for the log of the original series.'` 
+
+```{r echo = F}
+zeroes = F
+if ( any(data < 0) ) {
+    htk = F
+    zeroes = T
+}
+htk2 = F
+```
+
+```{asis echo = htk && zeroes}
+Unfortunately, the series contains numbers that are less than zero, so we cannot apply the log function. 
+```
+
+```{asis echo = htk && !zeroes}
+The next step, then, is to rebuild the model using log(data).
+```
+
+```{asis echo = htk}
+### Unit root tests (non-seasonal)
+```
+
+```{r eval = htk, echo = htk}
+data <- log(data)
+
+ns_roots = 0
+d_ts = data
+test.params = append(list(y = d_ts), ur.test)
+df = do.call(BETS.ur_test,test.params)
+```
+
+```{r eval = (ur.test$mode != "KPSS") && htk, echo = (ur.test$mode != "KPSS") && htk}
+while(df$results[1,"statistic"] > df$results[1,"crit.val"]){
+    ns_roots = ns_roots + 1
+    d_ts = diff(d_ts)
+    test.params = append(list(y = d_ts), ur.test)
+    df = do.call(BETS.ur_test,test.params)
+}
+
+ns_roots
+```
+
+```{r eval = (ur.test$mode == "KPSS") && htk, echo = (ur.test$mode == "KPSS") && htk}
+while(df$results[1,"statistic"] < df$results[1,"crit.val"]){
+    ns_roots = ns_roots + 1
+    d_ts = diff(d_ts)
+    test.params = append(list(y = d_ts), ur.test)
+    df = do.call(BETS.ur_test,test.params)
+}
+
+ns_roots
+```
+
+```{asis echo = htk}
+### Seasonal unit root test
+```
+
+```{r echo = htk, eval = htk}
+s_roots = nsdiffs(data)
+print(s_roots)
+
+if(s_roots != 0) {
+   d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots) 
+}
+
+s_roots
+```
+
+```{asis echo = htk}
+### ACF and PACF
+```
+
+```{r fig.height=3, fig.width=6.0, eval = htk, echo = htk}
+BETS.corrgram(d_ts, lag.max = af.lags, mode = "bartlett", knit = T)
+BETS.corrgram(d_ts, lag.max = af.lags, mode = "simple", type = "partial", knit = T)
+```
+
+```{asis echo = htk}
+### Estimation
+```
+
+```{r echo = htk && has.dum, eval = htk && has.dum}
+model = auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
+                   max.d = ns_roots, max.D = s_roots, xreg = m.dummy)
+summary(model)
+```
+
+```{r echo = htk && !has.dum, eval = htk && !has.dum}
+model = auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
+                   max.d = ns_roots, max.D = s_roots)
+summary(model)
+```
+
+```{r eval = htk, echo = F}
+desc = capture.output(model)[2]
+diffs = as.numeric(gsub("\\,", "", regmatches(desc,gregexpr(",.,",desc))[[1]]))
+p = model$arma[1]
+d = diffs[1]
+q = model$arma[2]
+P = model$arma[3]
+D = diffs[2]
+Q = model$arma[4]
+freq = model$arma[5]
+
+desc = paste0("SARIMA(",p,",",d,",",q,")(",P,",",D,",",Q,")[",freq,"]")
+```
+
+`r if(htk) paste('The best model seems to be a',desc)`
+
+```{asis echo = htk}
+### ARCH Test
+```
+
+```{r echo = htk, eval = htk}
+arch.params <- append(list(x = resid(model)), arch.test)
+at <- do.call(BETS.arch_test, arch.params)
+at
+```
+
+```{r echo = F, eval = htk}
+htk2 = at[1,"htk"]
+```
+
+```{asis echo = htk2}
+We are led to conclude that the residuals of the second model are heteroskedastic. It seems that the class of SARIMA models are not suited to forecasting the original series.
+```
+
+```{asis echo = !htk2 && htk}
+We are led to conclude that the residuals of the second model are not heteroskedastic, which means this model is a better choice compared to the first.
+```
+
+The next function outputs the model's standardized residuals. If they are all inside the confidence interval, it means the behaviour of the series was well captured by the model. If few residuals are outside the confidence interval, using a dummy to handle structural breaks should be considered. But if most residuals are outside the interval, then SARIMA might not be the appropriate choice. 
+
+```{r fig.height = 4}
+rsd <- BETS.std_resid(model, alpha = 0.01)
+```
+
+As a final step in model evaluation, we are going to apply the `r box.test$type` test to check for autocorrelation in the residuals. 
+
+```{r echo = c(1,2,3)}
+test.params <- append(list(x = resid(model)), box.test)
+bt = do.call(Box.test,test.params)
+bt$p.value
+
+ac = TRUE
+if(bt$p.value > 0.05){
+    ac = FALSE
+}
+```
+
+```{asis echo = ac && !has.dum}
+The p-value is smaller than 0.05, so we can reject the null hypothesis of no autocorrelation in the residuals. Maybe a dummy can solve this problem. Try running this report with a dummy as a parameter next time. 
+```
+
+```{asis echo = ac && has.dum}
+The p-value is smaller than 0.05, so we can reject the null hypothesis of no autocorrelation in the residuals. Since not even a dummy could solve this problem, another class of models could be applied. Try running other types of reports (e.g. GRNN or HOLT-WINTERS) to model this series.
+```
+
+```{asis echo = !ac}
+The p-value is greater than 0.05, which means there is not enough statistical evidence to reject the null hypothesis of no autocorrelation in the residuals. This is a desirable result.
+```
+
+## Forecasts
+
+```{r echo = has.dum, eval = has.dum}
+BETS.predict(model,h=n.ahead, xreg = f.dummy,
+                main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+```
+
+```{r echo = !has.dum, eval = !has.dum}
+BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+```
+
+
+```{r echo = F, eval = !is.na(series.file)}
+preds = BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], knit = F)
+data = c(data,preds$mean)
+
+if(grepl("\\.spss$", series.file)){
+  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+} else if(grepl("\\.dta$", series.file)){
+  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+} else if(grepl("\\.sas$", series.file)){
+  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+}else if(grepl("\\.csv$", series.file)) {
+  write.csv(data, file = series.file, row.names = F)
+} else if(grepl("\\.csv2$", series.file)) {
+  series.file = gsub("\\.csv2$", ".csv", series.file)
+  write.csv2(data, file = series.file, row.names = F)
+}
+```
+
+<br>
+`r if(!is.na(series.file)) 'The whole series and the model predictions are available at [THIS LINK]('``r if(!is.na(series.file)) series.file``r if(!is.na(series.file)) ')'`
+

@@ -1,0 +1,227 @@
+---
+title: "Fitted Exponential Smoothing Model"
+author: "BETS Package"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  ts: 21864
+  alpha: !r NA
+  beta: !r FALSE 
+  gamma: !r FALSE
+  additive: !r TRUE
+  l.start: !r NULL 
+  b.start: !r NULL
+  s.start: !r NULL
+  n.ahead: 10
+  series.file: !r NA
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+
+custom.ts = TRUE
+ts = params$ts
+
+if(class(ts) != 'ts'){
+  custom.ts = FALSE
+  code = as.integer(ts) 
+} else{
+  code = "None"
+}
+
+alpha = params$alpha
+beta = params$beta
+gamma = params$gamma
+additive = params$additive
+n.ahead = params$n.ahead
+series.file = params$series.file
+
+l.start = params$l.start
+b.start = params$b.start
+s.start = params$s.start
+
+
+str = s.start
+if(!is.null(s.start)){
+  str = paste(s.start, collapse = ", ")
+}
+```
+
+## User-Defined Parameters
+
+ Parameter                          | Value              | Variable
+ ---------------------------------- | -------------------| ----------
+ Series code                        | `r code`           | `ts` 
+ Alpha                              | `r alpha`          | `alpha` 
+ Beta                               | `r beta`           | `beta` 
+ Gamma                              | `r gamma`          | `gamma`
+ Additive                           | `r additive`       | `additive`
+ Level initial value                | `r l.start`        | `l.start` 
+ Trend initial value                | `r b.start`        | `b.start` 
+ Seasonal components initial values | `r str`            | `s.start` 
+ Steps ahead                        | `r n.ahead`        | `n.ahead`
+ 
+## Series Information
+
+```{r echo = !custom.ts, eval = !custom.ts}
+library(BETS)
+info <- BETS.search(code = ts, view = F)
+```
+
+```{r echo = FALSE, eval = custom.ts}
+info <- data.frame(matrix(nrow = 1, ncol = 6))
+names(info) <- c("Code","Description","Periodicity","Start","Source","Unit")
+info[1,] <- c(code," ",frequency(ts),paste0(start(ts),collapse = "."),"Custom"," ")
+```
+
+```{r echo = FALSE, eval = !custom.ts}
+names(info) <- c("Code","Description","Periodicity","Start","Source","Unit")
+info[,"Start"] <- paste(start(ts),collapse=".")
+info[,"Description"] <- trimws(info[,"Description"])
+```
+
+```{r echo = FALSE}
+knitr::kable(info, format = "markdown")
+```
+ 
+## Graph
+
+```{r eval = !custom.ts, echo = !custom.ts}
+ts = BETS.get(code = ts)
+```
+
+
+```{r}
+library(mFilter)
+trend = fitted(hpfilter(ts))
+
+
+library(dygraphs)
+dygraph(cbind(Series = ts, Trend = trend), main = info[1,"Description",]) %>%
+  dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
+     dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
+        dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
+          dyAxis("y", label = info[1,"Unit"])
+```
+
+```{r echo = F}
+# Aditivo e NAO TEM alpha
+type1 = (additive && is.na(alpha))
+
+# Aditivo e TEM alpha
+type2 = (additive && !is.na(alpha))
+
+# Multiplicativo e TEM alpha
+type3 = (!additive && !is.na(alpha))
+
+# Multiplicativo e NAO TEM alpha
+type4 = (!additive && is.na(alpha))
+```
+
+## Smoothing
+
+```{asis echo = type1}
+You believe the series can be decomposed in a additive fashion (possibly because it seems homoscedastic) and you want the Holt-Winters R algorithm to choose the best alpha value. 
+```
+
+```{asis echo = type2}
+You believe the series can be decomposed in a additive fashion (possibly because it seems homoscedastic) and you do not want the Holt-Winters R algorithm to choose the best alpha value. 
+```
+
+```{asis echo = type3}
+You believe the series can be decomposed in a multiplicative fashion (possibly because it seems heteroscedastic) and you want the Holt-Winters R algorithm to choose the best alpha value. 
+```
+
+```{asis echo = type4}
+You believe the series can be decomposed in a multiplicative fashion (possibly because it seems heteroscedastic) and you do not want the Holt-Winters R algorithm to choose the best alpha value. 
+```
+
+In addition, you `r if(!beta) 'do not'` want to model trend and `r if(!gamma) 'do not'` think the series has seasonal patterns.
+
+Therefore, this is how we are going to create the model:
+
+```{r echo = type1, eval = type1}
+model = HoltWinters(ts, beta = beta, gamma = gamma,
+                        l.start = l.start, b.start = b.start, s.start = s.start)
+```
+
+```{r echo = type2, eval = type2}
+model = HoltWinters(ts, alpha = alpha, beta = beta, gamma = gamma,
+                        l.start = l.start, b.start = b.start, s.start = s.start)
+```
+
+```{r echo = type3, eval = type3}
+model = HoltWinters(ts, beta = beta, gamma = gamma, seasonal = "multiplicative",
+                        l.start = l.start, b.start = b.start, s.start = s.start)
+```
+
+```{r echo = type4, eval = type4}
+model = HoltWinters(ts, alpha = alpha, 
+                    beta = beta, gamma = gamma, seasonal = "multiplicative",
+                      l.start = l.start, b.start = b.start, s.start = s.start)
+```
+
+These are the final parameters:
+
+```{r}
+model
+```
+
+## Forecasts
+
+```{r eval = custom.ts, echo = custom.ts}
+library(BETS)
+```
+
+```{r}
+preds = BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], style = "normal")
+```
+
+## Model Evaluation
+
+If the model is well-specified, its normalized residuals should not surpass the boundaries of confidence intervals. In addition, it should look like white noise. Here, we plot the normalized residuals with a 95% confidence interval:
+
+```{r}
+std.resid = BETS.std_resid(model, alpha = 0.05)
+```
+
+We can use a Ljung-Box test to accept or reject the hypothesis of autocorrelation in the residuals (the forecasting errors):
+
+```{r echo = -1}
+bt = Box.test(preds$residuals, lag=20, type="Ljung-Box")
+Box.test(preds$residuals, lag=20, type="Ljung-Box")
+```
+
+```{asis echo = bt$p.value < 0.5}
+Note that the `p.value` is too low, which is an evidence of non-zero autocorrelations in the forecasting errors at lags 1 to 20. It suggests you should change the model specification.
+```
+
+```{asis echo = bt$p.value > 0.5}
+Note that the `p.value` is high. So, there is little evidence of non-zero autocorrelations in the forecasting errors at lags 1 to 20.
+```
+
+To confirm these results, we can take look at the residuals ACF:
+
+```{r}
+BETS.corrgram(preds$residuals, lag.max = 20, mode = "bartlett", knit = T)
+```
+
+```{r echo = F, eval = !is.na(series.file)}
+data = c(ts,preds$mean)
+
+if(grepl("\\.spss$", series.file)){
+  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+} else if(grepl("\\.dta$", series.file)){
+  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+} else if(grepl("\\.sas$", series.file)){
+  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+}else if(grepl("\\.csv$", series.file)) {
+  write.csv(data, file = series.file, row.names = F)
+} else if(grepl("\\.csv2$", series.file)) {
+  series.file = gsub("\\.csv2$", ".csv", series.file)
+  write.csv2(data, file = series.file, row.names = F)
+}
+```
+
+<br>
+`r if(!is.na(series.file)) 'The whole series and the model predictions are available at [THIS LINK]('``r if(!is.na(series.file)) series.file``r if(!is.na(series.file)) ')'`

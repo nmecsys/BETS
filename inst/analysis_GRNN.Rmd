@@ -1,0 +1,392 @@
+---
+title: "Fitted GRNN Model"
+author: "BETS Package"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  ts: 13522
+  auto.reg: TRUE
+  present.regs: FALSE 
+  lag.max: 2
+  regs: 4382
+  start.train: !r c(1999,1)
+  end.train: !r c(2016,1)
+  start.test: !r c(2016,2)
+  end.test: !r c(2016,11)
+  sigma.interval: !r c(0.8,0.9)
+  sigma.step: 0.1
+  var.names: !r NA
+  series.file: !r NA
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+```{r echo = FALSE}
+library(BETS)
+
+regs = as.list(params$regs)
+regs = append(regs,params$ts,0)
+
+gen.name = FALSE 
+
+if(is.na(params$var.names)){
+  var.names = vector(mode = "character")
+  gen.name = TRUE
+} else {
+  var.names = params$var.names
+}
+
+info = data.frame()
+j = 1
+
+for(i in 1:length(regs)){
+  
+  reg = regs[[i]]
+  
+  if(class(reg) == "numeric" || class(reg) == "character" || class(reg) == "integer"){
+    
+    res = BETS.search(code = reg, view = F)[1,]
+    res = data.frame(cbind(res," "),stringsAsFactors = F)
+    info = rbind(info,res)
+    regs[[i]] = BETS.get(reg)
+  }
+  else {
+    res = data.frame(t(c("-", paste("Custom series",j),
+             "-",paste(start(reg),collapse = "-"),
+                 paste(end(reg),collapse = "-"),
+                 rep("-",2)," ")),
+             stringsAsFactors = F)
+    
+    names(res) = names(info)
+    info = rbind(info, res)
+    
+    j = j + 1
+    
+  }
+  
+  if(gen.name){
+    var.names = c(var.names,paste0("series",i))
+  }
+}
+
+
+info[,8] = var.names
+names(info) <- c("Code","Description","Unit","Periodicity","Start","End","Source","Name")
+info[,"Description"] <- trimws(info[,"Description"])
+```
+
+
+## User-Defined Parameters
+
+```{r echo = FALSE}
+r = info[-1,1]
+inx = (r == "-")
+
+custom = ""
+if(any(inx)){
+  custom = "and custom"
+}
+
+r = paste(paste(r[!inx],collapse = ", "),custom)  
+pars = c("ts","regs","auto.reg","present.reg","lag.max","start.train","end.train","start.test","end.test","sigma.inteval","sigma.step","var.names")
+desc = c("Dependant variable","Regressors","Is the dependant variable auto-regressive?","Include non-lagged series among regressors?","Regressors' maximum lag","Training set starting period","Training set ending period","Testing set starting period","Testing set ending period","Sigma inteval","Sigma step", "Variable names")
+vals = c(info[1,1],r,params$auto.reg,params$present.regs,params$lag.max, paste(params$start.train,collapse = "."), paste(params$end.train,collapse = "."), paste(params$start.test,collapse = "."), paste(params$end.test,collapse = "."), paste(params$sigma.interval,collapse = " to "), params$sigma.step, paste(var.names, collapse = ", "))
+
+knitr::kable(data.frame(Parameter = pars,Description = desc, Value = vals))
+```
+
+```{r echo = F}
+auto.reg = params$auto.reg
+present.regs = params$present.regs
+lag.max = params$lag.max
+start.train = params$start.train
+end.train = params$end.train
+start.test = params$start.test
+end.test = params$end.test
+sigma.interval = params$sigma.interval
+sigma.step = params$sigma.step
+ts = params$ts
+series.file = params$series.file
+```
+
+
+### Series Information
+
+The table shown below was saved into a variable called `info`. It is going to be used later.
+
+```{r echo = FALSE}
+knitr::kable(info, format = "markdown")
+```
+
+Note: If the series is in BETS database, you can get information about it using the function `BETS.search`.
+
+## Graphs
+
+All series were stored in a list called `regs`, the first element being the dependant variable. We are now going to subset these series according to starting and ending periods.
+
+```{r}
+for(i in 1:length(regs)){
+  regs[[i]] = window(regs[[i]], start = start.train, end = end.test)
+}
+```
+
+```{r echo = F}
+mult = FALSE
+if(length(regs) > 2){
+  mult = TRUE
+}
+```
+
+
+### Dependant Variable 
+
+```{r}
+# Load mFilter, a package with several filters
+library(mFilter)
+
+# Calculate the trend of dependant variable using an HP filter
+trend = fitted(hpfilter(regs[[1]]))
+
+# Load dygraphs and make a plot
+library(dygraphs)
+dygraph(cbind(Series = regs[[1]], Trend = trend), main = info[1,"Description",]) %>%
+  dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
+     dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
+        dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
+          dyAxis("y", label = info[1,"Unit"])
+```
+
+
+```{asis eval = mult}
+### Regressors
+```
+
+```{r eval = mult, echo = mult}
+# Load lattice, a charting library
+library(lattice)
+
+# Load zoo, a library to manipulate time series and dates
+library(zoo)
+
+# Get the dates of each observation of the dependant variable
+dates = as.Date.ts(regs[[1]])
+
+# Create a data.frame in which each column contains a regressor
+df = data.frame("date" = dates)
+
+for(i in 2:length(regs)){
+  df = cbind(df, as.vector(regs[[i]]))
+}
+
+# Name columns after variable names
+names(df)[2:length(regs)] = var.names[2:length(regs)]
+
+# Convert the data.frame into a zoo object
+df <- read.zoo(df)
+
+# Plot it with lattice
+xyplot(df)
+```
+
+```{asis eval = !mult, echo = !mult}
+### Regressor
+```
+
+```{r eval = !mult, echo = !mult}
+trend = fitted(hpfilter(regs[[2]]))
+
+library(dygraphs)
+dygraph(cbind(Series = regs[[2]], Trend = trend), main = info[2,"Description"]) %>%
+  dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
+     dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
+        dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
+          dyAxis("y", label = info[2,"Unit"])
+```
+
+## Normalization
+
+Input values normalization is a very important step when working with neural networks. Normalizing means standartizing the values of a series, in order to smooth its variability and to enhance the accuracy of numerical computation, once redundancies are removed. The effect of normalization is, therefore, to improve network performance, helping to avoid simulation faults and making it more efficient.
+
+We are going to normalize every series by applying two operations on each of its elements: subtract the series mean and divide by the series standard deviation. `BETS` has a function that performs these operations, `BETS.normalize` with parameter `mode` set to `scale`:
+
+```{r}
+regs.norm = list()
+
+for(i in 1:length(regs)){
+  regs.norm[[i]] = BETS.normalize(regs[[i]], mode = "scale")
+}
+```
+
+The ranges changed and became very similar after normalization:
+
+```{r echo = F}
+library(lattice)
+library(zoo)
+
+dates = as.Date.ts(regs.norm[[1]])
+df = data.frame("date" = dates)
+
+for(i in 1:length(regs)){
+  df = cbind(df, as.vector(regs.norm[[i]]))
+}
+
+names(df)[-1] = var.names
+df <- read.zoo(df)
+
+xyplot(df)
+```
+
+This way, no series will dominate and thus distort the training process.
+
+## Definition of Training and Testing Sets
+
+Before training the neural network, we need to initialize the inputs accepted by `BETS.grnn.train`, in particular the argumento `train.set`. It is a list of objects of type `ts` (time series), where the first must be the dependant variable (in this case, `r var.names[1]`) and the others, regressors. Each lag must be provided as an aditional regressor. We will name each lagged regressor with an underscore plus its lag (for instance, `r paste0(var.names[2],"_1")` will be the first lag of variable `r var.names[2]`). 
+
+To build the training set, we first need to add `r lag.max` periods (the number of lags) to `start.train`, since all series must start in the same period:
+
+```{r echo = F}
+freq = frequency(regs.norm[[1]])
+f1 = (freq == 1)
+f2 = (freq == 4 || freq == 12)
+```
+
+```{r echo = f1, eval = f1}
+# Load lubridate, a package to manipulate dates
+library(lubridate)
+
+# Transform start.train in a ymd object
+start.train = ymd(paste0(start.train,"-01-01"))
+
+# Sum lag.max*12 to the ymd object using the special operator %m+%
+start.train = start.train %m+% months(lag.max*12)
+
+# Extract the resulting year
+start.train = as.numeric(format(start.train,"%Y"))
+```
+
+
+```{r echo = f2, eval = f2}
+# Load lubridate, a package to manipulate dates
+library(lubridate)
+
+# Transform start.train in a ymd object
+y = start.train[1]
+m = start.train[2]
+start.train = ymd(paste0(y,"-",m,"-","01"))
+
+# Sum lag.max*12/freq to the ymd object using the special operator %m+%
+start.train = start.train %m+% months(lag.max*12/frequency(regs.norm[[1]]))
+
+# Extract the resulting period
+start.train = as.numeric(c(format(start.train,"%Y"),format(start.train,"%m")))
+```
+
+Now, `start.train` is equal to `r paste(start.train,collapse = ".")` and we can proceed to divide our data into training and testing sets.
+
+```{r}
+complete = list()
+training = list()
+testing = list()
+
+# The list 'complete' will contain all series, i.e, original and lagged series
+complete[[1]] = regs.norm[[1]]
+
+nms = var.names[1]
+
+# If the dependant variable is auto-regressive, add its lags to the list 
+if(auto.reg){
+  for(j in 1:lag.max){
+    complete[[1 + j]] = lag(regs.norm[[1]],-j)
+    nms = c(nms, paste0(var.names[1],"_",j))
+  }
+}
+
+# Add regressors lags to the series list and their names to the names vector
+nregs = length(regs.norm)
+s = length(complete)
+
+for(i in 2:nregs){
+  
+  if(present.regs){
+    complete[[s + 1]] = regs.norm[[i]]
+    nms = c(nms, var.names[i])
+    s = s + 1
+  }
+
+  for(j in 1:lag.max){
+    complete[[s + 1]] = lag(regs.norm[[i]],-j)
+    nms = c(nms,paste0(var.names[i],"_",j))
+    s = s + 1
+  }
+}
+
+# Divide series in training and testing sets
+for(i in 1:length(complete)){
+  training[[i]] = window(complete[[i]], start = start.train, end = end.train)
+  testing[[i]] = window(complete[[i]], start = start.test, end = end.test)
+}
+
+names(training) = nms
+names(testing) = nms
+```
+
+## Network Training
+
+Finally, the GRNN can be trained:
+
+```{r}
+results = BETS.grnn.train(training, sigma = sigma.interval, step = sigma.step)
+```
+
+From the list outputted by `BETS.grnn.train` we see that the best network in terms of fitting used `r paste(nms[results[[1]]$regressors],collapse = ", ")` as regressors and a sigma of `r results[[1]]$sigma`, obtaining a MAPE of `r round(results[[1]]$mape,2)`.
+
+## Network Testing
+
+The next step is, naturally, testing the best networks and choosing one of them. The function `BETS.grnn.test`.   
+
+```{r}
+best.net = BETS.grnn.test(results,testing)
+
+# 'accuracy' field of object best.net (MAPE)
+best.net[['mape']]
+
+# Regressors of best net in terms of one-step-ahead forecasts
+best.net[['regressors']]
+nms[best.net[['regressors']]] 
+```
+
+## Forecasts
+
+Using the `results` object and the testing set, we can easily obtain forecasts through `BETS.predict`: 
+
+```{r}
+preds = BETS.predict(results, testing, actual = testing[[1]],
+                     unnorm = c(mean(regs[[1]]), sd(regs[[1]])), xlim = c(2013, 2016 + 11/12),
+                     ylab = info[1,"Unit"], style = "normal")
+
+preds[['accuracy']]
+```
+
+
+```{r echo = F, eval = !is.na(series.file)}
+data = c(regs[[1]],preds$mean)
+
+if(grepl("\\.spss$", series.file)){
+  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+} else if(grepl("\\.dta$", series.file)){
+  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+} else if(grepl("\\.sas$", series.file)){
+  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+}else if(grepl("\\.csv$", series.file)) {
+  write.csv(data, file = series.file, row.names = F)
+} else if(grepl("\\.csv2$", series.file)) {
+  series.file = gsub("\\.csv2$", ".csv", series.file)
+  write.csv2(data, file = series.file, row.names = F)
+}
+```
+
+<br>
+
+`r if(!is.na(series.file)) 'The whole dependant variable series and  model predictions are available at [THIS LINK]('``r if(!is.na(series.file)) series.file``r if(!is.na(series.file)) ')'`

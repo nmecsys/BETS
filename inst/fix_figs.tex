@@ -1,0 +1,10 @@
+\usepackage{subcaption,fancyhdr,graphicx,lastpage,hyperref,lmodern,float,caption}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
+
+ 

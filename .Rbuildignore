@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^.*\.tar\.gz$
+^tests$
+^data$
+^\.travis\.yml$
+^appveyor\.yml$
+^graphs$
+^old$
