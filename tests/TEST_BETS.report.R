@@ -6,20 +6,19 @@ BETS.report()
 
 # Caso do artigo 
 
-dum <- BETS.dummy(start= c(2002,1) , end = c(2016,4) , from = c(2008,9) , to = c(2008,11))
+dum <- BETS.dummy(start= c(2002,1) , end = c(2016,4) , from = c(2008,7) , to = c(2008,11))
 
 params = list( 
   af.lags = 48,
-  n.ahead = 6,
+  n.ahead = 12,
   ur.test =  list(mode = "ADF", type = "drift", lags = 11, selectlags = "BIC", level = "5pct"),
+  box.test = list(lag = 2),
   dummy = dum
 )
 
 BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), 
             parameters = params,
             series.saveas = "csv")
-
-#BETS.report(ts = 7375)
 
 # Caso base, com codigo e parametros 
 
