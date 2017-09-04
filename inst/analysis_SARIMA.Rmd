@@ -221,7 +221,7 @@ d_ts = data
 
 ### Osborn-Chui-Smith-Birchenhall
 
-This test will be performed for lag `r frequency(data)`, that is, the frequency of the series `r info[1,1]`. 
+This test will be performed for lag `r frequency(data)`, that is, the frequency of the series. 
 
 ```{r echo = c(1,2,3)}
 library(forecast)
@@ -278,6 +278,7 @@ f.dummy = tail(dummy, n.ahead)
 ```
 
 ```{r echo = has.dum, eval = has.dum}
+ns_roots
 model <- auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
                    max.d = ns_roots, max.D = s_roots, xreg = m.dummy)
 summary(model)
@@ -435,7 +436,7 @@ htk2 = at[1,"htk"]
 ```
 
 ```{asis echo = htk2}
-We are led to conclude that the residuals of the second model are heteroskedastic. It seems that the class of SARIMA models are not suited to forecasting the original series.
+We are led to conclude that the residuals of the second model are also heteroskedastic. It seems that the class of SARIMA models are not suited to forecasting the original series.
 ```
 
 ```{asis echo = !htk2 && htk}

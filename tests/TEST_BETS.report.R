@@ -9,8 +9,9 @@ BETS.report()
 dum <- BETS.dummy(start= c(2002,1) , end = c(2016,4) , from = c(2008,9) , to = c(2008,11))
 
 params = list( 
-  af.lags = 36,
+  af.lags = 48,
   n.ahead = 6,
+  ur.test =  list(mode = "ADF", type = "drift", lags = 11, selectlags = "BIC", level = "5pct"),
   dummy = dum
 )
 
