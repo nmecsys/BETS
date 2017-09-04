@@ -102,7 +102,7 @@ knitr::kable(info, format = "markdown")
 ## Graph
 
 ```{r echo = F}
-library(mFilter)
+require(mFilter)
 ```
 
 
@@ -182,7 +182,7 @@ if(lvl == "1pc"){
 ```
 
 ```{asis eval = !uroot}
-  For a 95% confidence interval, the test statistic `tau3` is smaller than the critical value. We therefore conclude that there is no non-seasonal unit root. 
+  For a 95% confidence interval, the test statistic is smaller than the critical value. We therefore conclude that there is no non-seasonal unit root. 
 ```
 
 ```{r eval = !uroot, echo = !uroot}
@@ -269,7 +269,7 @@ BETS.corrgram(d_ts, lag.max = af.lags, mode = "simple", type = "partial", knit =
 The correlograms from last section gives us enough information to try to identify the underlying SARIMA model parameters. We can confirm our guess by running the `auto.arima` function from the package `forecast`. By default, this function uses the AICc (Akaike Information Criterion with Finite Sample Correction) for model selection. `r if(inf.crit == "AICC") 'This is the criterion we are going to use here.'` `r if(inf.crit == "BIC") 'Here, we are going to use BIC (Bayesian Information Criterion), in which the penalty term for the number of parameters in the model is larger than in AIC.'` `r if(inf.crit == "AIC") 'Here, we are going to use AIC (Akaike Information Criterion).'`
 
 ```{asis eval = has.dum}
-Since a dummy has to be included, we are going to separate it in two samples, one for the model and one for the forecasts.
+Since a dummy has to be included, we are going to separate it in two samples, one to build the model and other to make the forecasts.
 ```
 
 ```{r eval = has.dum, echo = has.dum}
@@ -476,17 +476,25 @@ The p-value is greater than 0.05, which means there is not enough statistical ev
 ## Forecasts
 
 ```{r echo = has.dum, eval = has.dum}
-BETS.predict(model,h=n.ahead, xreg = f.dummy,
-                main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+BETS.predict(model, h=n.ahead, xreg = f.dummy,
+             main = info[,"Description"], ylab = info[,"Unit"], knit = T)
 ```
 
 ```{r echo = !has.dum, eval = !has.dum}
-BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+BETS.predict(model, h=n.ahead, 
+             main = info[,"Description"], ylab = info[,"Unit"], knit = T)
 ```
 
 
 ```{r echo = F, eval = !is.na(series.file)}
-preds = BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], knit = F)
+if(has.dum){
+  preds = BETS.predict(model, h=n.ahead, xreg = f.dummy,
+                        main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+} else {
+  preds = BETS.predict(model, h=n.ahead, 
+                       main = info[,"Description"], ylab = info[,"Unit"], knit = T)      
+}
+
 data = c(data,preds$mean)
 
 if(grepl("\\.spss$", series.file)){
