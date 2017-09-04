@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: BETS\nType: Package\nTitle: Brazilian Economic Time Series\nVersion: 0.3.2\nDate: 2017-08-29\nAuthors@R: c(person(\"Pedro\", \"Costa Ferreira\", email = \"pedro.guilherme@fgv.br\", role = c(\"aut\", \"cre\")),\n              person(\"Talitha\", \"Speranza\", email = \"talitha.speranza@fgv.br\", role = \"aut\"),\n\t\t\t        person(\"Jonatha\", \"Azevedo\", email = \"jonatha.azevedo@fgv.br\", role = \"aut\"),\n\t\t\t        person(\"Fernando\", \"Teixeira\", email = \"fernando.teixeira@fgv.br\", role = \"aut\"),\n\t\t\t        person(\"Daiane\", \"Marcolino\", email = \"daiane.mattos@fgv.br\", role = \"aut\"))\nMaintainer: Pedro Costa Ferreira <pedro.guilherme@fgv.br>\nDepends: R (>= 3.4.1)\nImports: grnn, ggplot2, plotly, urca, forecast, sqldf, zoo, rmarkdown,\n        foreign, seasonal, stringr, dygraphs, RCurl, shiny (>= 0.13),\n        miniUI (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL,\n        DBI, rjson, httr,rvest, xml2, lubridate, htmltools\nSuggests: mFilter, devtools, xts, knitr\nDescription: It provides access to and information about the most important\n    Brazilian economic time series - from the Getulio Vargas Foundation <http://portal.fgv.br/en>,\n    the Central Bank of Brazil <http://www.bcb.gov.br> and the Brazilian Institute of Geography\n    and Statistics <http://www.ibge.gov.br>. It also presents tools for managing, analysing (e.g.\n    generating dynamic reports with a complete analysis of a series) and exporting\n    these time series.\nLicense: GPL-3\nBugReports: https://github.com/nmecsys/BETS/issues\nURL: https://github.com/nmecsys/BETS\nEncoding: UTF-8\nLazyData: true\nRoxygenNote: 6.0.1\nNeedsCompilation: no\nVignetteBuilder: knitr\nRepository: CRAN\n",
+    "created" : 1504536365279.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3278104642",
+    "id" : "F1705B45",
+    "lastKnownWriteTime" : 1504536430,
+    "last_content_update" : 1504536430339,
+    "path" : "C:/Users/Talitha/Dropbox/FGV/BETS/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}
