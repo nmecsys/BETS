@@ -52,6 +52,20 @@ parameters = list(
 
 BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), parameters = parameters)
 
+# Outra serie
+
+params = list( 
+  af.lags = 36,
+  n.ahead = 6,
+  dummy = BETS.dummy(start= c(2002,1) , end = c(2017,12) , from = c(2008,9) , to = c(2008,11)),
+  arch.test = list(lags = 12, alpha = 0.01),
+  box.test = list(type = "Box-Pierce")
+)
+
+BETS.report(ts = 21863, parameters = params)
+
+
+
 # Caso base, mudando teste de raiz unitaria
 
 parameters = list( 

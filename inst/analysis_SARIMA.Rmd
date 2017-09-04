@@ -255,7 +255,7 @@ library(plotly)
 
 `r if(roots) 'As we saw earlier, this series probably has'` `r if(uroot) ns_roots` `r if(uroot) ' non-seasonal unit root(s)'` `r if(sroot && uroot) ' and '` `r if(sroot) s_roots` `r if(sroot) ' seasonal unit root(s)'` `r if(roots) '. It means we have look into the correlograms of the differenced series.'`
 
-```{r eval =  roots, echo = roots}
+```{r eval =  sroot, echo = sroot}
 d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
 ```
 
@@ -278,7 +278,6 @@ f.dummy = tail(dummy, n.ahead)
 ```
 
 ```{r echo = has.dum, eval = has.dum}
-ns_roots
 model <- auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
                    max.d = ns_roots, max.D = s_roots, xreg = m.dummy)
 summary(model)
@@ -436,7 +435,7 @@ htk2 = at[1,"htk"]
 ```
 
 ```{asis echo = htk2}
-We are led to conclude that the residuals of the second model are also heteroskedastic. It seems that the class of SARIMA models are not suited to forecasting the original series.
+We are led to conclude that the residuals of the second model are also heteroskedastic. It seems that the class of SARIMA models is not suited to forecasting the original series.
 ```
 
 ```{asis echo = !htk2 && htk}
