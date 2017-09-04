@@ -378,7 +378,7 @@ if(s_roots != 0) {
    d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots) 
 }
 ```
-
+ 
 ```{asis echo = htk}
 ### ACF and PACF
 ```

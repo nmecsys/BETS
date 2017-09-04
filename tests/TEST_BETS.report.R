@@ -4,7 +4,7 @@
 
 BETS.report()
 
-BETS.report(ts = 7375)
+#BETS.report(ts = 7375)
 
 # Caso base, com codigo e parametros 
 
