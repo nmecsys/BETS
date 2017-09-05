@@ -56,8 +56,8 @@ BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), p
 params = list( 
   af.lags = 36,
   n.ahead = 6,
-  dummy = BETS.dummy(start= c(2002,1) , end = c(2017,12) , from = c(2008,9) , to = c(2008,11)),
-  arch.test = list(lags = 12, alpha = 0.01),
+  dummy = BETS.dummy(start= c(2002,1) , end = c(2017,12) , from = c(2008,7) , to = c(2008,11)),
+  arch.test = list(lags = 12, alpha = 0.025),
   box.test = list(type = "Box-Pierce")
 )
 
@@ -99,7 +99,7 @@ BETS.report(ts = series, parameters = parameters)
 series = list(BETS.get(4447), BETS.get(21864))
 
 parameters = list(
-  af.lags= 20,
+  af.lags= 25,
   n.ahead = 15 ) 
 
 
