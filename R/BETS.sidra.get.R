@@ -12,7 +12,8 @@
 #' codes containing the desired tables from the classification.
 #' @keywords sidra
 #' @export
-#' @import httr rjson zoo
+#' @import rjson zoo
+#' @importFrom httr GET content
 #' @examples
 #' \dontrun{sidra=BETS.sidra.get(x = c(1612), from = 1990, to = 2015, territory = "brazil", variable =109)
 #' sidra=BETS.sidra.get(x = c(3653), from = c("200201"), 

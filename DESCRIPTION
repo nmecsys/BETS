@@ -11,9 +11,9 @@ Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br",
 Maintainer: Pedro Costa Ferreira <pedro.guilherme@fgv.br>
 Depends: R (>= 3.4.1)
 Imports: grnn, ggplot2, plotly, urca, forecast, zoo, rmarkdown,
-        foreign, seasonal, stringr, dygraphs, RCurl, shiny (>= 0.13),
+        foreign, seasonal, stringr, dygraphs, shiny (>= 0.13),
         miniUI (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL,
-        DBI, rjson, httr,rvest, xml2, lubridate, htmltools
+        DBI, rjson, rvest, xml2, lubridate, htmltools, httr
 Suggests: mFilter, devtools, xts, knitr
 Description: It provides access to and information about the most important
     Brazilian economic time series - from the Getulio Vargas Foundation <http://portal.fgv.br/en>,
