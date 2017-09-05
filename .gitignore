@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 inst/doc
+R/BETS.collapse.R
+R/collapse.aux.R
