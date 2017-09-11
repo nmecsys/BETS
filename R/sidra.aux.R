@@ -16,6 +16,7 @@
 #' 
 #' @import xml2 rvest stringr
 #' @importFrom lubridate month
+#' @importFrom httr GET content
 
 
 sidra.aux <- function(x, len, nova_req, from, to, inputs, territory, variable, header, sections) { 
@@ -42,13 +43,15 @@ sidra.aux <- function(x, len, nova_req, from, to, inputs, territory, variable, h
             header2 = NULL
             
             for(j in seq(from,to, by=minus)){
-            
-                tabela1=RCurl::getURL(paste0("http://api.sidra.ibge.gov.br/values/",
+
+                tabela1=httr::GET(paste0("http://api.sidra.ibge.gov.br/values/",
                                         "t/", inputs[i], "/", territory, "/", "p/", 
-                                        j, "-", (j+minus-1),  
+                                        from, "-", to,  
                                         "/v/", variable[i], "/f/", "u", "/h/", header,
-                                        sections[[i]]),
-                                        ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+                                        sections[[i]]))
+                
+                tabela1 = base::rawToChar(httr::content(tabela1,'raw'))
+                
                 
                 
                 t1 = paste("tabela", x, sep="_")
@@ -88,12 +91,13 @@ sidra.aux <- function(x, len, nova_req, from, to, inputs, territory, variable, h
             
             for(j in 1:nova_req){        
         
-                tabela1=RCurl::getURL(paste0("http://api.sidra.ibge.gov.br/values/",
-                                    "t/", inputs[i], "/", territory, "/", "p/", 
-                                    init, "-", fin,  
-                                    "/v/", variable[i], "/f/", "u", "/h/", header,
-                                    sections[[i]]),
-                             ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+                tabela1=httr::GET(paste0("http://api.sidra.ibge.gov.br/values/",
+                                        "t/", inputs[i], "/", territory, "/", "p/", 
+                                        from, "-", to,  
+                                        "/v/", variable[i], "/f/", "u", "/h/", header,
+                                        sections[[i]]))
+                
+                tabela1 = base::rawToChar(httr::content(tabela1,'raw'))
                 
                 
                 
@@ -141,12 +145,14 @@ sidra.aux <- function(x, len, nova_req, from, to, inputs, territory, variable, h
 
             for(j in 1:nova_req){
 
-                tabela1=RCurl::getURL(paste0("http://api.sidra.ibge.gov.br/values/",
-                                    "t/", inputs[i], "/", territory, "/", "p/",
-                                    from, "-", to,
-                                    "/v/", variable[i], "/f/", "u", "/h/", header,
-                                    sections[[i]]),
-                             ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+
+                tabela1=httr::GET(paste0("http://api.sidra.ibge.gov.br/values/",
+                                        "t/", inputs[i], "/", territory, "/", "p/", 
+                                        from, "-", to,  
+                                        "/v/", variable[i], "/f/", "u", "/h/", header,
+                                        sections[[i]]))
+                
+                tabela1 = base::rawToChar(httr::content(tabela1,'raw'))
                 
                 
                 

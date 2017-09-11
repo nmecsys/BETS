@@ -27,7 +27,8 @@
 #'
 #' @author Pedro Costa Ferreira \email{pedro.guilherme@fgv.br},
 #'         Jonatha Costa \email{jonatha.costa@fgv.br},
-#'         Talitha Speranza \email{talitha.speranza@fgv.br}
+#'         Talitha Speranza \email{talitha.speranza@fgv.br},
+#'         Fernando Teixeira \email{fernando.teixeira@fgv.br}
 #'
 #' @docType package
 #' @name BETS

@@ -12,7 +12,8 @@
 #' codes containing the desired tables from the classification.
 #' @keywords sidra
 #' @export
-#' @import RCurl rjson zoo
+#' @import rjson zoo
+#' @importFrom httr GET content
 #' @examples
 #' \dontrun{sidra=BETS.sidra.get(x = c(1612), from = 1990, to = 2015, territory = "brazil", variable =109)
 #' sidra=BETS.sidra.get(x = c(3653), from = c("200201"), 
@@ -128,12 +129,14 @@ BETS.sidra.get <- function(x, from, to, territory = c(n1 = "brazil", n2 = "regio
     serie = mapply(paste0, "serie_", inputs, USE.NAMES = FALSE)
     
     for (i in len){
-        tabela=RCurl::getURL(paste0("http://api.sidra.ibge.gov.br/values/",
-                                    "t/", inputs[i], "/", territory, "/", "p/", 
-                                    from, "-", to,  
-                                    "/v/", variable[i], "/f/", "u", "/h/", header,
-                                    sections[[i]]),
-                             ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+        tabela=httr::GET(paste0("http://api.sidra.ibge.gov.br/values/",
+                                "t/", inputs[i], "/", territory, "/", "p/", 
+                                from, "-", to,  
+                                "/v/", variable[i], "/f/", "u", "/h/", header,
+                                sections[[i]]))
+        
+        tabela = base::rawToChar(httr::content(tabela,'raw'))
+        
 
         if (strsplit(tabela, " ")[[1]][1] == "Par\uE2metro") {
             
