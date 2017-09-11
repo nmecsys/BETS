@@ -6,7 +6,7 @@ output: html_document
 params:
   ts: 21864
   series.file: !r NA
-  af.lags: 48
+  cf.lags: 48
   n.ahead: 12
   inf.crit: "BIC"
   dummy: !r NA
@@ -41,7 +41,7 @@ series.file = params$series.file
  Parameter          | Value                | Variable
  ------------------ | -------------------- | ----------
  Series Code        | `r code`             | `ts` 
- Maximum Lag        | `r params$af.lags`   | `af.lags` 
+ Maximum Lag        | `r params$cf.lags`   | `cf.lags` 
  Prevision Horizon  | `r params$n.ahead`   | `n.ahead` 
  Unit Root Test     | `r params$ur.test`   | `ur.test`
  ARCH Test          | `r params$arch.test` | `arch.test`
@@ -50,7 +50,7 @@ series.file = params$series.file
 
  
 ```{r echo = FALSE}
-  af.lags = params$af.lags
+  cf.lags = params$cf.lags
   n.ahead = params$n.ahead
   ur.test = params$ur.test
   arch.test = params$arch.test
@@ -260,8 +260,8 @@ d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
 ```
 
 ```{r fig.height=3, fig.width=6.0}
-BETS.corrgram(d_ts, lag.max = af.lags, mode = "bartlett", knit = T)
-BETS.corrgram(d_ts, lag.max = af.lags, mode = "simple", type = "partial", knit = T)
+BETS.corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
+BETS.corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
 ## Model Identification and Estimation
@@ -384,8 +384,8 @@ if(s_roots != 0) {
 ```
 
 ```{r fig.height=3, fig.width=6.0, eval = htk, echo = htk}
-BETS.corrgram(d_ts, lag.max = af.lags, mode = "bartlett", knit = T)
-BETS.corrgram(d_ts, lag.max = af.lags, mode = "simple", type = "partial", knit = T)
+BETS.corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
+BETS.corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
 ```{asis echo = htk}

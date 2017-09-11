@@ -9,7 +9,7 @@ BETS.report()
 dum <- BETS.dummy(start= c(2002,1) , end = c(2016,4) , from = c(2008,7) , to = c(2008,11))
 
 params = list( 
-  af.lags = 48,
+  cf.lags = 48,
   n.ahead = 12,
   ur.test =  list(mode = "ADF", type = "drift", lags = 11, selectlags = "BIC", level = "5pct"),
   box.test = list(lag = 2),
@@ -23,7 +23,7 @@ BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)),
 # Caso base, com codigo e parametros 
 
 parameters = list(
-  af.lags= 48,
+  cf.lags= 48,
   n.ahead = 12 ) 
 
 BETS.report(ts = 21864, parameters = parameters)
@@ -32,7 +32,7 @@ BETS.report(ts = 21864, parameters = parameters)
 dum <- BETS.dummy(start= c(2002,1) , end = c(2017,1) , from = c(2008,9) , to = c(2008,11))
 
 parameters = list( 
-    af.lags = 25,
+    cf.lags = 25,
     n.ahead = 15,
     dummy = dum
 )
@@ -42,7 +42,7 @@ BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), p
 # Caso base, objeto do tipo ts, mudando teste ARCH e teste Box
 
 parameters = list( 
-    af.lags = 25,
+    cf.lags = 25,
     n.ahead = 15,
     dummy = dum,
     arch.test = list(lags = 12, alpha = 0.01),
@@ -54,11 +54,11 @@ BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), p
 # Outra serie
 
 params = list( 
-  af.lags = 36,
+  cf.lags = 36,
   n.ahead = 6,
   dummy = BETS.dummy(start= c(2002,1) , end = c(2017,12) , from = c(2008,7) , to = c(2008,11)),
   arch.test = list(lags = 12, alpha = 0.025),
-  box.test = list(type = "Box-Pierce")
+  box.test = list(type = "Box-Pierce", lag = 5)
 )
 
 BETS.report(ts = 21863, parameters = params)
@@ -68,7 +68,7 @@ BETS.report(ts = 21863, parameters = params)
 # Caso base, mudando teste de raiz unitaria
 
 parameters = list( 
-    af.lags = 25,
+    cf.lags = 25,
     n.ahead = 15,
     ur.test = list(mode = "KPSS", level = "2.5pct")
 )
@@ -88,7 +88,7 @@ BETS.report(ts = 4447, series.saveas = "csv")
 series = list(4447, 21864)
 
 parameters = list(
-  af.lags= 48,
+  cf.lags= 48,
   n.ahead = 12 ) 
 
 
@@ -99,7 +99,7 @@ BETS.report(ts = series, parameters = parameters)
 series = list(BETS.get(4447), BETS.get(21864))
 
 parameters = list(
-  af.lags= 25,
+  cf.lags= 25,
   n.ahead = 15 ) 
 
 

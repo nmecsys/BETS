@@ -13,7 +13,7 @@
 #' \bold{SARIMA Report Parameters}
 #' 
 #' \itemize{
-#' \item{\code{af.lag}: An \code{integer}. Maximum number of lags to show on the ACFs e PACFs}
+#' \item{\code{cf.lags}: An \code{integer}. Maximum number of lags to show on the ACFs e PACFs}
 #' \item{\code{n.ahead}: An \code{integer}. Prevision horizon (number of steps ahead)}
 #' \item{\code{inf.crit}: A \code{character}. Information criterion to be used in model selection.}
 #' \item{\code{dummy}: A \code{ts} object. A dummy regressor. Must also cover the forecasting period.}
@@ -73,7 +73,7 @@
 #' # BETS.report(ts = series, parameters = parameters)
 #' 
 #' # parameters = list( 
-#' # af.lags = 25,
+#' # cf.lags = 25,
 #' # n.ahead = 15,
 #' # dummy = dum,
 #' # arch.test = list(lags = 12, alpha = 0.01),
@@ -87,7 +87,7 @@
 #' #from = c(2008,9) , to = c(2008,11))
 #' 
 #' # parameters = list( 
-#' #    af.lags = 25,
+#' #    cf.lags = 25,
 #' #    n.ahead = 15,
 #' #    dummy = dum
 #' # )
