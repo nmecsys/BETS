@@ -251,6 +251,6 @@ BETS.sidra.get <- function(x, from, to, territory = c(n1 = "brazil", n2 = "regio
     ls_df = ls()[grepl('data.frame', sapply(ls(), function(x) class(get(x))))]
     for ( obj in ls_df ) { lista[obj]=list(get(obj)) }
     
-    return(invisible(lista))
+    return(lista)
     
 } 
