@@ -7,7 +7,7 @@
 #' @param periodicity A \code{character}. The periodicity of the series. See the 'Details' section for a list of possible values.  
 #' @param unit A \code{character}. The unit of measurement of the data. See the 'Details' section for a list of possible values.  
 #' @param code An \code{integer}. The index of the series within the database. 
-#' @param view A \code{boolean}. The default is \code{TRUE}. If set to \code{FALSE}, the results are NOT going to be shown.    
+#' @param view A \code{boolean}. The default is \code{TRUE}. If set to \code{FALSE}, the output's \code{head} will be printed in your console as a \code{data.frame}.     
 #' @param start A \code{date}. Starting date of the series.
 #' @param lang A \code{character}. The search language. The default is "en" for english, but "pt" for portuguese is also possible.
 #' 
@@ -278,7 +278,7 @@ BETS.search = function(description="*",src,periodicity,unit,code,start,view=TRUE
       return(View(results,"Metadata"))
     }
     else{
-      return(results)
+      return(head(results))
     }
   }
   else{

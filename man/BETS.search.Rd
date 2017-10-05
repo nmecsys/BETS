@@ -20,7 +20,7 @@ BETS.search(description = "*", src, periodicity, unit, code, start,
 
 \item{start}{A \code{date}. Starting date of the series.}
 
-\item{view}{A \code{boolean}. The default is \code{TRUE}. If set to \code{FALSE}, the results are NOT going to be shown.}
+\item{view}{A \code{boolean}. The default is \code{TRUE}. If set to \code{FALSE}, the output's \code{head} will be printed in your console as a \code{data.frame}.}
 
 \item{lang}{A \code{character}. The search language. The default is "en" for english, but "pt" for portuguese is also possible.}
 }
