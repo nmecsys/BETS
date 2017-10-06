@@ -275,10 +275,10 @@ BETS.search = function(description="*",src,periodicity,unit,code,start,view=TRUE
     
  
     if(view==T){
-      return(View(results,"Metadata"))
+      return(utils::View(results,"Metadata"))
     }
     else{
-      return(head(results))
+      return(results)
     }
   }
   else{
