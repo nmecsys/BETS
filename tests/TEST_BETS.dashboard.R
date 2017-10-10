@@ -8,7 +8,7 @@ BETS.dashboard(type = "none")
 
 # With text, without logo
 
-parameters = list(author = "FGV/IBRE", 
+parameters = list(author = "FGV/IBRE",
                   text = "text.txt",
                   url = "http://portalibre.fgv.br/")
 
@@ -16,7 +16,7 @@ BETS.dashboard(type = "macro_situation", parameters = parameters, saveas = "inst
 
 # Without text, with logo
 
-parameters = list(author = "FGV/IBRE", 
+parameters = list(author = "FGV/IBRE",
                   url = "http://portalibre.fgv.br/",
                   logo = "logo_ibre.png")
 
@@ -24,7 +24,7 @@ BETS.dashboard(type = "macro_situation", parameters = parameters, saveas = "inst
 
 # With text, with logo
 
-parameters = list(author = "FGV/IBRE", 
+parameters = list(author = "FGV/IBRE",
                   url = "http://portalibre.fgv.br/",
                   text = "text.txt",
                   logo = "logo_ibre.png")
@@ -50,7 +50,7 @@ charts.opts[[1]] <- list(
     legend = c("Gross", "Net"),
     extra = window(BETS.get(4536),start = c(2006,1)),
     extra.arr.ort = 'h',
-    extra.arr.len = 1 
+    extra.arr.len = 1
 )
 
 BETS.chart(ts = charts[[1]], style = "normal", file = "debt", open = T, params = charts.opts[[1]])
@@ -93,7 +93,7 @@ BETS.chart(ts = charts[[3]], style = "normal", file = "ca_di.pdf", open = T, par
 
 df <- BETS.get(11407, data.frame = T)
 df <- df[-(1:30),2]
-charts[[4]] <- window(ts(df, start = c(2000,1), frequency = 4),start = c(2006,1)) 
+charts[[4]] <- window(ts(df, start = c(2000,1), frequency = 4),start = c(2006,1))
 
 df <- BETS.get(11409, data.frame = T)
 df <- df[-(1:30),2]
@@ -115,9 +115,9 @@ charts.opts[[4]] <- list(
 BETS.chart(ts = charts[[4]], style = "normal", file = "debt", open = T, params = charts.opts[[4]])
 
 parameters <- list(
-    style = style, 
+    style = style,
     charts.opts = charts.opts,
-    author = "FGV/IBRE", 
+    author = "FGV/IBRE",
     url = "http://portalibre.fgv.br/",
     text = "text2.txt",
     logo = "logo_ibre.png"
@@ -181,7 +181,7 @@ BETS.chart(ts = charts[[3]], style = "plotly", file = "ca_di", open = T, params 
 
 df <- BETS.get(11407, data.frame = T)
 df <- df[-(1:30),2]
-charts[[4]] <- window(ts(df, start = c(2000,1), frequency = 4),start = c(2006,1)) 
+charts[[4]] <- window(ts(df, start = c(2000,1), frequency = 4),start = c(2006,1))
 
 df <- BETS.get(11409, data.frame = T)
 df <- df[-(1:30),2]
@@ -199,7 +199,7 @@ charts.opts[[4]] <- list(
 BETS.chart(ts = charts[[4]], style = "plotly", file = "debt", open = T, params = charts.opts[[4]])
 
 parameters <- list(
-    style = style, 
+    style = style,
     charts.opts = charts.opts)
 
 BETS.dashboard(type = "custom", charts = charts, saveas = "custom_dashboard.pdf", parameters = parameters)
