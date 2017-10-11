@@ -2,7 +2,7 @@
 title: "BETS - Brazilian Economic Time Series: Basic Usage"
 bibliography: 
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignettes
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{"BETS - Brazilian Economic Time Series: Basic Usage""}
   %\VignetteEngine{knitr::rmarkdown}

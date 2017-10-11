@@ -31,11 +31,6 @@ get.series.bacen<- function(x, from = "", to = "",save = ""){
   inputs = as.character(x)
   len = seq_along(inputs)
   serie = mapply(paste0, "serie_", inputs, USE.NAMES = FALSE)
-  
-  
- 
- 
- 
 
  for(i in len){
     texto=tryCatch({

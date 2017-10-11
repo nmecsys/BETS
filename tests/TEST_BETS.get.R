@@ -1,3 +1,31 @@
+# Uma unica serie
+BETS.get(4447)
+
+# Mesma serie, filtrada por data de inicio
+BETS.get(4447, from = "2000-01-01")
+
+# Mesma serie, filtrada por data de fim
+BETS.get(4447, to = "2000-01-01")
+
+# Mesma serie, filtrada por data de inicio e de fim
+BETS.get(4447, from = "1998-01-01", to = "2000-01-01")
+
+# Duas series, filtradas por 1 data de inico e fim, caso 1
+BETS.get(code = c(10777,4447),from = "2001-01-01", to = "2016-10-31")
+
+# Duas series, filtradas por 1 data de inicio e fim, caso 2
+BETS.get(code = c(10777,4447),from = c("2001-10-31",""),to = c("2016-10-31",""))
+
+# Duas series, filtradas por datas diferentes 
+BETS.get(code = c(10777,4447),from = c("2001-10-31","1998-09-01"), to = c("2014-10-31","2015-01-01"))
+
+# Duas series, data de inicio igual, datas fim diferentes
+BETS.get(code = c(10777,4447),from = "2001-10-31", to = c("2014-10-31","2015-01-01"))
+
+# Duas series, datas de inicio diferentes, data fim igual
+BETS.get(code = c(10777,4447),from = c("2002-10-31","1997-01-01"), to = "2015-01-01")
+
+
 TEST_BETS.get = function(db = "bacen", lang = "en"){
   
   require(rowr)

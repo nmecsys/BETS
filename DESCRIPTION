@@ -1,8 +1,8 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.3.2
-Date: 2017-08-29
+Version: 0.3.3
+Date: 2017-10-10
 Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = c("aut", "cre")),
               person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", role = "aut"),
 			        person("Jonatha", "Azevedo", email = "jonatha.azevedo@fgv.br", role = "aut"),
@@ -21,7 +21,7 @@ Description: It provides access to and information about the most important
     and Statistics <http://www.ibge.gov.br>. It also presents tools for managing, analysing (e.g.
     generating dynamic reports with a complete analysis of a series) and exporting
     these time series.
-License: GPL-3
+License: GPL-3 | file LICENSE
 BugReports: https://github.com/nmecsys/BETS/issues
 URL: https://github.com/nmecsys/BETS
 Encoding: UTF-8

@@ -7,11 +7,11 @@
 BETS.get(code, from = "", to = "", data.frame = FALSE, frequency = NULL)
 }
 \arguments{
-\item{code}{A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.}
+\item{code}{A \code{character} or an \code{integer}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function. More than one code can be provided at once, through a vector. In this case, be careful with the dates, i.e, parameters \code{from} and \code{to}. They must either be the same length as \code{code}, containing the date limits in order, or an isolated date, but nothing in between. See the examples section.}
 
-\item{from}{A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD).}
+\item{from}{A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD). Can be a vector of dates/characters if the length of the parameter \code{code} is greater than 1.}
 
-\item{to}{A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-MM-DD).}
+\item{to}{A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-MM-DD). Can be a vector of dates/characters if the length of the parameter \code{code} is greater than 1.}
 
 \item{data.frame}{A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.}
 
@@ -37,6 +37,14 @@ Due to the significant size of the databases, it could take a while to retrieve 
  
  # Exchange rate - Free - United States dollar (purchase)
  #us.brl <- BETS.get(3691)
+ 
+ # Multiple requests
+ BETS.get(code = c(10777,4447),from = "2001-01-01", to = "2016-10-31")
+ BETS.get(code = c(10777,4447),from = c("2001-10-31",""),to = c("2016-10-31",""))
+ BETS.get(code = c(10777,4447),from = c("2001-10-31","1998-09-01"), to = c("2014-10-31","2015-01-01"))
+ BETS.get(code = c(10777,4447),from = "2001-10-31", to = c("2014-10-31","2015-01-01"))
+ BETS.get(code = c(10777,4447),from = c("2002-10-31","1997-01-01"), to = "2015-01-01")
+ 
  
 }
 \seealso{
