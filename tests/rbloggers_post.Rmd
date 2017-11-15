@@ -1,7 +1,7 @@
 ---
 title: "Using the BETS R Package to Generate Professional Economic Dashboards"
 author: "Talitha Speranza"
-output: html_document
+output: md_document
 ---
 
 The BETS package, besides providing thousands of Brazilian economic time series and interesting analytical tools, has a powerful device to visualize economic data. With a few lines of code - in some cases, only one line - the user is able to create professional looking dashboards exhibiting several thematic charts. These charts will always contain the latest available data of each series, since BETS extracts series directly from their original sources. The figure below shows a page of one of such dashboards:
