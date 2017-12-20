@@ -259,7 +259,7 @@ library(plotly)
 d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
 ```
 
-```{r fig.height=3, fig.width=6.0}
+```{r fig.width=4, fig.height=2, fig.align="center"}
 BETS.corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
 BETS.corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```

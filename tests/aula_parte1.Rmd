@@ -3,7 +3,7 @@ title: "Funções do BETS"
 subtitle: "Minicurso do II Seminário Internacional de Estatística com R"
 author: "Talitha Speranza, Pedro Ferreira e Jonatha Azevedo"
 date: "24 de Maio de 2017"
-output: html_document
+output: pdf_document
 ---
 ```{r echo = FALSE}
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, prompt = TRUE)
