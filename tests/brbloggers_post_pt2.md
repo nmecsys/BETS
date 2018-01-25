@@ -151,7 +151,11 @@ os valores críticos e se a hipótese nula é rejeitada ou não, e um vetor
 contendo os resíduos da equação do teste. Esta equação é mostrada
 abaixo.
 
-*Δ**y*<sub>*t*</sub> = *ϕ* + *τ*<sub>1</sub>*t* + *τ*<sub>2</sub>*y*<sub>*t* − 1</sub> + *δ*<sub>1</sub>*Δ**y*<sub>*t* − 1</sub> + ⋯ + *δ*<sub>*p* − 1</sub>*Δ**y*<sub>*t* − *p* + 1</sub> + *ε*<sub>*t*</sub>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+=================================
+
+> > > > > > > c53735b8735363845c116610fcd2f1c398c32125
+> > > > > > > *Δ**y*<sub>*t*</sub> = *ϕ* + *τ*<sub>1</sub>*t* + *τ*<sub>2</sub>*y*<sub>*t* − 1</sub> + *δ*<sub>1</sub>*Δ**y*<sub>*t* − 1</sub> + ⋯ + *δ*<sub>*p* − 1</sub>*Δ**y*<sub>*t* − *p* + 1</sub> + *ε*<sub>*t*</sub>
 
 As estatísticas de teste da tabela do objeto de saída se referem aos
 coeficientes *ϕ* (média ou *drift*), *τ*<sub>1</sub> (tendência
@@ -269,7 +273,7 @@ parecem significativas, enquanto as demais, não. Há, ainda, alguma
 evidência de decaimento exponencial na FACP, exceto na frequência
 sazonal. Os dois últimos fatos indicam que o polinômio de médias móveis
 (não sazonal) pode ter ordem 2. Por estas razões, o primeiro modelo
-proposto para *Z*<sub>*t*</sub> será um `SARIMA(0,1,2)(1,0,0)[12]`.
+proposto para *Z*<sub>*t*</sub> será um `SARIMA(0,1,1)(0,1,1)[12]`.
 
 2. Estimação
 ------------

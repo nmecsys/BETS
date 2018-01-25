@@ -163,7 +163,7 @@ O correlograma acima ainda não é suficiente para determinamos um modelo para a
 BETS.corrgram(diff(data), lag.max = 36, type = "partial", style="plotly", knit = T)
 ```
 
-A FAC da figura \ref{fig:fac1} e a FACP da figura \ref{fig:fac2} podem ter sido geradas por um processo `SARIMA(0,0,1) (0,0,1)`. Esta conjectura se baseia na observação de que as defasagens múltiplas de 12 parecem apresentar corte brusco na FACP a partir da segunda (isto é, a de número 24) e decaimento exponencial na FAC. Além disso, as duas primeiras defasagens da FAC parecem significativas, enquanto as demais, não. Há, ainda, alguma evidência de decaimento exponencial na FACP, exceto na frequência sazonal. Os dois últimos fatos indicam que o polinômio de médias móveis (não sazonal) pode ter ordem 2. Por estas razões, o primeiro modelo proposto para $Z_t$ será um `SARIMA(0,1,2)(1,0,0)[12]`. 
+A FAC da figura \ref{fig:fac1} e a FACP da figura \ref{fig:fac2} podem ter sido geradas por um processo `SARIMA(0,0,1) (0,0,1)`. Esta conjectura se baseia na observação de que as defasagens múltiplas de 12 parecem apresentar corte brusco na FACP a partir da segunda (isto é, a de número 24) e decaimento exponencial na FAC. Além disso, as duas primeiras defasagens da FAC parecem significativas, enquanto as demais, não. Há, ainda, alguma evidência de decaimento exponencial na FACP, exceto na frequência sazonal. Os dois últimos fatos indicam que o polinômio de médias móveis (não sazonal) pode ter ordem 2. Por estas razões, o primeiro modelo proposto para $Z_t$ será um `SARIMA(0,1,1)(0,1,1)[12]`. 
 
 ## 2. Estimação
 
