@@ -21,10 +21,7 @@ O método de Box \& Jenkins permite que os valores futuros da série em estudo s
 
 Estes modelos são chamados SARIMA, uma sigla para o termo em inglês *Seasonal Auto-Regressive Integrated Moving Average*, e têm a forma:
 
-\begin{equation}
-\Phi_{P}(B)\phi_{p}(B)\nabla^{d}\nabla^{D}Z_t = \Theta_{Q}(B)\theta_{q}(B)a_t.
-\end{equation}
-
+$\Phi_{P}(B)\phi_{p}(B)\nabla^{d}\nabla^{D}Z_t = \Theta_{Q}(B)\theta_{q}(B)a_t$
 onde
 
 * $Z_t$ é a série em estudo 
@@ -96,15 +93,13 @@ Esta subseção trata de um passo crucial na abordagem de Box \& Jenkins: a dete
 
 A função `BETS.ur_test` executa o teste *Augmented Dickey Fuller* (ADF). Ela foi construída em cima da função `ur.df` do pacote `urca`, que é instalado juntamente com o BETS. A vantagem da `BETS.ur_test` é a saída, desenhada para que o usuário visualize rapidamente o resultado do teste e tenha todas as informações de que realmente necessita. Trata-se de um objeto com dois campos: uma tabela mostrando as estatísticas de teste, os valores críticos e se a hipótese nula é rejeitada ou não, e um vetor contendo os resíduos da equação do teste. Esta equação é mostrada abaixo.
 
-\begin{equation}
-\Delta y_t = \phi + \tau_{1} t + \tau_{2} y_{t-1} + \delta_1 \Delta y_{t-1} + \cdots +\delta_{p-1} \Delta y_{t-p+1} + \varepsilon_t
-\end{equation}
+$\Delta y_t = \phi + \tau_{1} t + \tau_{2} y_{t-1} + \delta_1 \Delta y_{t-1} + \cdots +\delta_{p-1} \Delta y_{t-p+1} + \varepsilon_t$
 
 As estatísticas de teste da tabela do objeto de saída se referem aos coeficientes $\phi$ (média ou *drift*), $\tau_{1}$ (tendência determinística) e $\tau_{2}$ (raiz unitária). A inclusão da média e da tendência determinística é opcional. Para controlar os parâmetros do teste, a `BETS.ur_test` aceita os mesmos parâmetros da `ur.df`, além do nível de significância desejado.
 
 ```{r adf, fig.cap= "Função de Autocorrelação dos Resíduos do Teste de Dickey-Fuller"}
-df = BETS.ur_test(y = diff(data), type = "none", lags = 11, 
-                                  selectlags = "BIC", level = "1pct")
+df = BETS.ur_test(y = diff(data), type = "drift", lags = 11, 
+                                  selectlags = "BIC", level = "5pct")
 
 # Exibir resultado dos testes
 df$results
@@ -122,7 +117,7 @@ d_ts = diff(data)
     ns_roots = ns_roots + 1
     d_ts = diff(d_ts)
     df = BETS.ur_test(y = d_ts, type = "none", lags = 11, 
-                                selectlags = "BIC", level = "1pct")
+                                selectlags = "BIC", level = "5pct")
  }
 
 ns_roots
@@ -164,15 +159,15 @@ O correlograma acima ainda não é suficiente para determinamos um modelo para a
 BETS.corrgram(diff(data), lag.max = 36, type = "partial", style="plotly", knit = T)
 ```
 
-A FAC da figura \ref{fig:fac1} e a FACP da figura \ref{fig:fac2} podem ter sido geradas por um processo `SARIMA(0,0,2) (1,0,0)`. Esta conjectura se baseia na observação de que as defasagens múltiplas de 12 parecem apresentar corte brusco na FACP a partir da segunda (isto é, a de número 24) e decaimento exponencial na FAC. Além disso, as duas primeiras defasagens da FAC parecem significativas, enquanto as demais, não. Há, ainda, alguma evidência de decaimento exponencial na FACP, exceto na frequência sazonal. Os dois últimos fatos indicam que o polinômio de médias móveis (não sazonal) pode ter ordem 2. Por estas razões, o primeiro modelo proposto para $Z_t$ será um `SARIMA(0,1,2)(1,0,0)[12]`. 
+A FAC da figura \ref{fig:fac1} e a FACP da figura \ref{fig:fac2} podem ter sido geradas por um processo `SARIMA(0,0,1) (0,0,1)`. Esta conjectura se baseia na observação de que as defasagens múltiplas de 12 parecem apresentar corte brusco na FACP a partir da segunda (isto é, a de número 24) e decaimento exponencial na FAC. Além disso, as duas primeiras defasagens da FAC parecem significativas, enquanto as demais, não. Há, ainda, alguma evidência de decaimento exponencial na FACP, exceto na frequência sazonal. Os dois últimos fatos indicam que o polinômio de médias móveis (não sazonal) pode ter ordem 2. Por estas razões, o primeiro modelo proposto para $Z_t$ será um `SARIMA(0,1,2)(1,0,0)[12]`. 
 
 ## 2. Estimação
 
-Para estimar os coeficientes do modelo `SARIMA(0,1,2)(1,0,0)[12]`, será aplicada a função `Arima` do pacote `forecast`. Os testes t serão feitos através da função `BETS.t_test` do BETS, que recebe um objeto do tipo `arima` ou `Arima`, o número de variáveis exógenas do modelo e o nível de significância desejado, devolvendo um `data.frame` contendo as informações do teste e do modelo (coeficientes estimados, erros padrão, estatísticas de teste, valores críticos e resultados dos testes).
+Para estimar os coeficientes do modelo `SARIMA(0,1,1)(0,1,1)[12]`, será aplicada a função `Arima` do pacote `forecast`. Os testes t serão feitos através da função `BETS.t_test` do BETS, que recebe um objeto do tipo `arima` ou `Arima`, o número de variáveis exógenas do modelo e o nível de significância desejado, devolvendo um `data.frame` contendo as informações do teste e do modelo (coeficientes estimados, erros padrão, estatísticas de teste, valores críticos e resultados dos testes).
 
 ```{r}
 # Estimacao dos parâmetros do modelo
-model1 = Arima(data, order = c(0,1,2), seasonal = c(1,0,0))
+model1 = Arima(data, order = c(0,1,1), seasonal = c(0,1,1))
 
 # Teste t com os coeficientes estimados
 # Nível de significância de 1%
@@ -198,13 +193,7 @@ points(2008 + 11/12, resids[84], col = "red")
 
 Observamos que há um *outlier* proeminente e estatisticamente significativo em novembro de 2008. Este ponto corresponde à data da quebra estrutural que identificamos na figura \ref{fig:chart}. Portanto, foi proposto um segundo modelo, que inclui uma *dummy* definida como se segue:
 
-\begin{equation}
-D_{t} = \begin{cases}
-& 0 \text{, } t < \text{setembro de 2008} \\
-& 1 \text{, } \text{setembro de 2008} <= t <= \text{novembro de 2008} \\
-& 0 \text{, } t > \text{novembro de 2008} 
-\end{cases}
-\end{equation}
+$D_{t} = \begin{cases} & 0 \text{, } t < \text{setembro de 2008} \\ & 1 \text{, } \text{setembro de 2008} <= t <= \text{novembro de 2008} \\ & 0 \text{, } t > \text{novembro de 2008}  \end{cases}$
 
 Esta *dummy* pode ser criada com a função `BETS.dummy`, como mostramos abaixo. Os parâmetros `start` e `end` indicam o início e o fim do período coberto pela *dummy*, que nada mais é que uma série temporal cujos valores podem ser apenas 0 ou 1. Os campos `from` e `to` indicam o intervalo em que a *dummy* deve assumir valor 1.
 
@@ -218,7 +207,7 @@ Como podemos ver nos resultados da execução do trecho de código a seguir, a e
 ```{r stdr2, echo = c(-1,-9), fig.cap="Resíduos padronizados do modelo proposto após a detecção de quebra estrutural"}
 par(cex.axis = 0.75, cex.lab = 0.8, mar = c(5.1, 4.1, 0.5, 2.1))
 # Estimacao dos parâmetros do modelo com a dummy 
-model2 = Arima(data, order = c(0,1,2), seasonal = c(1,0,0), xreg = dummy)
+model2 = Arima(data, order = c(0,1,1), seasonal = c(0,1,1), xreg = dummy)
 
 # Teste t com os coeficientes estimados
 # Nível de significância de 1%
@@ -241,7 +230,7 @@ O teste de Ljung-Box para o modelo escolhido pode ser executado através da fun�
 
 ```{r lb, fig.cap = "Função de autocorrelação dos resíduos do modelo com a {\\it dummy}."}
 # Teste de Ljung-Box nos resíduos do modelo com a dummy
-boxt = Box.test(resid(model2), type = "Ljung-Box",lag = 11)
+boxt = Box.test(resid(model2), type = "Ljung-Box",lag = 2)
 boxt
 
 # Correlograma dos resíduos do modelo com a dummy
@@ -261,7 +250,7 @@ par(cex.axis = 0.75, cex.lab = 0.8, mar = c(5.1, 4.1, 0.5, 2.1))
 new_dummy = BETS.dummy(start = start(data_test), end = end(data_test))
 
 preds = BETS.predict(object = model2, xreg = new_dummy, 
-                     actual = data_test, xlim = c(2012, 2016.2), ylab = "Milhões de Reais", 
+                     actual = data_test, xlim = c(2012, 2016.2), ylab = "PBI (Número Índice)", 
                      style = "normal", legend.pos = "bottomleft")
 ```
 
