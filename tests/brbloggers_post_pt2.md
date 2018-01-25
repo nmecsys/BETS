@@ -151,11 +151,7 @@ os valores críticos e se a hipótese nula é rejeitada ou não, e um vetor
 contendo os resíduos da equação do teste. Esta equação é mostrada
 abaixo.
 
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-=================================
-
-> > > > > > > c53735b8735363845c116610fcd2f1c398c32125
-> > > > > > > *Δ**y*<sub>*t*</sub> = *ϕ* + *τ*<sub>1</sub>*t* + *τ*<sub>2</sub>*y*<sub>*t* − 1</sub> + *δ*<sub>1</sub>*Δ**y*<sub>*t* − 1</sub> + ⋯ + *δ*<sub>*p* − 1</sub>*Δ**y*<sub>*t* − *p* + 1</sub> + *ε*<sub>*t*</sub>
+*Δ**y*<sub>*t*</sub> = *ϕ* + *τ*<sub>1</sub>*t* + *τ*<sub>2</sub>*y*<sub>*t* − 1</sub> + *δ*<sub>1</sub>*Δ**y*<sub>*t* − 1</sub> + ⋯ + *δ*<sub>*p* − 1</sub>*Δ**y*<sub>*t* − *p* + 1</sub> + *ε*<sub>*t*</sub>
 
 As estatísticas de teste da tabela do objeto de saída se referem aos
 coeficientes *ϕ* (média ou *drift*), *τ*<sub>1</sub> (tendência
@@ -164,15 +160,15 @@ da tendência determinística é opcional. Para controlar os parâmetros do
 teste, a `BETS.ur_test` aceita os mesmos parâmetros da `ur.df`, além do
 nível de significância desejado.
 
-    > df = BETS.ur_test(y = diff(data), type = "drift", lags = 11, 
-    +                                   selectlags = "BIC", level = "5pct")
+    > df = BETS.ur_test(y = data, type = "drift", lags = 11, 
+    +                                 selectlags = "BIC", level = "5pct")
     > 
     > # Exibir resultado dos testes
     > df$results
 
     ##      statistic crit.val rej.H0
-    ## tau2 -3.030349    -2.88    yes
-    ## phi1  4.616128     4.63    yes
+    ## tau2 -2.420907    -2.88     no
+    ## phi1  3.531397     4.63    yes
 
 Portanto, para a série em nível, observa-se que não se pode rejeitar a
 hipotése nula de existência de uma raiz unitária ao nível de confiança
@@ -194,7 +190,7 @@ verificar se a série diferenciada possui uma raiz unitária.
     > 
     > ns_roots
 
-    ## [1] 0
+    ## [1] 1
 
 Logo, para a série em primeira diferença, rejeita-se a hipótese nula de
 que há raiz unitária a 5% de significância. A FAC dos resíduos da

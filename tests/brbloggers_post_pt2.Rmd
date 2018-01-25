@@ -93,17 +93,13 @@ Esta subseção trata de um passo crucial na abordagem de Box \& Jenkins: a dete
 
 A função `BETS.ur_test` executa o teste *Augmented Dickey Fuller* (ADF). Ela foi construída em cima da função `ur.df` do pacote `urca`, que é instalado juntamente com o BETS. A vantagem da `BETS.ur_test` é a saída, desenhada para que o usuário visualize rapidamente o resultado do teste e tenha todas as informações de que realmente necessita. Trata-se de um objeto com dois campos: uma tabela mostrando as estatísticas de teste, os valores críticos e se a hipótese nula é rejeitada ou não, e um vetor contendo os resíduos da equação do teste. Esta equação é mostrada abaixo.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c53735b8735363845c116610fcd2f1c398c32125
 $\Delta y_t = \phi + \tau_{1} t + \tau_{2} y_{t-1} + \delta_1 \Delta y_{t-1} + \cdots +\delta_{p-1} \Delta y_{t-p+1} + \varepsilon_t$
 
 As estatísticas de teste da tabela do objeto de saída se referem aos coeficientes $\phi$ (média ou *drift*), $\tau_{1}$ (tendência determinística) e $\tau_{2}$ (raiz unitária). A inclusão da média e da tendência determinística é opcional. Para controlar os parâmetros do teste, a `BETS.ur_test` aceita os mesmos parâmetros da `ur.df`, além do nível de significância desejado.
 
 ```{r adf, fig.cap= "Função de Autocorrelação dos Resíduos do Teste de Dickey-Fuller"}
-df = BETS.ur_test(y = diff(data), type = "drift", lags = 11, 
-                                  selectlags = "BIC", level = "5pct")
+df = BETS.ur_test(y = data, type = "drift", lags = 11, 
+                                selectlags = "BIC", level = "5pct")
 
 # Exibir resultado dos testes
 df$results
