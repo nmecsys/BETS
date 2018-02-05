@@ -8,8 +8,8 @@
 #' @param browse A \code{boolean}. If browse is set to \code{TRUE}, the description table opens in your browser for better visualization.
 #' @examples
 #' \dontrun{
-#' BETS.sidra.search("pib")
-#' BETS.sidra.search(1248)
+#' BETS.sidra.search(description = "pib")
+#' BETS.sidra.search(code = 1248)
 #' }
 #' @keywords sidra IBGE
 #' @importFrom utils View 
