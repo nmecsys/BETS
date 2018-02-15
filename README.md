@@ -25,3 +25,15 @@ devtools::install_version("DBI", version = "0.5", repos = "http://cran.us.r-proj
 devtools::install_version("RMySQL", version = "0.10.9", repos = "http://cran.us.r-project.org") 
 ```
 
+### Information
+ 
+ The Brazilian Economic Uncertainty Indicator (IIE-Br) is standardized in a new window
+ 
+   ```R
+   # To get the IIEBR and components, run:
+   iiebr <- BETS.get(code = "ST_100.0")
+   market <- BETS.get(code = "ST_100.1")
+   expectations <- BETS.get(code = "ST_100.2")
+   media <- BETS.get(code = "ST_100.3")
+   ```
+
