@@ -6,7 +6,7 @@
 
 connection = function(){
     tryCatch({
-        conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+        conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
         return(conn)
     },
     error = function(e){
@@ -18,13 +18,13 @@ connection = function(){
                 
                     devtools::install_github("rstats-db/DBI")
                     devtools::install_github("rstats-db/RMySQL")
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }else{
                     install.packages("devtools")
                     devtools::install_github("rstats-db/DBI")
                     devtools::install_github("rstats-db/RMySQL")
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }
             },
@@ -35,10 +35,12 @@ connection = function(){
                     install.packages("devtools")
                     devtools::install_version("DBI", version = "0.5", repos = "http://cran.us.r-project.org")
                     devtools::install_version("RMySQL", version = "0.10.9", repos = "http://cran.us.r-project.org") 
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }else{
-                    stop("Connection fail!")
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
+                    return(conn)
+                    #stop("Connection fail!")
                 }
             })
         }else{
