@@ -1,15 +1,15 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.3.3
-Date: 2018-03-01
-Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = c("aut", "cre")),
-              person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", role = "aut"),
-			        person("Jonatha", "Azevedo", email = "jonatha.azevedo@fgv.br", role = "aut"),
-			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "aut"),
-			        person("Daiane", "Marcolino", email = "daiane.mattos@fgv.br", role = "aut"))
-Maintainer: Pedro Costa Ferreira <pedro.guilherme@fgv.br>
-Depends: R (>= 3.4.1)
+Version: 0.3.6
+Date: 2018-04-02
+Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
+                    person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = c("aut", "cre")),
+                    person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", role ="aut"),
+			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "ctb"),
+			        person("Daiane", "Marcolino", email = "daiane.mattos@fgv.br", role = "ctb"))
+Maintainer: Jonatha Costa <jonatha.costa@fgv.br>
+Depends: R (>= 3.4)
 Imports: grnn, ggplot2, plotly, urca, forecast, zoo, rmarkdown,
         foreign, seasonal, stringr, dygraphs, shiny (>= 0.13),
         miniUI (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL,
@@ -21,12 +21,11 @@ Description: It provides access to and information about the most important
     and Statistics <http://www.ibge.gov.br>. It also presents tools for managing, analysing (e.g.
     generating dynamic reports with a complete analysis of a series) and exporting
     these time series.
-License: GPL-3 | file LICENSE
+License: GPL-3 
 BugReports: https://github.com/nmecsys/BETS/issues
 URL: https://github.com/nmecsys/BETS
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-VignetteBuilder: knitr
 Repository: CRAN
