@@ -135,13 +135,21 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
   })
   
   
-  if(freq != 365 && !data.frame){
+  if(freq != 365 &&!data.frame){
+      
+      #year = as.numeric(format(k,"%Y"))
+      #month = as.numeric(format(k,"%m"))
+      #day = as.numeric(format(k,"%d"))
+      
     start = get.period(aux2[1],freq)
+    #start = get.period(c(year,month,day),freq)
+    #print(start)
     ts <- ts(aux1, start = start, freq = freq)
-  }
-  else {
+  }else {
+      
     ts = data.frame(date = aux2, value = aux1)
   }
+  
   
   return(ts)
 }

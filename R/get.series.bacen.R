@@ -57,7 +57,7 @@ get.series.bacen<- function(x, from = "", to = "",save = ""){
 
   lista = list()
   ls_df = ls()[grepl('data.frame', sapply(ls(), function(x) class(get(x))))]
-  for ( obj in ls_df ) { lista[obj]=list(get(obj)) }
+  for ( obj in ls_df ) { lista[obj]=list(get(obj))}
   
   return(invisible(lista))
   
