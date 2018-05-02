@@ -16,8 +16,8 @@
 
 draw.ipca = function(){
   
-  ipca = BETS.get(13522)
-  core = BETS.get(4466)
+  ipca = BETSget(13522)
+  core = BETSget(4466)
   start = c(2006,1)
   
   if(is.null(start)){

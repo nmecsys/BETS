@@ -66,12 +66,12 @@ library(BETS)
 
 ```{r echo = FALSE, results = "hide"}
 dir.create("graphs")
-BETS.chart(ts = "ipca_with_core", file = "ipca.pdf", open = FALSE)
+chart(ts = "ipca_with_core", file = "ipca.pdf", open = FALSE)
 ```
 
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "ulc", file = "ulc.pdf", open = FALSE)
+chart(ts = "ulc", file = "ulc.pdf", open = FALSE)
 ```
 
 \begin{figure}[h]
@@ -104,11 +104,11 @@ if(!is.na(text)){
 \fi
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "eap", file = "eap.pdf", open = FALSE)
+chart(ts = "eap", file = "eap.pdf", open = FALSE)
 ```
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "unemp", file = "unemp.pdf", open = FALSE)
+chart(ts = "unemp", file = "unemp.pdf", open = FALSE)
 ```
 
 \begin{figure}[h]
@@ -136,11 +136,11 @@ if(!is.na(text)){
 \pagestyle{plain}
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "vargdp", file = "vargdp.pdf", open = FALSE)
+chart(ts = "vargdp", file = "vargdp.pdf", open = FALSE)
 ```
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "indprod", file = "indprod.pdf", open = FALSE)
+chart(ts = "indprod", file = "indprod.pdf", open = FALSE)
 ```
 
 \begin{figure}[h]
@@ -169,11 +169,11 @@ if(!is.na(text)){
 \fi
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "selic", file = "selic.pdf", open = FALSE)
+chart(ts = "selic", file = "selic.pdf", open = FALSE)
 ```
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "cdb", file = "cdb.pdf", open = FALSE)
+chart(ts = "cdb", file = "cdb.pdf", open = FALSE)
 ```
 
 \begin{figure}[h]

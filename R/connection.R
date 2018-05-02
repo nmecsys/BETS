@@ -1,12 +1,25 @@
 #' @title Connection with the server
 #' @description  Make the connection with the server
-#' @import DBI RMySQL 
+#' @import DBI RMySQL digest
 #' @importFrom utils  install.packages remove.packages
-#' 
+
+
+
+
+
+
 
 connection = function(){
+        key = readRDS("R/key.rds")
+        dat <- readBin("inst/credentials.txt","raw",n=1000)
+        aes <- AES(key,mode="ECB")
+        raw <- aes$decrypt(dat, raw=TRUE)
+        txt <- rawToChar(raw[raw>0])
+        credentials <- read.csv(text=txt, stringsAsFactors = F)
+        
+    
     tryCatch({
-        conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+        conn = dbConnect(MySQL(),db=credentials$bd,user=credentials$login,password=as.character(credentials$password),host=credentials$host,port=credentials$port)
         return(conn)
     },
     error = function(e){
@@ -18,13 +31,13 @@ connection = function(){
                 
                     devtools::install_github("rstats-db/DBI")
                     devtools::install_github("rstats-db/RMySQL")
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }else{
                     install.packages("devtools")
                     devtools::install_github("rstats-db/DBI")
                     devtools::install_github("rstats-db/RMySQL")
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }
             },
@@ -35,10 +48,12 @@ connection = function(){
                     install.packages("devtools")
                     devtools::install_version("DBI", version = "0.5", repos = "http://cran.us.r-project.org")
                     devtools::install_version("RMySQL", version = "0.10.9", repos = "http://cran.us.r-project.org") 
-                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
                     return(conn)
                 }else{
-                    stop("Connection fail!")
+                    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.18.49.107",port=3306)
+                    return(conn)
+                    #stop("Connection fail!")
                 }
             })
         }else{

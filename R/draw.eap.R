@@ -12,7 +12,7 @@
 
 draw.eap = function(){
   
-  eap = (BETS.get(10810)/BETS.get(10800))*100
+  eap = (BETSget(10810)/BETSget(10800))*100
   start = c(2006,1)
   
   if(!is.null(start)){

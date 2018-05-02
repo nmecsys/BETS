@@ -8,7 +8,7 @@ get.series(code, from = "", to = "", data.frame = FALSE,
   frequency = NULL)
 }
 \arguments{
-\item{code}{A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.}
+\item{code}{A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETSsearch}} function.}
 
 \item{from}{A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD).}
 

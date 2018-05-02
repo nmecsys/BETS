@@ -12,7 +12,7 @@
 
 draw.cdb= function(){
 
-  cdb = BETS.get(code = 14, data.frame = TRUE)
+  cdb = BETSget(code = 14, data.frame = TRUE)
   
   if(!is.null(start)){
     

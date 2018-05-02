@@ -1,10 +1,10 @@
 library(BETS)
 
-BETS.dashboard()
-BETS.dashboard(saveas = "survey.pdf")
+dashboard()
+dashboard(saveas = "survey.pdf")
 
 # É pra dar erro
-BETS.dashboard(type = "none")
+dashboard(type = "none")
 
 # With text, without logo
 

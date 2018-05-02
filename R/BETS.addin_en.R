@@ -5,7 +5,7 @@
 #' 
 #' @import miniUI
 #' @import rstudioapi
-#' @import shiny
+#' @import shiny dplyr
 #' @importFrom utils write.csv write.csv2
 #' 
 #' @export
@@ -156,7 +156,7 @@ BETS.addin_en  = function(){
       
       #nomes = c("Code","Description","Unit","Periodicity","Start","Last Value","Source")
       
-      data.addin <- BETS.search(description ="*",view=F)
+      data.addin <- BETSsearch(description ="*",view=F)
       #names(data.addin) = nomes
       
       
@@ -164,16 +164,16 @@ BETS.addin_en  = function(){
       if(input$description != "Search"){
         print(input$description)
         req(input$description) # tratamento para o input da descricao
-        data.addin <- BETS.search(description = input$description,view=F)
+        data.addin <- BETSsearch(description = input$description,view=F)
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
           
         }else{
           data.addin 
         }
         
       }else{
-        data.addin <- BETS.search(description ="*",view=F)
+        data.addin <- BETSsearch(description ="*",view=F)
       }
       
       
@@ -203,10 +203,10 @@ BETS.addin_en  = function(){
         
         
         # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
         }else{
           data.addin 
         }
@@ -214,10 +214,10 @@ BETS.addin_en  = function(){
       
       if(input$source!= "All"){
         req(input$source)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$source == input$source,]
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
         }else{
           data.addin 
         }
@@ -226,7 +226,7 @@ BETS.addin_en  = function(){
       print(data.addin)
       
       if(is.character(data.addin)){
-        data.addin = BETS.search(description="*",view=F)
+        data.addin = BETSsearch(description="*",view=F)
       }else{
         data.addin 
       }
@@ -249,7 +249,7 @@ BETS.addin_en  = function(){
       
       #nomes = c("Code","Description","Unit","Periodicity","Start","Last Value","Source")
       
-      data.addin <- BETS.search(description ="*",view=F)
+      data.addin <- BETSsearch(description ="*",view=F)
       #names(data.addin) = nomes
       
       
@@ -257,25 +257,25 @@ BETS.addin_en  = function(){
       if(input$description != "Search"){
         print(input$description)
         req(input$description) # tratamento para o input da descricao
-        data.addin <- BETS.search(description = input$description,view=F)
+        data.addin <- BETSsearch(description = input$description,view=F)
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
           
         }else{
           data.addin 
         }
         
       }else{
-        data.addin <- BETS.search(description ="*",view=F)
+        data.addin <- BETSsearch(description ="*",view=F)
       }
       
       
       if(input$periodicity!= "All"){
         req(input$periodicity)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$periodicity == input$periodicity,]
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
         }else{
           data.addin 
         }
@@ -283,10 +283,10 @@ BETS.addin_en  = function(){
       
       if(input$source!= "All"){
         req(input$source)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$source == input$source,]
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F)
+          data.addin = BETSsearch(description="*",view=F)
         }else{
           data.addin 
         }
@@ -295,7 +295,7 @@ BETS.addin_en  = function(){
       
       
       if(is.character(data.addin)){
-        data.addin = BETS.search(description="*",view=F)
+        data.addin = BETSsearch(description="*",view=F)
       }else{
         data.addin 
       }
@@ -328,40 +328,40 @@ BETS.addin_en  = function(){
     
     
     observeEvent(input$action_csv2,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       write.csv2(dados,file =paste0(local,".csv") )
       output$done_export = renderPrint("The file was successfully exported!")
     })
     
     observeEvent(input$action_csv,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       write.csv(dados,file =paste0(local,".csv") )
       output$done_export = renderPrint("The file was successfully exported!")
     })
     
     observeEvent(input$action_rds,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       saveRDS(dados,file = paste0(local,".rds"))
       output$done_export = renderPrint("The file was successfully exported!")
     })
     
     observeEvent(input$action_sas,{
-      BETS.save.sas(code = as.numeric(input$code,file.name = input$name))
+      saveSas(code = as.numeric(input$code,file.name = input$name))
       output$done_export = renderPrint("The file was successfully exported!")
     })
     
     
     observeEvent(input$action_stata,{
-      BETS.save.stata(code = as.numeric(input$code),file.name = paste0(input$name,".dta"))
+      saveStata(code = as.numeric(input$code),file.name = paste0(input$name,".dta"))
       output$done_export = renderPrint("The file was successfully exported!")
     })
     
     
     observeEvent(input$action_spss,{
-      BETS.save.spss(code = input$code,file.name = input$name)
+      saveSpss(code = input$code,file.name = input$name)
       output$done_export = renderPrint("The file was successfully exported!")
     })
     

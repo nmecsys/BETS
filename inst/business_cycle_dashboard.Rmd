@@ -35,10 +35,10 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE)
 
 ```{r echo = FALSE, results = "hide"}
 dir.create("graphs")
-BETS.chart(ts = "sent_ind", open = F, file = "sent_ind")
-BETS.chart(ts = "conf_lvl", open = F, file = "conf_lvl")
-BETS.chart(ts = "iie_br", open = F, file = "iie_br")
-BETS.chart(ts = "transf_ind", open = F, file = "transf_ind")
+chart(ts = "sent_ind", open = F, file = "sent_ind")
+chart(ts = "conf_lvl", open = F, file = "conf_lvl")
+chart(ts = "iie_br", open = F, file = "iie_br")
+chart(ts = "transf_ind", open = F, file = "transf_ind")
 ```
 
 
@@ -70,10 +70,10 @@ BETS.chart(ts = "transf_ind", open = F, file = "transf_ind")
 
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "servc", open = F, file = "servc")
-BETS.chart(ts = "retail", open = F, file = "retail")
-BETS.chart(ts = "constr", open = F, file = "constr")
-BETS.chart(ts = "consm", open = F, file = "consm")
+chart(ts = "servc", open = F, file = "servc")
+chart(ts = "retail", open = F, file = "retail")
+chart(ts = "constr", open = F, file = "constr")
+chart(ts = "consm", open = F, file = "consm")
 ```
 
 
@@ -104,10 +104,10 @@ BETS.chart(ts = "consm", open = F, file = "consm")
 \end{figure}
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "gdp_vars", open = F, file = "gdp_vars")
-BETS.chart(ts = "gdp_comps", open = F, file = "gdp_comps")
-BETS.chart(ts = "cap_utl", open = F, file = "cap_utl")
-BETS.chart(ts = "gdp_mon", open = F, file = "gdp_mon")
+chart(ts = "gdp_vars", open = F, file = "gdp_vars")
+chart(ts = "gdp_comps", open = F, file = "gdp_comps")
+chart(ts = "cap_utl", open = F, file = "cap_utl")
+chart(ts = "gdp_mon", open = F, file = "gdp_mon")
 ```
 
 
@@ -139,10 +139,10 @@ BETS.chart(ts = "gdp_mon", open = F, file = "gdp_mon")
 
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "gdp_unemp", open = F, file = "gdp_unemp")
-BETS.chart(ts = "misery_index", open = F, file = "misery_index")
-BETS.chart(ts = "lab_coin", open = F, file = "lab_lead")
-BETS.chart(ts = "lab_lead", open = F, file = "lab_coin")
+chart(ts = "gdp_unemp", open = F, file = "gdp_unemp")
+chart(ts = "misery_index", open = F, file = "misery_index")
+chart(ts = "lab_coin", open = F, file = "lab_lead")
+chart(ts = "lab_lead", open = F, file = "lab_coin")
 ```
 
 
@@ -173,10 +173,10 @@ BETS.chart(ts = "lab_lead", open = F, file = "lab_coin")
 \end{figure}
 
 ```{r echo = FALSE, results = "hide"}
-BETS.chart(ts = "lei", open = F, file = "lei")
-BETS.chart(ts = "cei", open = F, file = "cei")
-BETS.chart(ts = "ei_vars", open = F, file = "ei_vars")
-BETS.chart(ts = "ei_comps", open = F, file = "ei_comps")
+chart(ts = "lei", open = F, file = "lei")
+chart(ts = "cei", open = F, file = "cei")
+chart(ts = "ei_vars", open = F, file = "ei_vars")
+chart(ts = "ei_comps", open = F, file = "ei_comps")
 ```
 
 

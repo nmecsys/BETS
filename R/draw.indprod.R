@@ -13,7 +13,7 @@
 
 draw.indprod = function(){
   
-  indprod = seasonal::final(seas(BETS.get(21859)))
+  indprod = seasonal::final(seas(BETSget(21859)))
   start = c(2006,1)
   
   if(!is.null(start)){

@@ -69,13 +69,13 @@ series.file = params$series.file
 
 ```{r eval = !custom.ts, echo = !custom.ts}
 library(BETS)
-data = BETS.get(code)
+data = BETSget(code)
 ```
 
 ### Information About the Series
 
 ```{r eval = !custom.ts, echo = !custom.ts}
-info <- BETS.search(code = ts, view = F)
+info <- BETSsearch(code = ts, view = F)
 ```
 
 ```{r eval = custom.ts, echo = custom.ts}
@@ -133,7 +133,7 @@ dygraph(cbind(Series = data, Trend = trend), main = info[,"Description"]) %>%
 
 ```{r}
   test.params = append(list(y = data), ur.test)
-  df = do.call(BETS.ur_test,test.params)
+  df = do.call(ur_test,test.params)
   df$results
 ```
 
@@ -199,7 +199,7 @@ d_ts = data
     ns_roots = ns_roots + 1
     d_ts = diff(d_ts)
     test.params = append(list(y = d_ts), ur.test)
-    df = do.call(BETS.ur_test,test.params)
+    df = do.call(ur_test,test.params)
     print(df$results)
  }
 ```
@@ -212,7 +212,7 @@ d_ts = data
     ns_roots = ns_roots + 1
     d_ts = diff(d_ts)
     test.params = append(list(y = d_ts), ur.test)
-    df = do.call(BETS.ur_test,test.params)
+    df = do.call(ur_test,test.params)
     print(df$results)
  }
 ```
@@ -260,8 +260,8 @@ d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
 ```
 
 ```{r fig.width=4, fig.height=2, fig.align="center"}
-BETS.corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
-BETS.corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
+corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
+corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
 ## Model Identification and Estimation
@@ -307,7 +307,7 @@ We see that, according to `r inf.crit`, the best model is a `r desc`. Neverthele
 
 ```{r echo = c(1,2,3)}
 arch.params <- append(list(x = resid(model)), arch.test)
-at <- do.call(BETS.arch_test, arch.params)
+at <- do.call(arch_test, arch.params)
 at
 htk = at[1,"htk"]
 ```
@@ -341,7 +341,7 @@ data <- log(data)
 ns_roots = 0
 d_ts = data
 test.params = append(list(y = d_ts), ur.test)
-df = do.call(BETS.ur_test,test.params)
+df = do.call(ur_test,test.params)
 ```
 
 ```{r eval = (ur.test$mode != "KPSS") && htk, echo = (ur.test$mode != "KPSS") && htk}
@@ -349,7 +349,7 @@ while(df$results[1,"statistic"] > df$results[1,"crit.val"]){
     ns_roots = ns_roots + 1
     d_ts = diff(d_ts)
     test.params = append(list(y = d_ts), ur.test)
-    df = do.call(BETS.ur_test,test.params)
+    df = do.call(ur_test,test.params)
 }
 
 ns_roots
@@ -360,7 +360,7 @@ while(df$results[1,"statistic"] < df$results[1,"crit.val"]){
     ns_roots = ns_roots + 1
     d_ts = diff(d_ts)
     test.params = append(list(y = d_ts), ur.test)
-    df = do.call(BETS.ur_test,test.params)
+    df = do.call(ur_test,test.params)
 }
 
 ns_roots
@@ -384,8 +384,8 @@ if(s_roots != 0) {
 ```
 
 ```{r fig.height=3, fig.width=6.0, eval = htk, echo = htk}
-BETS.corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
-BETS.corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
+corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
+corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
 ```{asis echo = htk}
@@ -426,7 +426,7 @@ desc = paste0("SARIMA(",p,",",d,",",q,")(",P,",",D,",",Q,")[",freq,"]")
 
 ```{r echo = htk, eval = htk}
 arch.params <- append(list(x = resid(model)), arch.test)
-at <- do.call(BETS.arch_test, arch.params)
+at <- do.call(arch_test, arch.params)
 at
 ```
 
@@ -445,7 +445,7 @@ We are led to conclude that the residuals of the second model are not heterosked
 The next function outputs the model's standardized residuals. If they are all inside the confidence interval, it means the behaviour of the series was well captured by the model. If few residuals are outside the confidence interval, using a dummy to handle structural breaks should be considered. But if most residuals are outside the interval, then SARIMA might not be the appropriate choice. 
 
 ```{r fig.height = 4}
-rsd <- BETS.std_resid(model, alpha = 0.01)
+rsd <- std_resid(model, alpha = 0.01)
 ```
 
 As a final step in model evaluation, we are going to apply the `r box.test$type` test to check for autocorrelation in the residuals. 
@@ -476,33 +476,33 @@ The p-value is greater than 0.05, which means there is not enough statistical ev
 ## Forecasts
 
 ```{r echo = has.dum, eval = has.dum}
-BETS.predict(model, h=n.ahead, xreg = f.dummy,
+predict(model, h=n.ahead, xreg = f.dummy,
              main = info[,"Description"], ylab = info[,"Unit"], knit = T)
 ```
 
 ```{r echo = !has.dum, eval = !has.dum}
-BETS.predict(model, h=n.ahead, 
+predict(model, h=n.ahead, 
              main = info[,"Description"], ylab = info[,"Unit"], knit = T)
 ```
 
 
 ```{r echo = F, eval = !is.na(series.file)}
 if(has.dum){
-  preds = BETS.predict(model, h=n.ahead, xreg = f.dummy,
+  preds = predict(model, h=n.ahead, xreg = f.dummy,
                         main = info[,"Description"], ylab = info[,"Unit"], knit = T)
 } else {
-  preds = BETS.predict(model, h=n.ahead, 
+  preds = predict(model, h=n.ahead, 
                        main = info[,"Description"], ylab = info[,"Unit"], knit = T)      
 }
 
 data = c(data,preds$mean)
 
 if(grepl("\\.spss$", series.file)){
-  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+  saveSpss(file.name = gsub("\\.spss$", "", series.file), data = data)
 } else if(grepl("\\.dta$", series.file)){
-  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+  saveStata(file.name = gsub("\\.dta$", "", series.file), data = data)
 } else if(grepl("\\.sas$", series.file)){
-  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+  saveSas(file.name = gsub("\\.sas$", "", series.file), data = data)
 }else if(grepl("\\.csv$", series.file)) {
   write.csv(data, file = series.file, row.names = F)
 } else if(grepl("\\.csv2$", series.file)) {

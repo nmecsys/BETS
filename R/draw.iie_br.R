@@ -11,7 +11,7 @@
 draw.iie_br = function(){
   
   #iiebr = paste0(system.file(package="BETS"), "/incerteza_fgv.csv")
-  iiebr = BETS.get("ST_100.0")
+  iiebr = BETSget("ST_100.0")
   #data <- read.csv2(iiebr, stringsAsFactors = F)
   
   iiebr = ts(iiebr[,2], start = c(2000,1), frequency = 12)

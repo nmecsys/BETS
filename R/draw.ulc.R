@@ -12,7 +12,7 @@
 
 draw.ulc = function(){
   
-  cut = BETS.get(11777)
+  cut   = BETSget(11777)
   start = c(2006,1)
   
   if(!is.null(start)){

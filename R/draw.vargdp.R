@@ -11,7 +11,7 @@
 
 draw.vargdp = function(){
   
-  vargdp = BETS.get(7326)
+  vargdp = BETSget(7326)
   start = c(2006,1)
   
   if(!is.null(start)){

@@ -5,7 +5,7 @@
 #' 
 #' @import miniUI
 #' @import rstudioapi
-#' @import shiny
+#' @import shiny dplyr
 #' @importFrom utils write.csv write.csv2
 #' 
 #' 
@@ -157,32 +157,42 @@ BETS.addin_pt  = function(){
       
       #nomes = c("Codigo","Descricao","Unidade","Periodicidade","Inicio","Ultimo Valor","Fonte")
       
-      data.addin <- BETS.search(description ="*",lang="pt",view=F)
+      data.addin <- BETSsearch(description ="*",lang="pt",view=F)
+      data.addin$code <- as.integer(data.addin$code)
+      data.addin <- data.addin %>% arrange((code))  
+      
       #names(data.addin) = nomes
       
       
       
       if(input$description != "Search"){
         req(input$description) # tratamento para o input da descricao
-        data.addin <- BETS.search(description = input$description,lang="pt",view=F)
+        data.addin <- BETSsearch(description = input$description,lang="pt",view=F)
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",lang="pt",view=F)
-          
+          data.addin = BETSsearch(description="*",lang="pt",view=F)
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
           data.addin 
         }
         
       }else{
-        data.addin <- BETS.search(description ="*",lang="pt",view=F)
+        data.addin <- BETSsearch(description ="*",lang="pt",view=F)
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
       }
       
       
       if(input$periodicity!= "All"){
         req(input$periodicity)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$periodicity == input$periodicity,]
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",lang="pt",view=F)
+          data.addin = BETSsearch(description="*",lang="pt",view=F)
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
           data.addin 
         }
@@ -190,21 +200,29 @@ BETS.addin_pt  = function(){
       
       if(input$source!= "All"){
         req(input$source)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$source == input$source,]
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",lang="pt",view=F)
+          data.addin = BETSsearch(description="*",lang="pt",view=F)
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
-          data.addin 
+            data.addin$code <- as.integer(data.addin$code)
+            data.addin <- data.addin %>% arrange((code))  
+            data.addin 
         }
       }
       
       
       
       if(is.character(data.addin)){
-        data.addin = BETS.search(description="*",lang="pt",view=F)
+        data.addin = BETSsearch(description="*",lang="pt",view=F)
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
       }else{
-        data.addin 
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
+          data.addin 
       }
       
       #names(data.addin) = nomes
@@ -225,57 +243,90 @@ BETS.addin_pt  = function(){
       
       #nomes = c("Code","Description","Unit","Periodicity","Start","Last Value","Source")
       
-      data.addin <- BETS.search(description ="*",view=F)
+      data.addin <- BETSsearch(description ="*",view=F)
+      data.addin$code <- as.integer(data.addin$code)
+      data.addin <- data.addin %>% arrange((code))  
       #names(data.addin) = nomes
       
+      
+      # periodicidade = c("A","M","D","T","S")
+      # periodicidade = c("mensal")
+      # switch ()
       
       
       if(input$description != "Search"){
         req(input$description) # tratamento para o input da descricao
-        data.addin <- BETS.search(description = input$description,view=F,lang="pt")
+        data.addin <- BETSsearch(description = input$description,view=F,lang="pt")
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F,lang="pt")
-          
+          data.addin = BETSsearch(description="*",view=F,lang="pt")
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
-          data.addin 
+            data.addin$code <- as.integer(data.addin$code)
+            data.addin <- data.addin %>% arrange((code))  
+            data.addin 
         }
         
       }else{
-        data.addin <- BETS.search(description ="*",view=F,lang="pt")
+        data.addin <- BETSsearch(description ="*",view=F,lang="pt")
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
       }
       
       
       if(input$periodicity!= "All"){
         req(input$periodicity)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$periodicity == input$periodicity,]
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F,lang="pt")
+          data.addin = BETSsearch(description="*",view=F,lang="pt")
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
+            data.addin$code <- as.integer(data.addin$code)
+            data.addin <- data.addin %>% arrange((code))  
           data.addin 
+            
         }
       }
       
       if(input$source!= "All"){
         req(input$source)      # tratamento para o input da fonte
-        #data.addin <- BETS.search(description = input$description,view=F)
+        #data.addin <- search(description = input$description,view=F)
         data.addin <- data.addin[data.addin$source == input$source,]
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
         if(is.character(data.addin)){
-          data.addin = BETS.search(description="*",view=F,lang="pt")
+          data.addin = BETSsearch(description="*",view=F,lang="pt")
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         }else{
-          data.addin 
+            data.addin$code <- as.integer(data.addin$code)
+            data.addin <- data.addin %>% arrange((code))  
+            data.addin 
+            
         }
       }
       
       
       
       if(is.character(data.addin)){
-        data.addin = BETS.search(description="*",view=F,lang="pt")
+        data.addin = BETSsearch(description="*",view=F,lang="pt")
+        data.addin$code <- as.integer(data.addin$code)
+        data.addin <- data.addin %>% arrange((code))  
       }else{
+          data.addin$code <- as.integer(data.addin$code)
+          data.addin <- data.addin %>% arrange((code))  
         data.addin 
       }
       
       #names(data.addin) = nomes
+      data.addin$code <- as.integer(data.addin$code)
+      data.addin <- data.addin %>% arrange((code))  
       data.addin  
       
       
@@ -287,40 +338,40 @@ BETS.addin_pt  = function(){
     
     
     observeEvent(input$action_csv2,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       write.csv2(dados,file =paste0(local,".csv") )
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     
     observeEvent(input$action_csv,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       write.csv(dados,file =paste0(local,".csv") )
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     
     observeEvent(input$action_rds,{
-      dados = BETS.get(code = input$code,data.frame = T)
+      dados = BETSget(code = input$code,data.frame = T)
       local = paste0(input$local,"/",input$name)
       saveRDS(dados,file = paste0(local,".rds"))
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     
     observeEvent(input$action_sas,{
-      BETS.save.sas(code = as.numeric(input$code,file.name = input$name))
+      saveSas(code = as.numeric(input$code,file.name = input$name))
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     
     
     observeEvent(input$action_stata,{
-      BETS.save.stata(code = as.numeric(input$code),file.name = paste0(input$name,".dta"))
+      saveStata(code = as.numeric(input$code),file.name = paste0(input$name,".dta"))
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     
     
     observeEvent(input$action_spss,{
-      BETS.save.spss(code = input$code,file.name = input$name)
+      saveSpss(code = input$code,file.name = input$name)
       output$done_export = renderPrint("O arquivo foi exportado com \u00EAxito!")
     })
     

@@ -1,29 +1,29 @@
 # Uma unica serie
-BETS.get(4447)
+BETSget(4447)
 
 # Mesma serie, filtrada por data de inicio
-BETS.get(4447, from = "2000-01-01")
+BETSget(4447, from = "2000-01-01")
 
 # Mesma serie, filtrada por data de fim
-BETS.get(4447, to = "2000-01-01")
+BETSget(4447, to = "2000-01-01")
 
 # Mesma serie, filtrada por data de inicio e de fim
-BETS.get(4447, from = "1998-01-01", to = "2000-01-01")
+BETSget(4447, from = "1998-01-01", to = "2000-01-01")
 
 # Duas series, filtradas por 1 data de inico e fim, caso 1
-BETS.get(code = c(10777,4447),from = "2001-01-01", to = "2016-10-31")
+BETSget(code = c(10777,4447),from = "2001-01-01", to = "2016-10-31")
 
 # Duas series, filtradas por 1 data de inicio e fim, caso 2
-BETS.get(code = c(10777,4447),from = c("2001-10-31",""),to = c("2016-10-31",""))
+BETSget(code = c(10777,4447),from = c("2001-10-31",""),to = c("2016-10-31",""))
 
 # Duas series, filtradas por datas diferentes 
-BETS.get(code = c(10777,4447),from = c("2001-10-31","1998-09-01"), to = c("2014-10-31","2015-01-01"))
+BETSget(code = c(10777,4447),from = c("2001-10-31","1998-09-01"), to = c("2014-10-31","2015-01-01"))
 
 # Duas series, data de inicio igual, datas fim diferentes
-BETS.get(code = c(10777,4447),from = "2001-10-31", to = c("2014-10-31","2015-01-01"))
+BETSget(code = c(10777,4447),from = "2001-10-31", to = c("2014-10-31","2015-01-01"))
 
 # Duas series, datas de inicio diferentes, data fim igual
-BETS.get(code = c(10777,4447),from = c("2002-10-31","1997-01-01"), to = "2015-01-01")
+BETSget(code = c(10777,4447),from = c("2002-10-31","1997-01-01"), to = "2015-01-01")
 
 
 TEST_BETS.get = function(db = "bacen", lang = "en"){
@@ -58,7 +58,7 @@ TEST_BETS.get = function(db = "bacen", lang = "en"){
   
   # Open a file connection and write a meaningful header
   conn <-file(log.file, "w")
-  header <- paste("-- TESTING BETS.get with ", database, " metadata @", Sys.time())
+  header <- paste("-- TESTING BETSget with ", database, " metadata @", Sys.time())
   write(header, conn)
   
   # Get all codes
@@ -66,7 +66,7 @@ TEST_BETS.get = function(db = "bacen", lang = "en"){
   codes <- codes[!is.na(codes)]
   
   # Check if the series are available 
-  write(paste0("## Errors and issues in BETS.get with ", database, "metadata "), conn, append = TRUE)
+  write(paste0("## Errors and issues in BETSget with ", database, "metadata "), conn, append = TRUE)
   
   errors = vector(mode = "integer")
   issues = vector(mode = "character")
@@ -78,7 +78,7 @@ TEST_BETS.get = function(db = "bacen", lang = "en"){
       
             info = paste0("TESTANDO ",i,"a serie, codigo ",codes[i])
             
-            ret = BETS.get(codes[i])
+            ret = BETSget(codes[i])
             
             if(class(ret) == "ts" || class(ret) == "data.frame"){
               info = paste(info,"-- OK")
@@ -149,7 +149,7 @@ TEST_BETS.get = function(db = "bacen", lang = "en"){
   write(status, conn, append = TRUE)
   
   # Log end of test
-  footer <- paste("-- END OF TEST: BETS.get with ", database, "metadata @", Sys.time())
+  footer <- paste("-- END OF TEST: BETSget with ", database, "metadata @", Sys.time())
   write(footer, conn, append = TRUE)
   
   # Close file connection

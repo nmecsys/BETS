@@ -2,7 +2,7 @@
 #' 
 #' @description Extracts a complete time series from either the Central Bank of Brazil (BCB), the Brazilian Institute of Geography and Statistics (IBGE) or the Brazilian Institute of Economics (FGV/IBRE).
 #' 
-#' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.
+#' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETSsearch}} function.
 #' @param data.frame A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.
 #' @param from A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD).
 #' @param to A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-MM-DD).
@@ -50,7 +50,7 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
       return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
     }
     
-    sch = suppressMessages(BETS.search(code = code, view = F))
+    sch = suppressMessages(BETSsearch(code = code, view = F))
     freq = NA
     
     if(class(sch) == "data.frame"){
@@ -135,13 +135,21 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
   })
   
   
-  if(freq != 365 && !data.frame){
+  if(freq != 365 &&!data.frame){
+      
+      #year = as.numeric(format(k,"%Y"))
+      #month = as.numeric(format(k,"%m"))
+      #day = as.numeric(format(k,"%d"))
+      
     start = get.period(aux2[1],freq)
+    #start = get.period(c(year,month,day),freq)
+    #print(start)
     ts <- ts(aux1, start = start, freq = freq)
-  }
-  else {
+  }else {
+      
     ts = data.frame(date = aux2, value = aux1)
   }
+  
   
   return(ts)
 }

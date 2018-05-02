@@ -55,7 +55,7 @@ dir.create("graphs")
 
 chart.FUN <- function(num){
     if(has.chart[num] == 1){
-        BETS.chart(ts = list.charts[[num]], 
+        chart(ts = list.charts[[num]], 
                    file = paste0("chart", num, ext), params = charts.opts[[num]], 
                    style = style, open = FALSE)
     }

@@ -47,10 +47,10 @@ for(i in 1:length(regs)){
   
   if(class(reg) == "numeric" || class(reg) == "character" || class(reg) == "integer"){
     
-    res = BETS.search(code = reg, view = F)[1,]
+    res = BETSsearch(code = reg, view = F)[1,]
     res = data.frame(cbind(res," "),stringsAsFactors = F)
     info = rbind(info,res)
-    regs[[i]] = BETS.get(reg)
+    regs[[i]] = BETSget(reg)
   }
   else {
     res = data.frame(t(c("-", paste("Custom series",j),
@@ -120,7 +120,7 @@ The table shown below was saved into a variable called `info`. It is going to be
 knitr::kable(info, format = "markdown")
 ```
 
-Note: If the series is in BETS database, you can get information about it using the function `BETS.search`.
+Note: If the series is in BETS database, you can get information about it using the function `BETSsearch`.
 
 ## Graphs
 
@@ -209,13 +209,13 @@ dygraph(cbind(Series = regs[[2]], Trend = trend), main = info[2,"Description"]) 
 
 Input values normalization is a very important step when working with neural networks. Normalizing means standartizing the values of a series, in order to smooth its variability and to enhance the accuracy of numerical computation, once redundancies are removed. The effect of normalization is, therefore, to improve network performance, helping to avoid simulation faults and making it more efficient.
 
-We are going to normalize every series by applying two operations on each of its elements: subtract the series mean and divide by the series standard deviation. `BETS` has a function that performs these operations, `BETS.normalize` with parameter `mode` set to `scale`:
+We are going to normalize every series by applying two operations on each of its elements: subtract the series mean and divide by the series standard deviation. `BETS` has a function that performs these operations, `normalize` with parameter `mode` set to `scale`:
 
 ```{r}
 regs.norm = list()
 
 for(i in 1:length(regs)){
-  regs.norm[[i]] = BETS.normalize(regs[[i]], mode = "scale")
+  regs.norm[[i]] = normalize(regs[[i]], mode = "scale")
 }
 ```
 
@@ -242,7 +242,7 @@ This way, no series will dominate and thus distort the training process.
 
 ## Definition of Training and Testing Sets
 
-Before training the neural network, we need to initialize the inputs accepted by `BETS.grnn.train`, in particular the argumento `train.set`. It is a list of objects of type `ts` (time series), where the first must be the dependant variable (in this case, `r var.names[1]`) and the others, regressors. Each lag must be provided as an aditional regressor. We will name each lagged regressor with an underscore plus its lag (for instance, `r paste0(var.names[2],"_1")` will be the first lag of variable `r var.names[2]`). 
+Before training the neural network, we need to initialize the inputs accepted by `grnn.train`, in particular the argumento `train.set`. It is a list of objects of type `ts` (time series), where the first must be the dependant variable (in this case, `r var.names[1]`) and the others, regressors. Each lag must be provided as an aditional regressor. We will name each lagged regressor with an underscore plus its lag (for instance, `r paste0(var.names[2],"_1")` will be the first lag of variable `r var.names[2]`). 
 
 To build the training set, we first need to add `r lag.max` periods (the number of lags) to `start.train`, since all series must start in the same period:
 
@@ -337,17 +337,17 @@ names(testing) = nms
 Finally, the GRNN can be trained:
 
 ```{r}
-results = BETS.grnn.train(training, sigma = sigma.interval, step = sigma.step)
+results = grnn.train(training, sigma = sigma.interval, step = sigma.step)
 ```
 
-From the list outputted by `BETS.grnn.train` we see that the best network in terms of fitting used `r paste(nms[results[[1]]$regressors],collapse = ", ")` as regressors and a sigma of `r results[[1]]$sigma`, obtaining a MAPE of `r round(results[[1]]$mape,2)`.
+From the list outputted by `grnn.train` we see that the best network in terms of fitting used `r paste(nms[results[[1]]$regressors],collapse = ", ")` as regressors and a sigma of `r results[[1]]$sigma`, obtaining a MAPE of `r round(results[[1]]$mape,2)`.
 
 ## Network Testing
 
-The next step is, naturally, testing the best networks and choosing one of them. The function `BETS.grnn.test`.   
+The next step is, naturally, testing the best networks and choosing one of them. The function `grnn.test`.   
 
 ```{r}
-best.net = BETS.grnn.test(results,testing)
+best.net = grnn.test(results,testing)
 
 # 'accuracy' field of object best.net (MAPE)
 best.net[['mape']]
@@ -359,10 +359,10 @@ nms[best.net[['regressors']]]
 
 ## Forecasts
 
-Using the `results` object and the testing set, we can easily obtain forecasts through `BETS.predict`: 
+Using the `results` object and the testing set, we can easily obtain forecasts through `predict`: 
 
 ```{r}
-preds = BETS.predict(results, testing, actual = testing[[1]],
+preds = predict(results, testing, actual = testing[[1]],
                      unnorm = c(mean(regs[[1]]), sd(regs[[1]])), xlim = c(2013, 2016 + 11/12),
                      ylab = info[1,"Unit"], style = "normal")
 
@@ -374,11 +374,11 @@ preds[['accuracy']]
 data = c(regs[[1]],preds$mean)
 
 if(grepl("\\.spss$", series.file)){
-  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+  saveSpss(file.name = gsub("\\.spss$", "", series.file), data = data)
 } else if(grepl("\\.dta$", series.file)){
-  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+  saveStata(file.name = gsub("\\.dta$", "", series.file), data = data)
 } else if(grepl("\\.sas$", series.file)){
-  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+    saveSas(file.name = gsub("\\.sas$", "", series.file), data = data)
 }else if(grepl("\\.csv$", series.file)) {
   write.csv(data, file = series.file, row.names = F)
 } else if(grepl("\\.csv2$", series.file)) {

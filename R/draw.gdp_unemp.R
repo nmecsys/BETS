@@ -11,13 +11,13 @@
 
 draw.gdp_unemp = function(){
   
-  gdp = window(BETS.get(22109), start = c(2012,2))
-  #ipca = window(aggregate(BETS.get(433), nfrequency = 4), start = c(2012,2))
-  #gdp = BETS.deflate(ts = gdp, deflator = ipca, type = "perc")
+  gdp = window(BETSget(22109), start = c(2012,2))
+  #ipca = window(aggregate(BETSget(433), nfrequency = 4), start = c(2012,2))
+  #gdp = deflate(ts = gdp, deflator = ipca, type = "perc")
   
-  # unemp = suppressWarnings(ts(BETS.get(24369)[,2], start = c(2012,6),frequency = 12))
+  # unemp = suppressWarnings(ts(BETSget(24369)[,2], start = c(2012,6),frequency = 12))
   # 
-  unemp = BETS.get(24369)
+  unemp = BETSget(24369)
   
   ind = grepl("-03-|-06-|-09-|-12-", as.Date(unemp))
   unemp = ts(unemp[ind],start = c(2012,2), frequency = 4)

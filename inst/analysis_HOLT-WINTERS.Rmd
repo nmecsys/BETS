@@ -65,7 +65,7 @@ if(!is.null(s.start)){
 
 ```{r echo = !custom.ts, eval = !custom.ts}
 library(BETS)
-info <- BETS.search(code = ts, view = F)
+info <- BETSsearch(code = ts, view = F)
 ```
 
 ```{r echo = FALSE, eval = custom.ts}
@@ -87,7 +87,7 @@ knitr::kable(info, format = "markdown")
 ## Graph
 
 ```{r eval = !custom.ts, echo = !custom.ts}
-ts = BETS.get(code = ts)
+ts = BETSget(code = ts)
 ```
 
 
@@ -174,7 +174,7 @@ library(BETS)
 ```
 
 ```{r}
-preds = BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], style = "normal")
+preds = predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], style = "normal")
 ```
 
 ## Model Evaluation
@@ -182,7 +182,7 @@ preds = BETS.predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,
 If the model is well-specified, its normalized residuals should not surpass the boundaries of confidence intervals. In addition, it should look like white noise. Here, we plot the normalized residuals with a 95% confidence interval:
 
 ```{r}
-std.resid = BETS.std_resid(model, alpha = 0.05)
+std.resid = std_resid(model, alpha = 0.05)
 ```
 
 We can use a Ljung-Box test to accept or reject the hypothesis of autocorrelation in the residuals (the forecasting errors):
@@ -203,18 +203,18 @@ Note that the `p.value` is high. So, there is little evidence of non-zero autoco
 To confirm these results, we can take look at the residuals ACF:
 
 ```{r}
-BETS.corrgram(preds$residuals, lag.max = 20, mode = "bartlett", knit = T)
+corrgram(preds$residuals, lag.max = 20, mode = "bartlett", knit = T)
 ```
 
 ```{r echo = F, eval = !is.na(series.file)}
 data = c(ts,preds$mean)
 
 if(grepl("\\.spss$", series.file)){
-  BETS.save.spss(file.name = gsub("\\.spss$", "", series.file), data = data)
+  saveSpss(file.name = gsub("\\.spss$", "", series.file), data = data)
 } else if(grepl("\\.dta$", series.file)){
-  BETS.save.stata(file.name = gsub("\\.dta$", "", series.file), data = data)
+  saveStata(file.name = gsub("\\.dta$", "", series.file), data = data)
 } else if(grepl("\\.sas$", series.file)){
-  BETS.save.sas(file.name = gsub("\\.sas$", "", series.file), data = data)
+  saveSas(file.name = gsub("\\.sas$", "", series.file), data = data)
 }else if(grepl("\\.csv$", series.file)) {
   write.csv(data, file = series.file, row.names = F)
 } else if(grepl("\\.csv2$", series.file)) {

@@ -14,9 +14,9 @@
 
 draw.selic = function(){
   
-  selic = BETS.get(4189)
-  target = BETS.get(432)
-  start = c(2006,1)
+  selic  = BETSget(4189)
+  target = BETSget(432)
+  start  = c(2006,1)
   
   if(!is.null(start)){
     selic = window(selic, start = start)
