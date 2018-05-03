@@ -22,7 +22,7 @@ report(mode = "SARIMA", ts = 21864, parameters = NULL, report.file = NA,
 One or more .html files (the reports) and, optionally, data files (series plus predictions).
 }
 \description{
-Generate automatic reports with a complete analysis of a set of time series. For now, only a SARIMA analysis (Box & Jenkins approach) is possible. In a near future, a GRNN (General Regression Neural Network) analysis will be released. Soon after, Holt-Winters, GRNN, Multilayer Perceptron, Fuzzy Logic and Box-Cox analysis will become available.
+Generate automatic reports with a complete analysis of a set of time series. For now, SARIMA (Box & Jenkins approach), Holt-Winters and GRNN analysis are possible. Soon, Multilayer Perceptron, Fuzzy Logic and Box-Cox analysis will become available.
 }
 \details{
 \bold{SARIMA Report Parameters}

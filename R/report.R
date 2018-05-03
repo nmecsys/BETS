@@ -1,6 +1,6 @@
 #' @title Create dynamic reports with a full analysis of a set of time series
 #' 
-#' @description Generate automatic reports with a complete analysis of a set of time series. For now, only a SARIMA analysis (Box & Jenkins approach) is possible. In a near future, a GRNN (General Regression Neural Network) analysis will be released. Soon after, Holt-Winters, GRNN, Multilayer Perceptron, Fuzzy Logic and Box-Cox analysis will become available.
+#' @description Generate automatic reports with a complete analysis of a set of time series. For now, SARIMA (Box & Jenkins approach), Holt-Winters and GRNN analysis are possible. Soon, Multilayer Perceptron, Fuzzy Logic and Box-Cox analysis will become available.
 #' 
 #' @param mode A \code{character}.The type of the analysis. So far, 'SARIMA', 'GRNN' and 'HOLT-WINTERS' are available.
 #' @param ts A \code{integer}, a \code{ts} object or a \code{list} of \code{integer}s and \code{ts} objects. Either the ID of the series in the BETS database or a time series object (any series, not just BETS's). If a \code{list} is provided, a report is generated for each series in this list, which can be mixed with IDs and time series objects.
@@ -167,6 +167,12 @@ report <- function(mode = "SARIMA", ts = 21864, parameters = NULL, report.file= 
   
     file.copy(file, rep.file, overwrite = T)
     file.remove(file)
-    system2("open", rep.file)
+    
+    cmd = "open"
+    
+    if(Sys.info()[["sysname"]] == "Linux"){
+        cmd = paste0("xdg-",cmd)
+    }
+    system2(cmd, rep.file)
   }
 }
