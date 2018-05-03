@@ -27,7 +27,13 @@ The BETS package underwent a major update, such as:
 
 |Olde name  | New name   |  
 |:---------:|:----------:|
-|           |            |   
+|BETS.search|BETSsearch|
+|BETS.get|BETSget|
+|BETS.chart|chart|
+|BETS.save.sas|saveSas|
+|BETS.save.stata|saveStata|
+|BETS.save.spss|saveSpss|
+|...|...|
 
 
 
