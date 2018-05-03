@@ -17,7 +17,13 @@ install.packages("BETS")
 library(BETS)
 ```
 
-## Importante (update 0.4.2)
+## :exclamation: Importante (update 0.4.2)
+
+The BETS package underwent a major update, such as:
+  - New function names
+  - Connection credentials to the database are now encrypted
+  - In cases of non-internet connection, a sample of data was added for offline use
+
 
 |Olde name  | New name   |  
 |:---------:|:----------:|
