@@ -254,8 +254,15 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,
     }
   
   results = dbGetQuery(conn, query)
-  results$description = iconv(results$description, from = "UTF-8")
-  results$unit = iconv(results$unit, from = "UTF-8")
+  
+  if(Sys.info()[["sysname"]] == "Linux"){
+      encod = "latin1"
+  } else {
+      encod = "UTF-8"
+  }
+  
+  results$description = iconv(results$description, from = encod)
+  results$unit = iconv(results$unit, from = encod)
 
   count = dbGetQuery(conn,paste0("select count(*) from ", tb))
   invisible(dbDisconnect(conn))
