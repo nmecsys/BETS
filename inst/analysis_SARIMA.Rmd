@@ -102,12 +102,18 @@ knitr::kable(info, format = "markdown")
 ## Graph
 
 ```{r echo = F}
-require(mFilter)
+tryCatch({require(mFilter)
+    }, warning = function(w){
+        x <- readline("You need to install package mFilter to obtain a SARIMA report. Install mFilter now? [Y/n]")
+        if(x %in% c("y","Y","yes","Yes","YES")){
+            install.packages("mFilter")
+            require(mFilter)
+        }
+    })
 ```
 
 
-```{r eval = -1}
-library(mFilter)
+```{r}
 trend = fitted(hpfilter(data))
 
 library(dygraphs)
@@ -259,7 +265,7 @@ library(plotly)
 d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots)
 ```
 
-```{r fig.width=4, fig.height=2, fig.align="center"}
+```{r fig.height=3, fig.width=6.0, fig.align="center"}
 corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
 corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
@@ -276,6 +282,16 @@ Since a dummy has to be included, we are going to separate it in two samples, on
 m.dummy = window(dummy, end = end(data))
 f.dummy = tail(dummy, n.ahead)
 ```
+
+```{r echo=F}
+was.adf = FALSE
+# workround until forecast package is fixed
+if(tolower(ur.test$mode) == "adf"){
+    ur.test$mode <- "KPSS"
+    was.adf = TRUE
+}
+```
+
 
 ```{r echo = has.dum, eval = has.dum}
 model <- auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
@@ -335,6 +351,13 @@ The next step, then, is to rebuild the model using log(data).
 ### Unit root tests (non-seasonal)
 ```
 
+```{r echo=F}
+if(was.adf){
+    ur.test$mode <- "ADF"
+}
+```
+
+
 ```{r eval = htk, echo = htk}
 data <- log(data)
 
@@ -391,6 +414,13 @@ corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```{asis echo = htk}
 ### Estimation
 ```
+
+```{r echo=F}
+if(was.adf){
+    ur.test$mode <- "KPSS"
+}
+```
+
 
 ```{r echo = htk && has.dum, eval = htk && has.dum}
 model = auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 

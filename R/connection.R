@@ -3,17 +3,10 @@
 #' @import DBI RMySQL digest
 #' @importFrom utils  install.packages remove.packages
 
-
-
-
-
-
-
-
 connection = function(){
     
-        key <- readRDS("data/key.rds")
-        dat <- readBin("inst/credentials.txt","raw",n=1000)
+        key <- readRDS(paste0(system.file(package="BETS"),"/data/key.rds"))
+        dat <- readBin(paste0(system.file(package="BETS"),"/credentials.txt"),"raw",n=1000)
         aes <- AES(key,mode="ECB")
         raw <- aes$decrypt(dat, raw=TRUE)
         txt <- rawToChar(raw[raw>0])
@@ -28,7 +21,7 @@ connection = function(){
     },
     error = function(e){
         message("Sorry, but it was not possible to connect to the server.")
-        x <- readline("You want to install a development version of RMySQL and DBI package packages?\n(This may solve the connection problem)[Y/n]")
+        x <- readline("Do you want to install a development version of RMySQL and DBI package packages?\n(This may solve the connection problem)[Y/n]")
         if(x %in% c("y","Y","yes","Yes","YES")){
             tryCatch({
                 if(requireNamespace("devtools")){
@@ -46,7 +39,7 @@ connection = function(){
                 }
             },
             error = function(e){
-                x<- readline("Install a previously version of DBI and RMySQL packages?")
+                x<- readline("Do you want to install a previous version of DBI and RMySQL packages?")
                 if(x %in% c("y","Y","yes","Yes","YES")){
                     remove.packages(c("RMySQL","DBI"))
                     install.packages("devtools")
@@ -61,7 +54,7 @@ connection = function(){
                 }
             })
         }else{
-                stop("Connetcion fail!")
+                stop("Connection failed!")
             } 
        })
 }

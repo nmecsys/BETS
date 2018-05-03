@@ -56,7 +56,7 @@ report(ts = window(BETSget(21864), start= c(2002,1) , end = c(2015,10)), paramet
 params = list( 
   cf.lags = 36,
   n.ahead = 6,
-  dummy = dummy(start= c(2002,1) , end = c(2017,12) , from = c(2008,7) , to = c(2008,11)),
+  dummy = dummy(start= c(2002,1) , end = c(2018,2) , from = c(2008,7) , to = c(2008,11)),
   arch.test = list(lags = 12, alpha = 0.025),
   box.test = list(type = "Box-Pierce", lag = 5)
 )
@@ -112,13 +112,13 @@ report(ts = 4447, parameters = parameters, report.file = "C:/Users/Talitha/Deskt
 
 # Uma serie, objeto ts, salvar no Desktop
 
-report(ts = get(4447), parameters = parameters, report.file = "C:/Users/Talitha/Desktop/TESTE2")
+report(ts = BETSget(4447), parameters = parameters, report.file = "/home/talithafs/Desktop/TESTE2")
 
 # Duas series, lista mista, salvar no Desktop
 
 series = list(4447, BETSget(21864))
 
-report(ts = series, parameters = parameters, report.file = "C:/Users/Talitha/Desktop/TESTE")
+report(ts = series, parameters = parameters, report.file = "/home/talithafs/Desktop/TESTE")
 
 # Salvar previsoes
 
