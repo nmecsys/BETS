@@ -116,20 +116,22 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
   
  if(grepl("-",aux[1,1])){
   try = tryCatch({
-    aux2 = as.Date(aux[,1], format = "%Y-%m-%d")},
+    aux2 = as.Date(aux[,1], format = "%Y-%m-%d")
+    FALSE },
     error = function(err) {
       return(TRUE)
     }
   )}else{
     try = tryCatch({
-      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")},
+      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")
+      FALSE },
       error = function(err) {
         return(TRUE)
       })
   }
   
   
-  suppressWarnings(if(try==TRUE){
+  suppressWarnings(if(try){
     
     return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Date formatting is inadequate."))))
   })
