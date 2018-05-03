@@ -1,0 +1,18 @@
+language: R
+
+cache: packages
+
+sudo: true
+
+
+os: 
+
+- linux
+
+
+
+r:
+
+- release
+
+- devel
