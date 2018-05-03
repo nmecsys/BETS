@@ -17,6 +17,16 @@ install.packages("BETS")
 library(BETS)
 ```
 
+## Importante (update 0.4.2)
+
+|Olde name  | New name   |  
+|:---------:|:----------:|
+|           |            |   
+
+
+
+
+
 
 ### Information
  
@@ -29,4 +39,7 @@ library(BETS)
    expectations <- BETS.get(code = "ST_100.2")
    media <- BETS.get(code = "ST_100.3")
    ```
+
+
+
 
