@@ -16,12 +16,6 @@
 
 get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = NULL){
   
-  # date_to = strsplit(to,split="-")
-  # to = paste0(date_to[[1]][3],"/",date_to[[1]][2],"/",date_to[[1]][1]) 
-  # 
-  # date_from = strsplit(from,split="-")
-  # from = paste0(date_from[[1]][3],"/",date_from[[1]][2],"/",date_from[[1]][1])
-  
   
   if(!grepl("ST_",code)){
      
@@ -35,19 +29,23 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
     
     
     code = as.numeric(code)
-    aux = get.series.bacen(code, from = from, to = to)[[1]]
     
-    x <- get.series.bacen(code, from = from, to = to)[[1]]
-    y <- get.series.bacen(code, from = from, to = to)[[1]]
-    
-    if(nrow(aux)<nrow(x)){
-      aux <- x
-    }else if(nrow(aux)<nrow(y)){
-      aux <- y
-    }
+    aux = tryCatch({
+        get.series.bacen(code, from = from, to = to)[[1]]
+    }, error = function(e){
+        data.frame()
+    })
     
     if(nrow(aux) == 0){
-      return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
+        
+        examples <- readRDS(paste0(system.file(package="BETS"),"/data/examples.rds"))
+        examples <- examples[examples$code == code,]
+        
+        if(nrow(examples) != 0){
+            aux <- examples[,c(1,2)] 
+        } else {
+            return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
+        }
     }
     
     sch = suppressMessages(BETSsearch(code = code, view = F))

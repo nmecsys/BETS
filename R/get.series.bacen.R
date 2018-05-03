@@ -13,7 +13,7 @@ get.series.bacen<- function(x, from = "", to = "",save = ""){
 
   
   if (missing(x)){
-    stop("Need to specify at least one serie.")
+    stop("Need to specify at least one series.")
   }
   
   if (! is.numeric(x)){

@@ -108,13 +108,14 @@
 #' 
 #' @import RMySQL
 #' @import DBI
+#' @import sqldf
 #' @importFrom stringr str_split
 #' @importFrom utils View
 #' @export 
 
 
 BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,lang="pt"){
-  
+    
   conn = connection()
   
   if(lang == "en"){
@@ -125,15 +126,6 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,
   
    if(description == "*" && missing(src) && missing(periodicity) && missing(unit) && missing(code)){
       query <- paste0("select * from ", tb)
-     #  results = dbGetQuery(conn, query)
-     #  results$description = iconv(results$description, from = "UTF-8")
-     #  invisible(dbDisconnect(conn))
-     # if(view==T){
-     #  return(View(results,"Metadata"))
-     #  }
-     #  else{
-     #    return(results)
-     #  }
     } else {
   
       if(missing(description) && missing(src) && missing(periodicity) && missing(unit) && missing(code)){
@@ -251,9 +243,19 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,
           query = paste(query, "and", params[i])
         }
       }
+      
     }
   
-  results = dbGetQuery(conn, query)
+  results = tryCatch({
+     dbGetQuery(conn, query)
+  }, error = function(e){
+      
+      metadata_pt <- readRDS(paste0(system.file(package="BETS"),"/data/metadata_pt.rds")) 
+      metadata_en <- readRDS(paste0(system.file(package="BETS"),"/data/metadata_en.rds"))
+    
+      return(sqldf(query))
+  }) 
+  
   
   if(Sys.info()[["sysname"]] == "Linux"){
       encod = "latin1"
@@ -264,8 +266,13 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,
   results$description = iconv(results$description, from = encod)
   results$unit = iconv(results$unit, from = encod)
 
-  count = dbGetQuery(conn,paste0("select count(*) from ", tb))
-  invisible(dbDisconnect(conn))
+  if(!is.null(conn)){
+      count = dbGetQuery(conn,paste0("select count(*) from ", tb))
+      invisible(dbDisconnect(conn))
+  } else {
+      count = nrow(results)
+  }
+  
   
   if(nrow(results) > 0){
     msg(paste("Found", nrow(results),"out of", count ,"time series.",sep=" "))

@@ -14,8 +14,10 @@ for(v in vec){
     metadata_en <- rbind(metadata_en, BETSsearch(code = v, lang = "en", view = F))
 }
 
-saveRDS(examples)
-saveRDS(metadata_pt)
-saveRDS(metadata_en)
+names(examples) <- c("date","value","code")
+
+saveRDS(examples, "data/examples.rds")
+saveRDS(metadata_pt, "data/metadata_pt.rds")
+saveRDS(metadata_en, "data/metadata_en.rds")
 
 
