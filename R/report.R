@@ -133,8 +133,7 @@ report <- function(mode = "SARIMA", ts = 21864, parameters = NULL, report.file= 
   i = 1
 
   for(ts in vec){ 
-    
-    
+
     name = paste0("analysis_",mode,".Rmd")
     file = system.file(package="BETS", name)
     
