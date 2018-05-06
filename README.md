@@ -17,7 +17,7 @@ install.packages("BETS")
 library(BETS)
 ```
 
-## :exclamation: Importante (update 0.4.2)
+## :exclamation: Important (update 0.4.2)
 
 The BETS package underwent a major update, such as:
   - New function names
