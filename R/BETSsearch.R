@@ -114,7 +114,7 @@
 #' @export 
 
 
-BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,lang="pt"){
+BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,lang="en"){
     
   conn = connection()
   
