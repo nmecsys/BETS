@@ -29,3 +29,4 @@ LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
 Repository: CRAN
+VignetteBuilder: knitr
