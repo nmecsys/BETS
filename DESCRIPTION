@@ -3,9 +3,9 @@ Type: Package
 Title: Brazilian Economic Time Series
 Version: 0.4.2
 Date: 2018-05-02
-Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
-                    person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = "aut")),
-                    person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", c("aut", "cre")),
+Authors@R: c(       person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
+                    person("Talitha", "Speranza", email = "talitha.speranza@fgv.br",role = c("aut", "cre")),
+                    person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = "aut"),
 			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "ctb"),
 			        person("Daiane", "Marcolino", email = "daiane.mattos@fgv.br", role = "ctb"))
 Maintainer: Talitha Speranza <talitha.speranza@fgv.br>

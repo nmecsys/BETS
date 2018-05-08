@@ -124,9 +124,9 @@ library(BETS)
 
 ```{r eval = F}
 # Some examples
-BETSsearch(description = "sales ~ retail")
-BETSsearch(description = "'sales volume index' ~ vehicles")
-BETSsearch(description = "'distrito federal'", periodicity = 'A', src = 'IBGE')
+BETSsearch(description = "sales ~ retail",view = F)
+BETSsearch(description = "'sales volume index' ~ vehicles",view = F)
+BETSsearch(description = "'distrito federal'", periodicity = 'A', src = 'IBGE',view = F)
 ```
 
 ```{r eval = F}
@@ -142,10 +142,7 @@ BETSsearch(description = "gdp accumulated", unit = "US$", view = F)
 #results
 ```
 
-```{r eval = F}
-# Search for consumption series, not seasonally adjusted, not private
-BETSsearch(description = "consumption ~ 'seasonally adjusted' ~ private", view = F)
-```
+
 
 ```{r echo = F, results='hide'}
 results <- BETSsearch(description = "consumption ~ 'seasonally adjusted' ~ private", view = F)

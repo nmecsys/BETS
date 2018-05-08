@@ -9,3 +9,7 @@
 ^graphs$
 ^old$
 README.md
+LICENSE
+^.log
+^.aux
+^.out
