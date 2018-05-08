@@ -4,7 +4,7 @@
 [![downloads](http://cranlogs.r-pkg.org/badges/BETS)](http://cran.rstudio.com/web/packages/BETS/index.html)
 ![](http://cranlogs.r-pkg.org/badges/last-week/BETS?color=blue)
 
-:exclamation: **Please read this carefully before using the latest BETS version (0.4.2).**
+:exclamation: **Please read this carefully before using the latest BETS version (0.4.2)**
 
 *The package went through considerable changes.*
 
