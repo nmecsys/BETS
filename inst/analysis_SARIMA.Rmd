@@ -231,7 +231,7 @@ This test will be performed for lag `r frequency(data)`, that is, the frequency 
 
 ```{r echo = c(1,2,3)}
 library(forecast)
-s_roots = nsdiffs(data)
+s_roots = nsdiffs(data, test = "ocsb")
 print(s_roots)
 
 sroot = FALSE
@@ -284,12 +284,12 @@ f.dummy = tail(dummy, n.ahead)
 ```
 
 ```{r echo=F}
-was.adf = FALSE
-# workround until forecast package is fixed
-if(tolower(ur.test$mode) == "adf"){
-    ur.test$mode <- "KPSS"
-    was.adf = TRUE
-}
+# was.adf = FALSE
+# # workround until forecast package is fixed
+# if(tolower(ur.test$mode) == "adf"){
+#     ur.test$mode <- "KPSS"
+#     was.adf = TRUE
+# }
 ```
 
 
@@ -352,17 +352,17 @@ The next step, then, is to rebuild the model using log(data).
 ```
 
 ```{r echo=F}
-if(was.adf){
-    ur.test$mode <- "ADF"
-}
+# if(was.adf){
+#     ur.test$mode <- "ADF"
+# }
 ```
 
 
 ```{r eval = htk, echo = htk}
-data <- log(data)
+ldata <- log(data)
 
 ns_roots = 0
-d_ts = data
+d_ts = ldata
 test.params = append(list(y = d_ts), ur.test)
 df = do.call(ur_test,test.params)
 ```
@@ -394,11 +394,11 @@ ns_roots
 ```
 
 ```{r echo = htk, eval = htk}
-s_roots = nsdiffs(data)
+s_roots = nsdiffs(ldata, test = "ocsb")
 s_roots
 
 if(s_roots != 0) {
-   d_ts <- diff(d_ts, lag = frequency(data), differences = s_roots) 
+   d_ts <- diff(d_ts, lag = frequency(ldata), differences = s_roots) 
 }
 ```
  
@@ -416,21 +416,21 @@ corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
 ```{r echo=F}
-if(was.adf){
-    ur.test$mode <- "KPSS"
-}
+# if(was.adf){
+#     ur.test$mode <- "KPSS"
+# }
 ```
 
 
 ```{r echo = htk && has.dum, eval = htk && has.dum}
 model = auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
-                   max.d = ns_roots, max.D = s_roots, xreg = m.dummy)
+                   max.d = ns_roots, max.D = s_roots, xreg = m.dummy, lambda = 0)
 summary(model)
 ```
 
 ```{r echo = htk && !has.dum, eval = htk && !has.dum}
 model = auto.arima(data, ic = tolower(inf.crit), test = tolower(ur.test$mode), 
-                   max.d = ns_roots, max.D = s_roots)
+                   max.d = ns_roots, max.D = s_roots, lambda = 0)
 summary(model)
 ```
 

@@ -44,7 +44,6 @@ report(ts = window(BETSget(21864), start= c(2002,1) , end = c(2015,10)), paramet
 parameters = list( 
     cf.lags = 25,
     n.ahead = 15,
-    dummy = dum,
     arch.test = list(lags = 12, alpha = 0.01),
     box.test = list(type = "Box-Pierce")
 )
