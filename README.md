@@ -51,7 +51,7 @@ library(BETS)
   |BETS.t_test|t_test|
   |BETS.ur_test|ur_test|
     
-2. Package `forecast`'s newest version (8.3) contains a bug in `ndiffs`. An error arises when trying to run augmented Dickey-Fuller testes. Therefore, BETS' `report` function does not work properly if the user opt for SARIMA analysis with ADF tests. A solution is to install `forecast 8.2`:
+2. Package `forecast`'s newest version (8.3) contains a bug in `ndiffs`. An error arises when trying to run Augmented Dickey-Fuller (ADF) tests. Therefore, BETS' `report` function does not work properly if the user opt for SARIMA analysis with ADF tests. A solution is to install `forecast 8.2`:
 
 ```R
 remove.packages("forecast")
