@@ -4,6 +4,8 @@
 [![downloads](http://cranlogs.r-pkg.org/badges/BETS)](http://cran.rstudio.com/web/packages/BETS/index.html)
 ![](http://cranlogs.r-pkg.org/badges/last-week/BETS?color=blue)
 
+**:exclamation: Please read this carefully before using the latest BETS version (0.4.2). The package went through considerable changes.*
+
 # BETS - Brazilian Economic Times Series
 
 ## Installation
@@ -19,13 +21,12 @@ library(BETS)
 
 ## :exclamation: Important (update 0.4.2)
 
-The BETS package underwent a major update, such as:
-  - New function names
-  - Connection credentials to the database are now encrypted
-  - In cases of non-internet connection, a sample of data was added for offline use
+1. BETS package underwent major changes in response to R Journal's reccomendations:
+  - New function names (see table below)
+  - Database onnection credentials are now encrypted
+  - Sample data was included in `/data`, to allow the user to run examples even when offline, or when our server is down.
 
-
-|Olde name  | New name   |  
+|Old name  | New name   |  
 |:---------|:----------|
 |BETS.search|BETSsearch|
 |BETS.get|BETSget|
@@ -48,11 +49,13 @@ The BETS package underwent a major update, such as:
 |BETS.t_test|t_test|
 |BETS.ur_test|ur_test|
 
+2. Package `forecast`'s newest version (8.3) contains a bug in `ndiffs`. An error arises when trying to run augmented Dickey-Fuller testes. Therefore, BETS' `report` function does not work properly if the user opt for SARIMA analysis with ADF tests. A solution is to install `forecast 8.2`:
 
-
-
-
-
+```R
+remove.packages("forecast")
+install.packages("devtools")
+devtools::install_version("forecast", version = "8.2", type = "source")
+```
 
 ### Information
  
