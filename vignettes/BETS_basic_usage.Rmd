@@ -10,6 +10,12 @@ vignette: >
 ---
 
 
+
+```{r,echo = F,message = F,warning=FALSE}
+require(BETS)
+```
+
+
 ## Introduction
 
 The BETS package (an abbreviation for Brazilian Economic Time Series) for R [@R] allows easy access to the most important Brazilian economic time series and a range of tools for analyzing them. It provides a much-needed single point of access to the many Brazilian series and a simple, flexible and robust interface. 
@@ -145,11 +151,11 @@ BETSsearch(description = "gdp accumulated", unit = "US$", view = F)
 
 
 ```{r echo = F, results='hide'}
-results <- BETSsearch(description = "consumption ~ 'seasonally adjusted' ~ private", view = F)
+#results <- BETSsearch(description = "consumption ~ 'seasonally adjusted' ~ private", view = F)
 ```
 
 ```{r echo = F}
-head(results)
+#head(results)
 ```
 
 For further information on `BETSsearch`, including valid values
@@ -176,13 +182,13 @@ by the function will be a `ts` ( _time series_ ). If
 
 We will extract two series that we looked up previously.
 
-```{r}
+```{r eval = F}
 # Get the 12-month cumulative GDP series in dollars
 gdp_accum <- BETSget(4192)
 window(gdp_accum, start = c(2014,1))
 ```
 
-```{r}
+```{r eval = F}
 #Get the series for the GDP of the Federal District at market prices
 gdp_df <- BETSget(23992, data.frame = T)
 head(gdp_df)
