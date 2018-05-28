@@ -5,7 +5,7 @@
 
 connection = function(){
     
-    key <- readRDS(paste0(system.file(package="BETS"),"/data/key.rds"))
+    key <- readRDS(paste0(system.file(package="BETS"),"/key.rds"))
     dat <- readBin(paste0(system.file(package="BETS"),"/credentials.txt"),"raw",n=1000)
     aes <- AES(key,mode="ECB")
     raw <- aes$decrypt(dat, raw=TRUE)

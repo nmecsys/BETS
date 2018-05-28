@@ -111,10 +111,11 @@
 #' @import sqldf
 #' @importFrom stringr str_split
 #' @importFrom utils View
+#' @importFrom dplyr as_tibble
 #' @export 
 
 
-BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,lang="en"){
+BETSsearch = function(description="*",src,periodicity,unit,code,start,view=FALSE,lang="en"){
     
   conn = connection()
   
@@ -277,7 +278,7 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=TRUE,
   if(nrow(results) > 0){
     msg(paste("Found", nrow(results),"out of", count ,"time series.",sep=" "))
     
- 
+    results = as_tibble(results)
     if(view==T){
       return(utils::View(results,"Metadata"))
     }
