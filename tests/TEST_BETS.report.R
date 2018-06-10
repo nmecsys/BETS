@@ -48,19 +48,20 @@ parameters = list(
     box.test = list(type = "Box-Pierce")
 )
 
-report(ts = window(BETSget(21864), start= c(2002,1) , end = c(2015,10)), parameters = parameters)
+report(ts = window(BETSget(21865), start= c(2002,1) , end = c(2017,12)), parameters = parameters)
 
 # Outra serie
 
 params = list( 
   cf.lags = 36,
   n.ahead = 6,
-  dummy = dummy(start= c(2002,1) , end = c(2018,2) , from = c(2008,7) , to = c(2008,11)),
   arch.test = list(lags = 12, alpha = 0.025),
   box.test = list(type = "Box-Pierce", lag = 5)
 )
 
-report(ts = 21863, parameters = params)
+series <- window(BETSget(21863), start= c(2002,1) , end = c(2018,2))
+
+report(ts = series, parameters = params)
 
 
 

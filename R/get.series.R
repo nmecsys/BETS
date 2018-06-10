@@ -51,7 +51,7 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
     sch = suppressMessages(BETSsearch(code = code, view = F))
     freq = NA
     
-    if(class(sch) == "data.frame"){
+    if("data.frame" %in% class(sch)){
       freq = trimws(sch[1,4])
     }
     
