@@ -45,8 +45,8 @@ library(BETS)
   |BETS.normalize|normalize|
   |BETS.predict|predict|
   |BETS.report|report|
-  |BETS.sidra.get|sidra.get|
-  |BETS.sidra.search|sidra.search|
+  |BETS.sidra.get|sidraGet|
+  |BETS.sidra.search|sidraSearch|
   |BETS.std_resid|std_resid|
   |BETS.t_test|t_test|
   |BETS.ur_test|ur_test|
