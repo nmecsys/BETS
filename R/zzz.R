@@ -12,7 +12,7 @@
             #"\n",
             #paste("Bug reports: https://github.com/pedrocostaferreira/BETS/issues"),
             #"\n",
-            #paste("Maintainer: Pedro costa Ferreira <pedro.guilherme@fgv.br>"),
+            #paste("Maintainer: Jonatha Costa <jonatha.costa@fgv.br>"),
             #"\n"
    #)
    #if(interactive() || getOption("verbose"))
