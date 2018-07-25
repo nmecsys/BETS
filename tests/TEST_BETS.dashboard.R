@@ -12,7 +12,7 @@ parameters = list(author = "FGV/IBRE",
                   text = "text.txt",
                   url = "http://portalibre.fgv.br/")
 
-BETS.dashboard(type = "macro_situation", parameters = parameters, saveas = "inst/macro_dashboard.pdf")
+dashboard(type = "macro_situation", parameters = parameters, saveas = "inst/macro_dashboard.pdf")
 
 # Without text, with logo
 
@@ -20,7 +20,7 @@ parameters = list(author = "FGV/IBRE",
                   url = "http://portalibre.fgv.br/",
                   logo = "logo_ibre.png")
 
-BETS.dashboard(type = "macro_situation", parameters = parameters, saveas = "inst/macro_situation_dashboard.pdf")
+dashboard(type = "macro_situation", parameters = parameters, saveas = "inst/macro_situation_dashboard.pdf")
 
 # With text, with logo
 
@@ -29,7 +29,7 @@ parameters = list(author = "FGV/IBRE",
                   text = "text.txt",
                   logo = "logo_ibre.png")
 
-BETS.dashboard(type = "macro_situation", parameters = parameters)
+dashboard(type = "macro_situation", parameters = parameters)
 
 ##-- Custom, normal style
 
@@ -68,7 +68,7 @@ charts.opts[[2]] <- list(
     trend = T
 )
 
-BETS.chart(ts = charts[[2]], style = "normal", file = "int_res.pdf", open = T, params = charts.opts[[2]])
+chart(ts = charts[[2]], style = "normal", file = "int_res.pdf", open = T, params = charts.opts[[2]])
 
 
 # Current Account vc Direct Foreign Investment
@@ -87,7 +87,7 @@ charts.opts[[3]] <- list(
     extra.arr.len = 200
 )
 
-BETS.chart(ts = charts[[3]], style = "normal", file = "ca_di.pdf", open = T, params = charts.opts[[3]])
+chart(ts = charts[[3]], style = "normal", file = "ca_di.pdf", open = T, params = charts.opts[[3]])
 
 # External Debt
 
@@ -112,7 +112,7 @@ charts.opts[[4]] <- list(
     legend.pos = "bottomleft"
 )
 
-BETS.chart(ts = charts[[4]], style = "normal", file = "debt", open = T, params = charts.opts[[4]])
+chart(ts = charts[[4]], style = "normal", file = "debt", open = T, params = charts.opts[[4]])
 
 parameters <- list(
     style = style,
@@ -123,7 +123,7 @@ parameters <- list(
     logo = "logo_ibre.png"
 )
 
-BETS.dashboard(type = "custom", charts = charts, saveas = "custom_dashboard.pdf", parameters = parameters)
+dashboard(type = "custom", charts = charts, saveas = "custom_dashboard.pdf", parameters = parameters)
 
 ##-- Custom, plotly style
 
@@ -143,7 +143,7 @@ charts.opts[[1]] <- list(
     extra = window(BETS.get(4536),start = c(2006,1))
 )
 
-BETS.chart(ts = charts[[1]], style = "plotly", file = "debt", open = T, params = charts.opts[[1]])
+chart(ts = charts[[1]], style = "plotly", file = "debt", open = T, params = charts.opts[[1]])
 
 
 # International Reserves
@@ -158,7 +158,7 @@ charts.opts[[2]] <- list(
     arr.len = 10
 )
 
-BETS.chart(ts = charts[[2]], style = "plotly", file = "int_res", open = T, params = charts.opts[[2]])
+chart(ts = charts[[2]], style = "plotly", file = "int_res", open = T, params = charts.opts[[2]])
 
 
 # Current Account vc Direct Foreign Investment
@@ -175,7 +175,7 @@ charts.opts[[3]] <- list(
     extra.arr.ort = 'v'
 )
 
-BETS.chart(ts = charts[[3]], style = "plotly", file = "ca_di", open = T, params = charts.opts[[3]])
+chart(ts = charts[[3]], style = "plotly", file = "ca_di", open = T, params = charts.opts[[3]])
 
 # External Debt
 
@@ -196,11 +196,11 @@ charts.opts[[4]] <- list(
     extra = extra
 )
 
-BETS.chart(ts = charts[[4]], style = "plotly", file = "debt", open = T, params = charts.opts[[4]])
+chart(ts = charts[[4]], style = "plotly", file = "debt", open = T, params = charts.opts[[4]])
 
 parameters <- list(
     style = style,
     charts.opts = charts.opts)
 
-BETS.dashboard(type = "custom", charts = charts, saveas = "custom_dashboard.pdf", parameters = parameters)
+dashboard(type = "custom", charts = charts, saveas = "custom_dashboard.pdf", parameters = parameters)
 
