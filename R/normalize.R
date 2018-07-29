@@ -14,7 +14,7 @@
 #' @export
 
 
-normalize = function(series, mode){
+normalize = function(series, mode="scale"){
   
   if(mode == "maxmin"){
     
