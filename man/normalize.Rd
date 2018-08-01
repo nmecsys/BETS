@@ -4,7 +4,7 @@
 \alias{normalize}
 \title{Normalize a time series}
 \usage{
-normalize(series, mode)
+normalize(series, mode = "scale")
 }
 \arguments{
 \item{series}{A \code{ts} object or a \code{ts list}. The series to be normalized.}
