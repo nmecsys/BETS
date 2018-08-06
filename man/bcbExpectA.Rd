@@ -29,7 +29,10 @@ Market Expectations with annual reference.
 The available indicators are: Balanca comercial, Balanco de pagamentos, Fiscal, IGP-DI,
   IGP-M, INPC, IPA-DI, IPA-M, IPCA, IPCA-15, IPC-FIPE, Precos administrados por contrato e 
   monitorado, Producao industrial, PIB Industrial, PIB Servicos, PIB Total, Meta para taxa 
-  over-selic e Taxa de cambio.
+  over-selic e Taxa de cambio.  
+  
+  
+  In collaboration with Angelo Salton <https://github.com/angelosalton>.
 }
 \examples{
  # bcbExpectA()
