@@ -53,7 +53,7 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = "Medi
     query_url <- paste(baseurl, "ExpectativasMercadoInflacao12Meses", "?$",variaveis_b,"&$",variaveis_a,timespan,
                        "&$select=",variaveis_c, sep = "", collapse = "")
     
-    data <- fromJSON(query_url)$value
+    
     data <- fromJSON(file = query_url)$value
     data <- do.call("rbind", lapply(data, as.data.frame))
     
