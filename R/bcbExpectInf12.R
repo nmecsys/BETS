@@ -36,11 +36,11 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = "Medi
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
     variaveis_b <- paste("top=",limit,sep="")
     variaveis_c <- paste("Indicador", "Data","Suavizada",
-                         "DataReferencia", variables, sep = ",")
+                          variables, sep = ",")
     
     if(missing(start) & missing(end)){
         timespan <- ""
-    }else if(missing(start) & !missing(end)){
+    }else if(!missing(start) & missing(end)){
         timespan <- paste0("%20and%20Data%20gt%20'", start,"'")
     }else if(!missing(start) & !missing(end)){
         timespan <- paste0("%20and%20Data%20gt%20'", start, "'%20and%20", "Data%20lt%20'", end,"'")
