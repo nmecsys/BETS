@@ -11,13 +11,13 @@
 #' @param limit A integer. A limint of data in request, top is 10000.
 #'
 #'
-#' @import rjson
+#' @import rjson stringr
 #' @return A data.frame.
 #' @export 
 #'
 #' 
 #' @note The available indicators are: IGP-DI, IGP-M, INPC, IPA-DI, IPA-M, IPCA, IPCA-15, IPC-FIPE, Producao 
-#'    industrial, Meta para taxa overlic, Taxa de cambio .  
+#'    industrial, Meta para taxa over-selic, Taxa de cambio .  
 #' 
 #' @examples 
 #'  # bcbExpectM()
@@ -31,11 +31,13 @@ bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = "Media", s
     
     
     
+    indicator = str_replace_all(indicator," ","%20")
+    
     if(limit > 10000 | limit < 0)stop("You need provid a limit in between 0 and 10000!")
     # variaveis
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
     variaveis_b <- paste("top=",limit,sep="")
-    variaveis_c <- paste("Indicador", "IndicadorDetalhe", "Data",
+    variaveis_c <- paste("Indicador", "Data",
                          "DataReferencia", variables, sep = ",")
     
     if(missing(start) & missing(end)){
@@ -53,7 +55,8 @@ bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = "Media", s
     query_url <- paste(baseurl, "ExpectativaMercadoMensais", "?$",variaveis_b,"&$",variaveis_a,timespan,
                        "&$select=",variaveis_c, sep = "", collapse = "")
     
-    data <- fromJSON(query_url)$value
+    data <- fromJSON(file = query_url)$value
+    data <- do.call("rbind", lapply(data, as.data.frame))
     return(data)
 }
 

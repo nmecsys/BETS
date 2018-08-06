@@ -29,7 +29,7 @@
 bcbExpectMTop5 <- function(indicator = 'IGP-DI',limit = 100, variables = "Media", start, end ){
     
     
-    
+    indicator = str_replace_all(indicator," ","%20")
     
     if(limit > 10000 | limit < 0)stop("You need provid a limit in between 0 and 10000!")
     # variaveis
@@ -53,7 +53,8 @@ bcbExpectMTop5 <- function(indicator = 'IGP-DI',limit = 100, variables = "Media"
     query_url <- paste(baseurl, "ExpectativasMercadoTop5Mensais", "?$",variaveis_b,"&$",variaveis_a,timespan,
                        "&$select=",variaveis_c, sep = "", collapse = "")
     
-    data <- fromJSON(query_url)$value
+    data <- fromJSON(file = query_url)$value
+    data <- do.call("rbind", lapply(data, as.data.frame))
     
     return(data)
 }

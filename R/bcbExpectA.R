@@ -20,6 +20,9 @@
 #'   IGP-M, INPC, IPA-DI, IPA-M, IPCA, IPCA-15, IPC-FIPE, Precos administrados por contrato e 
 #'   monitorado, Producao industrial, PIB Industrial, PIB Servicos, PIB Total, Meta para taxa 
 #'   over-selic e Taxa de cambio.  
+#'   
+#'   
+#'   In collaboration with Angelo Salton <https://github.com/angelosalton>.
 #' 
 #' @examples 
 #'  # bcbExpectA()
@@ -32,7 +35,7 @@
 bcbExpectA <- function(indicator = 'IPCA',limit = 100, variables = "Media", start, end ){
 
     
-    
+    indicator = str_replace_all(indicator," ","%20")
     
     if(limit > 10000 | limit < 0)stop("You need provid a limit in between 0 and 10000!")
     # variaveis
@@ -56,6 +59,8 @@ bcbExpectA <- function(indicator = 'IPCA',limit = 100, variables = "Media", star
     query_url <- paste(baseurl, "ExpectativasMercadoAnuais", "?$",variaveis_b,"&$",variaveis_a,timespan,
                        "&$select=",variaveis_c, sep = "", collapse = "")
     
-    data <- fromJSON(query_url)$value
+   
+    data <- fromJSON(file = query_url)$value
+    data <- do.call("rbind", lapply(data, as.data.frame))
     return(data)
 }

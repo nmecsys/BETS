@@ -27,7 +27,7 @@ Market Expectations with mensal reference.
 }
 \note{
 The available indicators are: IGP-DI, IGP-M, INPC, IPA-DI, IPA-M, IPCA, IPCA-15, IPC-FIPE, Producao 
-   industrial, Meta para taxa overlic, Taxa de cambio .
+   industrial, Meta para taxa over-selic, Taxa de cambio .
 }
 \examples{
  # bcbExpectM()
