@@ -26,7 +26,7 @@
 
 
 
-bcbExpectATop5 <- function(indicator = 'IGP-DI',limit = 100, variables = "Media", start, end ){
+bcbExpectATop5 <- function(indicator = 'IGP-DI',limit = 100, variables = c("tipoCalculo","Media","Mediana","DesvioPadrao","CoeficienteVariacao","Minimo","Maximo"), start, end ){
     
     
     indicator = str_replace_all(indicator," ","%20")

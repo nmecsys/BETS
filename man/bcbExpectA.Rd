@@ -4,8 +4,9 @@
 \alias{bcbExpectA}
 \title{bcbExpectA}
 \usage{
-bcbExpectA(indicator = "IPCA", limit = 100, variables = "Media", start,
-  end)
+bcbExpectA(indicator = "IPCA", limit = 100, variables = c("Media",
+  "Mediana", "DesvioPadrao", "CoeficienteVariacao", "Minimo", "Maximo",
+  "numeroRespondentes", "baseCalculo"), start, end)
 }
 \arguments{
 \item{indicator}{A string. Available indicator.}

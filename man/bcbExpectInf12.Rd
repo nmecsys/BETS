@@ -4,8 +4,9 @@
 \alias{bcbExpectInf12}
 \title{bcbExpectInf12}
 \usage{
-bcbExpectInf12(indicator = "IPC-FIPE", limit = 100, variables = "Media",
-  start, end)
+bcbExpectInf12(indicator = "IPC-FIPE", limit = 100, variables = c("Media",
+  "Mediana", "DesvioPadrao", "CoeficienteVariacao", "Minimo", "Maximo",
+  "numeroRespondentes", "baseCalculo"), start, end)
 }
 \arguments{
 \item{indicator}{A string. Available indicator.}

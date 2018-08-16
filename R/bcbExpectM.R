@@ -11,7 +11,7 @@
 #' @param limit A integer. A limint of data in request, top is 10000.
 #'
 #'
-#' @import rjson stringr
+#' @import rjson stringr dplyr
 #' @return A data.frame.
 #' @export 
 #'
@@ -27,8 +27,7 @@
 
 
 
-bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = "Media", start, end ){
-    
+bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = c("Media","Mediana","DesvioPadrao","CoeficienteVariacao","Minimo","Maximo","numeroRespondentes","baseCalculo"), start, end ){
     
     
     indicator = str_replace_all(indicator," ","%20")
@@ -37,8 +36,8 @@ bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = "Media", s
     # variaveis
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
     variaveis_b <- paste("top=",limit,sep="")
-    variaveis_c <- paste("Indicador", "Data",
-                         "DataReferencia", variables, sep = ",")
+    k = paste(variables,collapse = ",")
+    variaveis_c <- paste("Indicador,Data,DataReferencia", k, sep = ",")
     
     if(missing(start) & missing(end)){
         timespan <- ""
@@ -57,6 +56,18 @@ bcbExpectM <- function(indicator = 'IPCA-15',limit = 100, variables = "Media", s
     
     data <- fromJSON(file = query_url)$value
     data <- do.call("rbind", lapply(data, as.data.frame))
+    
+    # data$Data = as.Date(data$Data)
+    # data$DataReferencia = as.Date(as.character(data$DataReferencia),format = "%m/%Y")
+    # data = data %>% arrange(Data)
+    # data = data %>% arrange(DataReferencia)
+    # f = as.character(unique(data$DataReferencia))
+    # f = (f[(str_detect(f,"2019"))])
+    # 
+    # if(trat){
+    #     df =    setNames(data.frame(matrix(ncol = length(f),nrow = 1 )),f)
+    # }
+    
     return(data)
 }
 

@@ -4,8 +4,9 @@
 \alias{bcbExpectATop5}
 \title{bcbExpectATop5}
 \usage{
-bcbExpectATop5(indicator = "IGP-DI", limit = 100, variables = "Media",
-  start, end)
+bcbExpectATop5(indicator = "IGP-DI", limit = 100,
+  variables = c("tipoCalculo", "Media", "Mediana", "DesvioPadrao",
+  "CoeficienteVariacao", "Minimo", "Maximo"), start, end)
 }
 \arguments{
 \item{indicator}{A string. Available indicator.}

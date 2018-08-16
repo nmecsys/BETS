@@ -26,7 +26,7 @@
 
 
 
-bcbExpectT <- function(indicator = 'PIB Total',limit = 100, variables = "Media", start, end ){
+bcbExpectT <- function(indicator = 'PIB Total',limit = 100, variables = c("Media","Mediana","DesvioPadrao","CoeficienteVariacao","Minimo","Maximo","numeroRespondentes"), start, end ){
     
     indicator = str_replace_all(indicator," ","%20")
     
