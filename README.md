@@ -16,6 +16,7 @@ Installation
 ------------
 
 ``` r
+# cran version
 install.packages("BETS") 
 # dev version
 devtools::install_github("nmecsys/BETS")
