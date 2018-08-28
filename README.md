@@ -17,6 +17,8 @@ Installation
 
 ``` r
 install.packages("BETS") 
+# dev version
+devtools::install_github("nmecsys/BETS")
 ```
 
 Usage
