@@ -68,8 +68,3 @@ install.packages("devtools")
 devtools::install_version("forecast", version = "8.2", type = "source")
 ```
 
-### Information
-
-The Brazilian Economic Uncertainty Indicator (IIE-Br) is standardized in a new window
-
-`R    # To get the IIEBR and components, run:    iiebr <- BETS.get(code = "ST_100.0")    market <- BETS.get(code = "ST_100.1")    expectations <- BETS.get(code = "ST_100.2")    media <- BETS.get(code = "ST_100.3")`
