@@ -251,8 +251,8 @@ BETSsearch = function(description="*",src,periodicity,unit,code,start,view=FALSE
      dbGetQuery(conn, query)
   }, error = function(e){
       
-      metadata_pt <- readRDS(paste0(system.file(package="BETS"),"/metadata_pt.rds")) 
-      metadata_en <- readRDS(paste0(system.file(package="BETS"),"/metadata_en.rds"))
+      metadata_pt <- readRDS(file.path(system.file(package="BETS"),"/metadata_pt.rds")) 
+      metadata_en <- readRDS(file.path(system.file(package="BETS"),"/metadata_en.rds"))
     
       return(sqldf(query))
   }) 

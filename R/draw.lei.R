@@ -10,7 +10,7 @@
 
 draw.lei = function(){
   
-  file = paste0(system.file(package="BETS"), "/lei.csv")
+  file = file.path(system.file(package="BETS"), "/lei.csv")
   lei= read.csv2(file, stringsAsFactors = F)[,2]
   lei = window(ts(as.numeric(lei), start = c(1996,1),frequency = 12),start = c(2000,6))
   

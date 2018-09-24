@@ -8,10 +8,10 @@
 
 draw.ei_comps = function(){
   
-  file.cei = paste0(system.file(package="BETS"), "/cei_comps.csv")
+  file.cei = file.path(system.file(package="BETS"), "/cei_comps.csv")
   cei <- read.csv2(file.cei, stringsAsFactors = F)
   
-  file.lei = paste0(system.file(package="BETS"), "/lei_comps.csv")
+  file.lei = file.path(system.file(package="BETS"), "/lei_comps.csv")
   lei <- read.csv2(file.lei, stringsAsFactors = F)
   
   lei.labs = c("Swap<br>Rate","Manufacturing<br>Expec.", "Services<br>Expec.", "Consumers<br>Expec.", "Stock<br>Prices", "Terms of<br>Trade", "Consumer<br>Durable Goods<br>Production Exp.", "Exports<br>Volume")

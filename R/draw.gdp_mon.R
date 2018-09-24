@@ -9,7 +9,7 @@
 
 draw.gdp_mon = function(){
   
-  gdp_comp = paste0(system.file(package="BETS"), "/mon_pib_comps.csv")
+  gdp_comp = file.path(system.file(package="BETS"), "/mon_pib_comps.csv")
   data <- read.csv2(gdp_comp, stringsAsFactors = F)
   
   gdp = window(ts(as.numeric(data[,2]), start = c(2000,1), frequency = 12),start = c(2013,1))

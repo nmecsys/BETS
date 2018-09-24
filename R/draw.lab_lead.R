@@ -10,7 +10,7 @@
 
 draw.lab_lead = function(){
   
-  file = paste0(system.file(package="BETS"), "/sondagens_completo_fgv.csv")
+  file = file.path(system.file(package="BETS"), "/sondagens_completo_fgv.csv")
   sond = read.csv2(file, stringsAsFactors = F)
   sond[,-1] = suppressWarnings(
     data.frame(lapply(sond[,-1], function(x){as.numeric(gsub(",",".",x))}))

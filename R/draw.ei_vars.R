@@ -9,7 +9,7 @@
 
 draw.ei_vars = function(){
   
-  ei = paste0(system.file(package="BETS"), "/ei_vars.csv")
+  ei = file.path(system.file(package="BETS"), "/ei_vars.csv")
   data <- read.csv2(ei, stringsAsFactors = F)
   
   lei = ts(data[,2], start = c(2016,8),frequency = 12)

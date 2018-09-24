@@ -11,7 +11,7 @@
 
 draw.gdp_vars = function(){
   
-  gdp_comp = paste0(system.file(package="BETS"), "/mon_pib_vars.csv")
+  gdp_comp = file.path(system.file(package="BETS"), "/mon_pib_vars.csv")
   data <- read.csv2(gdp_comp, stringsAsFactors = F)
   
   gdp = window(ts(as.numeric(data[,2]), start = c(2000,12), frequency = 12),start = c(2013,1))

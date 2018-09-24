@@ -13,7 +13,7 @@
 
 draw.gdp_comps = function(){
   
-  gdp_comp = paste0(system.file(package="BETS"), "/mon_pib_comps.csv")
+  gdp_comp = file.path(system.file(package="BETS"), "/mon_pib_comps.csv")
   data <- ts(read.csv2(gdp_comp, stringsAsFactors = F)[,-1],start = c(2000,1), frequency = 12)
   data <- aggregate(data)
   

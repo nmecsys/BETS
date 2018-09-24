@@ -38,7 +38,7 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
     
     if(nrow(aux) == 0){
         
-        examples <- readRDS(paste0(system.file(package="BETS"),"/examples.rds"))
+        examples <- readRDS(file.path(system.file(package="BETS"),"/examples.rds"))
         examples <- examples[examples$code == code,]
         
         if(nrow(examples) != 0){
