@@ -17,6 +17,14 @@
 #' @importFrom stringr str_split
 #' @import xml2 rvest stringr RMySQL DBI
 #' @export 
+#' 
+#' 
+#' 
+
+
+
+
+
 
 sidraSearch <- function(description = NULL, code, view = TRUE, browse = FALSE) {
     
@@ -163,7 +171,42 @@ sidraSearch <- function(description = NULL, code, view = TRUE, browse = FALSE) {
             }
         }
         else{
-            msg("No series found. Try using another combination of search terms.")
+    
+            description <- stringr::str_replace_all(description, " ", "%20")
+
+          tabela <- xml2::read_html(paste0("https://sidra.ibge.gov.br/Busca?q=", description))
+       
+          tabela <- rvest::html_nodes(tabela,".busca-link-tabela")
+          tabela <- rvest::html_text(tabela)
+          
+          generic = function(x){
+              aux2 = data.frame(
+                  tabela = character(),
+                  info = character(),
+                  description = character()
+              )
+              for(i in 1:length(x)){
+                  aux = str_split(x[i], pattern = "-")
+                  if(length(aux[[1]])!=3){
+                      aux[[1]][3] = NA
+                      x[i] =  paste(aux[[1]],collapse ="-")
+                  }
+                  aux2 = rbind(aux2,aux)
+              }
+              data = data.frame(do.call('rbind', strsplit(as.character(x),'-',fixed=FALSE)))
+              names(data) = c("tabela","info", "description")
+              options(warn=-1)
+              return(data)
+          }
+          
+          data = generic(x = tabela)
+          
+          if(nrow(data) == 0){
+              msg("No series found. Try using another combination of search terms.")
+          }else{
+              return(data)    
+            }
+               
         }
         
         
