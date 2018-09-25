@@ -4,7 +4,7 @@ BETS
 ====
 
 [![Build Status](https://travis-ci.org/nmecsys/BETS.svg?branch=master)](https://travis-ci.org/nmecsys/BETS) ![Build Status](https://ci.appveyor.com/api/projects/status/github/nmecsys/BETS?branch=master&svg=true) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/BETS)](https://CRAN.R-project.org/package=BETS) [![downloads](http://cranlogs.r-pkg.org/badges/BETS)](http://cran.rstudio.com/web/packages/BETS/index.html) ![](http://cranlogs.r-pkg.org/badges/last-week/BETS?color=blue)
-
+[![Github Stars](https://img.shields.io/github/stars/nmecsys/BETS.svg?style=social&label=Github)](https://github.com/nmecsys/BETS)
 :exclamation: **Please read this carefully before using the latest BETS version (0.4.4)**
 
 *The package went through considerable changes.*
