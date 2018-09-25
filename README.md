@@ -9,7 +9,7 @@ BETS
 [![downloads](http://cranlogs.r-pkg.org/badges/BETS)](http://cran.rstudio.com/web/packages/BETS/index.html) 
 ![](http://cranlogs.r-pkg.org/badges/last-week/BETS?color=blue)
 [![Github Stars](https://img.shields.io/github/stars/nmecsys/BETS.svg?style=flat&label=Github)](https://github.com/nmecsys/BETS)
-![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)
+![GitHub repo size in bytes](https://img.shields.io/github/repo-size/nmecsys/BETS.svg)
 ![CRAN](https://img.shields.io/cran/l/BETS.svg)
 
 
