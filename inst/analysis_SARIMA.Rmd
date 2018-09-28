@@ -117,7 +117,7 @@ tryCatch({require(mFilter)
 trend = fitted(hpfilter(data))
 
 library(dygraphs)
-dygraph(cbind(Series = data, Trend = trend), main = info[,"Description"]) %>%
+dygraph(cbind(Series = data, Trend = trend), main = as.character(info[,"Description"])) %>%
   dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
     dyAxis("y", label = info[,"Unit"]) 
 ```
@@ -270,7 +270,7 @@ corrgram(d_ts, lag.max = cf.lags, mode = "bartlett", knit = T)
 corrgram(d_ts, lag.max = cf.lags, mode = "simple", type = "partial", knit = T)
 ```
 
-## Model Identification and Estimation
+## Model Identification and Estimation 
 
 The correlograms from last section gives us enough information to try to identify the underlying SARIMA model parameters. We can confirm our guess by running the `auto.arima` function from the package `forecast`. By default, this function uses the AICc (Akaike Information Criterion with Finite Sample Correction) for model selection. `r if(inf.crit == "AICC") 'This is the criterion we are going to use here.'` `r if(inf.crit == "BIC") 'Here, we are going to use BIC (Bayesian Information Criterion), in which the penalty term for the number of parameters in the model is larger than in AIC.'` `r if(inf.crit == "AIC") 'Here, we are going to use AIC (Akaike Information Criterion).'`
 
@@ -319,7 +319,7 @@ freq = model$arma[5]
 desc = paste0("SARIMA(",p,",",d,",",q,")(",P,",",D,",",Q,")[",freq,"]")
 ```
 
-We see that, according to `r inf.crit`, the best model is a `r desc`. Nevertheless, this is not the end. We still have to test for heteroskedasticity in the residuals. We can use an ARCH test with this purpose.
+We see that, according to `r inf.crit`, the best model[^1] is a `r desc`. Nevertheless, this is not the end. We still have to test for heteroskedasticity in the residuals. We can use an ARCH test with this purpose.
 
 ```{r echo = c(1,2,3)}
 arch.params <- append(list(x = resid(model)), arch.test)
@@ -507,22 +507,22 @@ The p-value is greater than 0.05, which means there is not enough statistical ev
 
 ```{r echo = has.dum, eval = has.dum}
 predict(model, h=n.ahead, xreg = f.dummy,
-             main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+             main = as.character(info[,"Description"]), ylab = info[,"Unit"], knit = T)
 ```
 
 ```{r echo = !has.dum, eval = !has.dum}
 predict(model, h=n.ahead, 
-             main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+             main = as.character(info[,"Description"]), ylab = info[,"Unit"], knit = T)
 ```
 
 
 ```{r echo = F, eval = !is.na(series.file)}
 if(has.dum){
   preds = predict(model, h=n.ahead, xreg = f.dummy,
-                        main = info[,"Description"], ylab = info[,"Unit"], knit = T)
+                        main = as.character(info[,"Description"]), ylab = info[,"Unit"], knit = T)
 } else {
   preds = predict(model, h=n.ahead, 
-                       main = info[,"Description"], ylab = info[,"Unit"], knit = T)      
+                       main = as.character(info[,"Description"]), ylab = info[,"Unit"], knit = T)      
 }
 
 data = c(data,preds$mean)
@@ -541,6 +541,9 @@ if(grepl("\\.spss$", series.file)){
 }
 ```
 
+
 <br>
 `r if(!is.na(series.file)) 'The whole series and the model predictions are available at [THIS LINK]('``r if(!is.na(series.file)) series.file``r if(!is.na(series.file)) ')'`
 
+[^1]: The authors of BETS would like to warn its users of the shortcomings of using automated analysis. This report saves a lot of time and might be insightful. However, performing the
+analysis in detail, using individual BETS functions rather than the batch of functions included in the reports, may provide more flexibility. Since reports use auto.arima(), they might not find models that are in line with a more sofisticated analysis. 

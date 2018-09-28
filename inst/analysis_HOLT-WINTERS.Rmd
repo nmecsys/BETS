@@ -97,7 +97,7 @@ trend = fitted(hpfilter(ts))
 
 
 library(dygraphs)
-dygraph(cbind(Series = ts, Trend = trend), main = info[1,"Description",]) %>%
+dygraph(cbind(Series = ts, Trend = trend), main = as.character(info[1,"Description",])) %>%
   dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
      dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
         dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
@@ -174,7 +174,7 @@ library(BETS)
 ```
 
 ```{r}
-preds = predict(model,h=n.ahead, main = info[,"Description"], ylab = info[,"Unit"], style = "normal")
+preds = predict(model,h=n.ahead, main = as.character(info[,"Description"]), ylab = info[,"Unit"], style = "normal")
 ```
 
 ## Model Evaluation

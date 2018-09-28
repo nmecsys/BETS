@@ -151,7 +151,7 @@ trend = fitted(hpfilter(regs[[1]]))
 
 # Load dygraphs and make a plot
 library(dygraphs)
-dygraph(cbind(Series = regs[[1]], Trend = trend), main = info[1,"Description",]) %>%
+dygraph(cbind(Series = regs[[1]], Trend = trend), main = as.character(info[1,"Description",])) %>%
   dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
      dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
         dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
@@ -198,7 +198,7 @@ xyplot(df)
 trend = fitted(hpfilter(regs[[2]]))
 
 library(dygraphs)
-dygraph(cbind(Series = regs[[2]], Trend = trend), main = info[2,"Description"]) %>%
+dygraph(cbind(Series = regs[[2]], Trend = trend), main = as.character(info[2,"Description"])) %>%
   dySeries("Series",color = "royalblue",drawPoints = TRUE) %>%
      dySeries("Trend", strokeWidth = 1, strokePattern = "dashed", color = "red") %>%
         dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
