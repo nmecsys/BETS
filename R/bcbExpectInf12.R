@@ -52,7 +52,7 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = c("Me
     
     baseurl <- "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/"
     query_url <- paste(baseurl, "ExpectativasMercadoInflacao12Meses", "?$",variaveis_b,"&$",variaveis_a,timespan,
-                       "&$select=",variaveis_c, sep = "", collapse = "")
+                       "&$select=",paste0(variaveis_c), sep = "", collapse = "")
     
     
     data = bind_rows(fromJSON(file =  query_url)$value)
