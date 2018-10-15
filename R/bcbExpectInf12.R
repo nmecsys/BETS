@@ -12,6 +12,7 @@
 #'
 #'
 #' @import rjson
+#' @importFrom  dplyr bind_rows
 #' @return A data.frame.
 #' @export 
 #'
@@ -34,9 +35,9 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = c("Me
     if(limit > 10000 | limit < 0)stop("You need provid a limit in between 0 and 10000!")
     # variaveis
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
-    variaveis_b <- paste("top=",limit,sep="")
-    variaveis_c <- paste("Indicador", "Data","Suavizada",
-                          variables, sep = ",")
+    variaveis_b <- paste("format=json&$top=",limit,sep="")
+    variaveis_c <- paste0("Indicador", "Data","Suavizada",
+                          variables, collapse = ",")
     
     if(missing(start) & missing(end)){
         timespan <- ""
@@ -54,8 +55,7 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = c("Me
                        "&$select=",variaveis_c, sep = "", collapse = "")
     
     
-    data <- fromJSON(file = query_url)$value
-    data <- do.call("rbind", lapply(data, as.data.frame))
+    data = bind_rows(fromJSON(file =  query_url)$value)
     
     return(data)
 }
