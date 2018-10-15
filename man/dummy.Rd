@@ -5,7 +5,8 @@
 \title{Create a monthly or quarterly dummy}
 \usage{
 dummy(start = NULL, end = NULL, frequency = 12, year = NULL,
-  month = NULL, quarter = NULL, date = NULL, from = NULL, to = NULL)
+  month = NULL, quarter = NULL, date = NULL, from = NULL,
+  to = NULL)
 }
 \arguments{
 \item{start}{An \code{integer vector}. The period of the first observation. The first element of the \code{vector} specifies the year of the first observation, whereas the second, the month (for monthly dummies) or quarter (for quarterly dummies)}
