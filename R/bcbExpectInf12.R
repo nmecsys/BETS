@@ -31,7 +31,7 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = c("Me
     
     
     indicator = str_replace_all(indicator," ","%20")
-    
+    variables = paste0(variables,collapse = ",")
     if(limit > 10000 | limit < 0)stop("You need provid a limit in between 0 and 10000!")
     # variaveis
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
