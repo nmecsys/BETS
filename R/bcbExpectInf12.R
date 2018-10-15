@@ -36,7 +36,7 @@ bcbExpectInf12 <- function(indicator = 'IPC-FIPE',limit = 100, variables = c("Me
     # variaveis
     variaveis_a <- paste("filter=Indicador%20eq%20'",indicator,"'",sep="")
     variaveis_b <- paste("format=json&$top=",limit,sep="")
-    variaveis_c <- paste0("Indicador", "Data","Suavizada",
+    variaveis_c <- paste0("Indicador,", "Data,","Suavizada,",
                           variables, collapse = ",")
     
     if(missing(start) & missing(end)){
