@@ -5,8 +5,7 @@
 \title{Get the predicted values of a model and visualize it}
 \usage{
 predict(..., actual = NULL, main = "", ylab = "", xlim = NULL,
-  style = "dygraphs", unnorm = NULL, legend.pos = "topright",
-  knit = F)
+  style = "dygraphs", unnorm = NULL, legend.pos = "topright", knit = F)
 }
 \arguments{
 \item{...}{arguments passed on to \link[forecast]{forecast}. If the model is a neural network, these arguments will be passed on to \link[BETS]{grnn.test}.}

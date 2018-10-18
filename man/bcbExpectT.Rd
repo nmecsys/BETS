@@ -4,10 +4,9 @@
 \alias{bcbExpectT}
 \title{bcbExpectT}
 \usage{
-bcbExpectT(indicator = "PIB Total", limit = 100,
-  variables = c("Media", "Mediana", "DesvioPadrao",
-  "CoeficienteVariacao", "Minimo", "Maximo", "numeroRespondentes"), start,
-  end)
+bcbExpectT(indicator = "PIB Total", limit = 100, variables = c("Media",
+  "Mediana", "DesvioPadrao", "CoeficienteVariacao", "Minimo", "Maximo",
+  "numeroRespondentes"), start, end)
 }
 \arguments{
 \item{indicator}{A string. Available indicator.}

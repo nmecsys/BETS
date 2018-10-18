@@ -4,8 +4,7 @@
 \alias{BETSget}
 \title{Get a complete time series from a BETS database}
 \usage{
-BETSget(code, from = "", to = "", data.frame = FALSE,
-  frequency = NULL)
+BETSget(code, from = "", to = "", data.frame = FALSE, frequency = NULL)
 }
 \arguments{
 \item{code}{A \code{character} or an \code{integer}. The unique code that references the time series. This code can be obtained by using the \code{\link{search}} function. More than one code can be provided at once, through a vector. In this case, be careful with the dates, i.e, parameters \code{from} and \code{to}. They must either be the same length as \code{code}, containing the date limits in order, or an isolated date, but nothing in between. See the examples section.}

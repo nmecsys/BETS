@@ -4,8 +4,8 @@
 \alias{report}
 \title{Create dynamic reports with a full analysis of a set of time series}
 \usage{
-report(mode = "SARIMA", ts = 21864, parameters = NULL,
-  report.file = NA, series.saveas = "none")
+report(mode = "SARIMA", ts = 21864, parameters = NULL, report.file = NA,
+  series.saveas = "none")
 }
 \arguments{
 \item{mode}{A \code{character}.The type of the analysis. So far, 'SARIMA', 'GRNN' and 'HOLT-WINTERS' are available.}
