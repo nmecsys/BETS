@@ -38,7 +38,7 @@ get.series.bacen<- function(x, from = "", to = "",save = ""){
                 inputs[i], 
                 '/dados?formato=csv&dataInicial=', data_init, '&dataFinal=',
                 data_end)
-     dados = httr::GET(k, timeout(10))
+     dados = httr::GET(k)
      aux = httr::content(dados,'raw')
      aux2= base::rawToChar(aux)
      
