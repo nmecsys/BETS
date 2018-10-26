@@ -14,7 +14,7 @@ BETS
 
 
 
-![Screenshot](https://gist.githubusercontent.com/GreedBlink/e47bce2c1f31ca138885eab5a704a98f/raw/c2700ed9ae27c29b3a0b512f2b21606cf72e0565/BETS.png)
+![Screenshot](https://gist.githubusercontent.com/GreedBlink/e47bce2c1f31ca138885eab5a704a98f/raw/c2700ed9ae27c29b3a0b512f2b21606cf72e0565/BETS.png =250x)
 
 
 :exclamation: **Please read this carefully before using the latest BETS version (0.4.4)**
