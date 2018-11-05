@@ -22,7 +22,8 @@ BETSsources <- function() {
 
 
 BETSexpect.info <- function() {
-    data.info = file.path(system.file(package="BETS"), "/expectativas_info.csv")
+    path = file.path(system.file(package="BETS"), "/expectativas_info.csv")
+    data.info = read.csv2( file = path, encoding = 'LATIN1', stringsAsFactors = F)
     data.info = as_tibble(data.info)
     return(data.info)
 }
