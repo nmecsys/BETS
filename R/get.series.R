@@ -44,7 +44,7 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
         if(nrow(examples) != 0){
             aux <- examples[,c(1,2)] 
         } else {
-            return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
+            return(invisible(msg(paste(MSG_NOT_SERVER_CONECTION,"Or series is empty in the BACEN databases"))))
         }
     }
     
