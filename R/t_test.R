@@ -19,7 +19,7 @@
 #' 
 #' @return A \code{data.frame} containing the standard erros, the t-statistic, the critical values and whether the null hypothesis should be rejected or not, for each model parameter. 
 #' @importFrom stats qt
-#' @author Talitha Speranza \email{talitha.speranza@fgv.br}, Daiane Marcolino \email{daiane.mattos@fgv.br}
+#' @author Talitha Speranza \email{talitha.speranza@fgv.br}, Daiane Marcolino \email{daiane.mattos@fgv.br} e Jonatha Costa \email{jonatha.costa@fgv.br}
 #' 
 #' @export
 
