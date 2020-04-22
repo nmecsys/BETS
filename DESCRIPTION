@@ -1,7 +1,7 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.5.0
+Version: 0.5.1
 Date: 2020-04-22
 Authors@R: c(       person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
                     person("Talitha", "Speranza", email = "talitha.speranza@fgv.br",role = c("aut", "cre")),
