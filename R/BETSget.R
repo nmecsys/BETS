@@ -32,8 +32,6 @@
 #'  # t <- c("2014-10-31","2015-01-01")
 #'  # BETSget(code = c(10777,4447), from = f, to = t)
 #'  
-#'  # BETSget(code = c(10777,4447),from = "2001-10-31", to = c("2014-10-31","2015-01-01"))
-#'  # BETSget(code = c(10777,4447),from = c("2002-10-31","1997-01-01"), to = "2015-01-01")
 #'  
 #'  
 #' @seealso \code{\link[stats]{ts}}, \code{\link[BETS]{BETSsearch}} and \code{\link[seasonal]{seas}}
@@ -41,6 +39,7 @@
 #' @keywords get
 #' @import RMySQL
 #' @import DBI
+#' @import purrr
 #' @export 
 
 BETSget = function(code,from = "", to = "",data.frame = FALSE, frequency = NULL){
@@ -49,37 +48,16 @@ BETSget = function(code,from = "", to = "",data.frame = FALSE, frequency = NULL)
     f = length(from)
     t = length(to)
     
-    if(n > 1){
+    
+    if(n == f & f == t){
+        ts <-  pmap(
+            .l = list(code,from,to,data.frame,frequency),
+            .f = get.series) %>% 
+            `names<-`(paste0("ts_",code))
         
-        ts = list()
-        nms = c()
-        
-        if(f == 1 && t == 1){
-            for(i in 1:n){
-                ts[[i]] = get.series(code[i], from = from, to = to, data.frame = data.frame, frequency = frequency)
-            }
-        } else if(f == n && t == 1){
-            for(i in 1:n){
-                ts[[i]] = get.series(code[i], from = from[i], to = to, data.frame = data.frame, frequency = frequency)
-            }
-        } else if(f == 1 && t == n){
-            for(i in 1:n){
-                ts[[i]] = get.series(code[i], from = from, to = to[i], data.frame = data.frame, frequency = frequency)
-            }
-        } else if(f == n && t == n){
-            for(i in 1:n){
-                ts[[i]] = get.series(code[i], from = from[i], to = to[i], data.frame = data.frame, frequency = frequency)
-            } 
-        }
-        
-        for(i in 1:n){
-            nms[i] = paste0("ts_",code[i])
-        }
-        
-        names(ts)<- nms
         return(ts)
-        
-    } else{
-        return(get.series(code, from, to, data.frame = data.frame, frequency = frequency))
+    }else{
+        stop(.MSG_BAD_PARAMETERS)
     }
+        
 }
