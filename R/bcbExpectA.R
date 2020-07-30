@@ -58,10 +58,10 @@ bcbExpectA <- function(indicator = 'IPCA',limit = 100, variables = c("Media","Me
     
     baseurl <- "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/"
     query_url <- paste(baseurl, "ExpectativasMercadoAnuais", "?$",variaveis_b,"&$",variaveis_a,timespan,
-                       "&$select=",paste0(variaveis_c), sep = "", collapse = "")
+                       "&$select=",variaveis_c, sep = "", collapse = "")
     
-    
-    data = bind_rows(fromJSON(file =  query_url)$value)
+    data <- fromJSON(file = query_url)$value
+    data <- do.call("rbind", lapply(data, as.data.frame))
     
     return(data)
 }
