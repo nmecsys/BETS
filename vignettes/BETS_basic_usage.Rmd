@@ -4,7 +4,7 @@ bibliography: biblio.bib
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{"BETS - Brazilian Economic Time Series: Basic Usage""}
+  %\VignetteIndexEntry{BETS - Brazilian Economic Time Series: Basic Usage}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
