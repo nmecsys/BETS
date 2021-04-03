@@ -80,3 +80,27 @@ install.packages("devtools")
 devtools::install_version("forecast", version = "8.2", type = "source")
 ```
 
+## Using BETS in python
+
+
+```
+import rpy2.robjects as ro
+import pandas as pd
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+
+
+# Getting Industrial Production (2002 = 100) - Rio de Janeiro
+
+bets = importr("BETS")
+dados = bets.BETSget(code=11081, data_frame=True)
+
+
+with localconverter(ro.default_converter + pandas2ri.converter):
+    pim_rj = ro.conversion.rpy2py(dados)
+
+print(pim_rj)
+```
+
+
